@@ -1,0 +1,83 @@
+---
+title: Software Overview
+description: Software stack, control methods, and example scripts for XLerobot.
+---
+
+XLerobot's software is built on the [LeRobot](https://github.com/huggingface/lerobot) framework by Hugging Face. All computing runs on your PC — the optional Raspberry Pi only handles data communication via WiFi.
+
+## Software stack
+
+| Layer | Component | Purpose |
+|---|---|---|
+| Framework | LeRobot | Motor control, data collection, policy training |
+| Motor config | Bambot | GUI tool for setting servo IDs and parameters |
+| IK solver | Analytical IK for SO-101 | Converts end-effector targets to joint angles |
+| Vision | YOLO | Object detection and tracking |
+| Simulation | MuJoCo + ManiSkill | Physics simulation, RL training |
+| VR | XLeVR | VR teleoperation (simulation; real hardware coming soon) |
+| AI | ACT, SmolVLA, pi0.5 | Vision-Language-Action policy training |
+
+## Control methods
+
+XLerobot supports multiple teleoperation interfaces, all running through example scripts in the [software/examples](https://github.com/Vector-Wangel/XLeRobot/tree/main/software/examples) directory:
+
+| Method | Script | Notes |
+|---|---|---|
+| Keyboard (joint) | `0_so100_keyboard_joint_control.py` | Control individual joints — good for testing |
+| Keyboard (end-effector) | `1_so100_keyboard_ee_control.py` | Move arm tip via IK — more intuitive |
+| Dual-arm keyboard | `2_so100_dual_arm_keyboard.py` | Both arms on `/dev/ttyACM0` and `/dev/ttyACM1` |
+| Vision tracking | `3_so100_yolo_tracking.py` | YOLO object following |
+| Full system keyboard | `4_xlerobot_teleop_keyboard.py` | Arms + base + head |
+| Xbox controller | `5_xlerobot_teleop_xbox.py` | Gamepad with stick/trigger mapping |
+| Joy-Con (single arm) | `6_so100_joycon_ee_control.py` | Single Nintendo Switch Joy-Con |
+| Joy-Con (full system) | `7_xlerobot_teleop_joycon.py` | Both Joy-Cons, full robot control |
+
+## Training pipelines
+
+| Approach | Description |
+|---|---|
+| **ACT** | Action Chunking with Transformers — imitation learning from demonstrations |
+| **SmolVLA** | Lightweight Vision-Language-Action model |
+| **pi0.5** | Policy model for vision-language-action tasks |
+| **Reinforcement Learning** | Train in MuJoCo simulation, transfer to hardware |
+
+## Ubuntu setup prerequisite
+
+Before running any example, you need to grant serial port access:
+
+```bash title="Grant serial port access"
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+```
+
+Verify your motor control boards are detected:
+
+```bash title="Find connected ports"
+python lerobot/find_port.py
+```
+
+If the script reports a motor count mismatch, check that the port names in your script match the actual device paths.
+
+## Joy-Con setup
+
+Joy-Con teleoperation requires extra dependencies:
+
+```bash title="Install Joy-Con support"
+git clone https://github.com/box2ai-robotics/joycon-robotics
+cd joycon-robotics
+pip install -e .
+sudo apt install joycond
+```
+
+To pair a Joy-Con: hold the sync button until the lights flash, pair via Bluetooth settings, then press L + R triggers simultaneously.
+
+Verify the connection:
+
+```bash title="Test Joy-Con input"
+python joycon_test_read.py
+```
+
+## Next steps
+
+- [Install LeRobot](/docs/software/lerobot-install/) — installation and file setup
+- [Tutorials](/tutorials/) — guided walkthroughs from first motor test to policy training

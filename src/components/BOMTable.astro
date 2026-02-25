@@ -1,0 +1,47 @@
+---
+interface BOMItem {
+  part: string;
+  quantity: number | string;
+  notes?: string;
+  link?: string;
+}
+
+interface Props {
+  items: BOMItem[];
+  title?: string;
+}
+
+const { items, title = "Bill of Materials" } = Astro.props;
+---
+
+<div class="my-6">
+  <h4 class="font-semibold text-lg mb-2">{title}</h4>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Part</th>
+          <th>Qty</th>
+          <th>Notes</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item) => (
+          <tr>
+            <td>{item.part}</td>
+            <td>{item.quantity}</td>
+            <td>{item.notes ?? "—"}</td>
+            <td>
+              {item.link ? (
+                <a href={item.link} target="_blank" rel="noopener noreferrer">Link</a>
+              ) : (
+                "—"
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

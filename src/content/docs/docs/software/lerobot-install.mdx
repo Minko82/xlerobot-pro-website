@@ -1,0 +1,91 @@
+---
+title: Install LeRobot
+description: Install the LeRobot framework and set up XLerobot files.
+---
+
+## Goal
+
+Get LeRobot installed in editable mode and copy the XLerobot-specific files into the correct directories.
+
+## Prerequisites
+
+- Python 3.10+ with conda or miniconda
+- Git
+- Ubuntu (recommended), macOS, or Windows with WSL
+- A working internet connection
+
+## Steps
+
+### 1. Install LeRobot
+
+Follow the [official LeRobot installation guide](https://github.com/huggingface/lerobot#installation) to set up the framework.
+
+The recommended approach is to install in editable mode for easier file management:
+
+```bash title="Clone and install LeRobot"
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+pip install -e .
+```
+
+### 2. Clone the XLerobot repository
+
+```bash title="Clone XLerobot"
+git clone https://github.com/Vector-Wangel/XLeRobot.git
+```
+
+### 3. Copy XLerobot files into LeRobot
+
+Move the following files from the XLerobot repo into your LeRobot installation:
+
+| Source (XLerobot) | Destination (LeRobot) | Purpose |
+|---|---|---|
+| Analytical IK solver for SO-101 | `/model` folder | Inverse kinematics |
+| XLerobot robot folder | `/robots` folder | Robot configuration |
+| Example scripts | `/example` folder | Control and teleop scripts |
+
+:::note
+If you plan to use a Raspberry Pi, uncomment `xlerobot_host` and `xlerobot_client` in the LeRobot `__init__.py` file after copying files.
+:::
+
+### 4. Configure motors
+
+Use the Bambot application to set motor IDs:
+
+- **Arms**: Follow the SO-101 motor configuration guide
+- **Head**: Set motor IDs to 7 and 8
+- **Wheel base**: Set motor IDs to 7, 8, and 9
+
+Mark each motor with a marker so you can identify which board it belongs to.
+
+:::caution
+On Linux, Bambot requires serial port access. Run `sudo chmod 666 /dev/ttyACM0` before launching the application.
+:::
+
+## Verify it works
+
+Run the basic joint control script to confirm motors respond:
+
+```bash title="Test motor control"
+python 0_so100_keyboard_joint_control.py
+```
+
+You should see each joint move in response to keyboard input. If nothing moves:
+
+1. Check that the correct serial port is referenced in the script
+2. Verify motor IDs match the expected configuration
+3. Confirm power is connected to the motor control boards
+4. Run `python lerobot/find_port.py` to check port detection
+
+## Common issues
+
+| Problem | Likely cause | Fix |
+|---|---|---|
+| `Permission denied` on `/dev/ttyACM*` | Serial port not accessible | `sudo chmod 666 /dev/ttyACM0` |
+| Motor count mismatch | Port name wrong in script | Run `find_port.py`, update script |
+| No motor movement | Power not connected | Check 12V DC cable from battery |
+| Bambot won't launch (Linux) | Missing permissions | Grant serial port access first |
+
+## Next step
+
+Once motors respond to keyboard input, move on to [end-effector control and teleoperation](/docs/software/) or start the [first reach tutorial](/tutorials/first-reach/).

@@ -1,0 +1,110 @@
+---
+title: Architecture Overview
+description: System architecture, data flow, and control pipeline for XLerobot.
+---
+
+This page describes how XLerobot's hardware and software components connect and communicate.
+
+## System diagram
+
+```
+┌─────────────┐     USB-C      ┌──────────────────┐
+│  Motor Board │◄──────────────►│                  │
+│  (Left Arm)  │                │   PC / Laptop    │
+└─────────────┘                │                  │
+                                │  LeRobot + IK    │
+┌─────────────┐     USB-C      │  YOLO + VLA      │
+│  Motor Board │◄──────────────►│  Training Loop   │
+│  (Right Arm) │                │                  │
+└─────────────┘                └────────┬─────────┘
+                                         │ USB
+┌─────────────┐     USB         ┌────────▼─────────┐
+│  Cameras     │◄──────────────►│    USB Hub        │
+│  (3x)        │                └──────────────────┘
+└─────────────┘
+
+┌─────────────┐     WiFi (optional)
+│ Raspberry Pi │◄──── only for untethered mode
+└─────────────┘
+```
+
+## Control pipeline
+
+### Direct mode (laptop connected)
+
+1. **Input** — keyboard, Xbox controller, Joy-Con, or VR sends commands
+2. **Control script** — a Python script in LeRobot translates input to target positions
+3. **IK solver** — for end-effector control, the analytical IK solver converts Cartesian targets to joint angles
+4. **Serial protocol** — joint positions are sent over USB to motor control boards via the STS3215 servo protocol
+5. **Execution** — servos move to commanded positions
+
+### Untethered mode (Raspberry Pi)
+
+The Raspberry Pi acts as a communication bridge:
+
+1. PC sends commands over WiFi to the Pi
+2. Pi forwards commands to motor boards over USB
+3. Pi streams camera feeds back to the PC over WiFi
+
+All computation (IK, vision, policy inference) still runs on the PC.
+
+## Motor ID mapping
+
+| Motor IDs | Component | Serial port |
+|---|---|---|
+| 1–6 | Left arm (6 joints) | `/dev/ttyACM0` |
+| 1–6 | Right arm (6 joints) | `/dev/ttyACM1` |
+| 7–8 | Head (pan + tilt) | Shared with an arm board |
+| 7–9 | Wheel base (3 wheels) | Shared with an arm board |
+
+:::note
+Motor IDs overlap between subsystems because they are on different serial buses. The head and wheel motors share boards with the arms but use higher IDs (7+) to avoid conflicts.
+:::
+
+## Camera pipeline
+
+| Camera | Mount | Purpose |
+|---|---|---|
+| Hand camera L | Left wrist | Close-up manipulation view |
+| Hand camera R | Right wrist | Close-up manipulation view |
+| Head camera | Head (pan-tilt) | Overview / scene understanding |
+
+Camera feeds are accessed as standard USB video devices. The YOLO tracking example reads the head camera for object detection and converts pixel coordinates to arm targets via IK.
+
+## Inverse kinematics
+
+XLerobot uses an **analytical IK solver** specific to the SO-101 arm geometry. This is faster and more predictable than numerical IK for this kinematic chain.
+
+The solver takes:
+- **Input**: desired end-effector position (X, Y, Z) in arm-base frame
+- **Output**: joint angles for all 6 joints
+
+The solver file is placed in the LeRobot `/model` folder during installation.
+
+## Training pipeline
+
+```
+Teleoperation → Record demos → Train policy → Deploy policy
+     │                │              │              │
+  Human input    .hdf5 files    ACT/SmolVLA/     Autonomous
+  (any method)                   pi0.5/RL        execution
+```
+
+1. **Data collection** — teleoperate the robot and record joint positions + camera frames
+2. **Training** — use ACT, SmolVLA, pi0.5, or RL to learn a policy from demonstrations
+3. **Deployment** — run the trained policy for autonomous task execution
+
+## Simulation
+
+MuJoCo + ManiSkill provides a simulated environment for:
+- Testing control scripts without hardware
+- Training RL policies
+- VR teleoperation (via XLeVR)
+
+URDF files and ManiSkill agent scripts are included in the XLerobot repo.
+
+## Related pages
+
+- [Software Overview](/docs/software/) — control methods and example scripts
+- [Hardware Overview](/docs/hardware/) — physical specifications
+- [Install LeRobot](/docs/software/lerobot-install/) — software setup

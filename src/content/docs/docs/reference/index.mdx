@@ -1,0 +1,91 @@
+---
+title: Quick Reference
+description: Common commands, scripts, and configuration for XLerobot.
+---
+
+## Example scripts
+
+All scripts are in the [software/examples](https://github.com/Vector-Wangel/XLeRobot/tree/main/software/examples) directory of the XLerobot repo.
+
+| Script | Purpose |
+|---|---|
+| `0_so100_keyboard_joint_control.py` | Test individual joints via keyboard |
+| `1_so100_keyboard_ee_control.py` | End-effector control via IK |
+| `2_so100_dual_arm_keyboard.py` | Dual-arm keyboard control |
+| `3_so100_yolo_tracking.py` | Vision-based object following |
+| `4_xlerobot_teleop_keyboard.py` | Full system keyboard teleoperation |
+| `5_xlerobot_teleop_xbox.py` | Xbox controller teleoperation |
+| `6_so100_joycon_ee_control.py` | Single Joy-Con end-effector control |
+| `7_xlerobot_teleop_joycon.py` | Full system Joy-Con teleoperation |
+
+## Common commands
+
+### Serial port access (Linux)
+
+```bash
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+```
+
+### Find connected motor boards
+
+```bash
+python lerobot/find_port.py
+```
+
+### List video devices
+
+```bash
+ls /dev/video*
+```
+
+### Quick camera test
+
+```bash
+python -c "import cv2; cap = cv2.VideoCapture(0); ret, frame = cap.read(); print('OK' if ret else 'FAIL'); cap.release()"
+```
+
+## Motor ID mapping
+
+| IDs | Component | Board |
+|---|---|---|
+| 1–6 | Left arm | Motor board 1 (`/dev/ttyACM0`) |
+| 1–6 | Right arm | Motor board 2 (`/dev/ttyACM1`) |
+| 7–8 | Head (pan, tilt) | Shared with arm board |
+| 7–9 | Wheel base | Shared with arm board |
+
+## Serial ports
+
+| Device | Typical path | Notes |
+|---|---|---|
+| Motor board (left arm) | `/dev/ttyACM0` | May vary — use `find_port.py` |
+| Motor board (right arm) | `/dev/ttyACM1` | May vary — use `find_port.py` |
+| USB cameras | `/dev/video0`, `/dev/video2`, etc. | Even-numbered entries |
+
+## Key file locations (after install)
+
+| File/Directory | Location in LeRobot | Purpose |
+|---|---|---|
+| IK solver | `/model/` | Analytical inverse kinematics for SO-101 |
+| Robot config | `/robots/` | XLerobot robot definition |
+| Example scripts | `/example/` | Control and teleop scripts |
+| `__init__.py` | LeRobot root | Uncomment Pi entries for untethered mode |
+
+## Hardware specs at a glance
+
+| Spec | Value |
+|---|---|
+| Servos | 17x STS3215 (12V) |
+| Arms | 2x SO-101, 6-DOF each |
+| Reach | ~40 cm per arm |
+| Payload | 600–1000 g per arm |
+| Base | 3 omnidirectional wheels |
+| Weight | ~12 kg total |
+| Battery | 288 Wh, 10+ hours |
+| Cameras | 2x wrist RGB + 1x head |
+
+## Related pages
+
+- [Software Overview](/docs/software/) — full control method details
+- [Architecture](/docs/architecture/) — system diagram and data flow
+- [Hardware Overview](/docs/hardware/) — physical specs and design rationale

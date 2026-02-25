@@ -1,0 +1,94 @@
+---
+title: Prerequisites
+description: What you need before getting started with XLerobot.
+sidebar:
+  order: 2
+---
+
+Before starting the build, make sure you have the hardware, software, tools, and skills listed below.
+
+## Hardware
+
+### Required
+
+| Component | Qty | Notes |
+|---|---|---|
+| STS3215 Servo (12V) | 17 | 12 for arms, 3 for base, 2 for head |
+| IKEA RÅSKOG Cart | 1 | Similar carts work with minor base adjustments |
+| Anker SOLIX C300 Power Station | 1 | Or equivalent — must supply ~120W across 2 ports |
+| 4" Omni Wheels | 3 | VEX Robotics or equivalent |
+| Motor Control Board | 2 | One per arm |
+| USB-C to USB-A Cable | 2 | Connect motor boards to computer/Pi |
+| USB-C Cable | 2 | Power delivery |
+| Type-C to DC Cable (12V) | 2 | Power motor boards from battery |
+| USB Hub | 1 | Anker or equivalent |
+| 4ft 5264 Wires | 1 set | For extending motor cables |
+| Table Clamps (4-pack) | 1 | Securing arm bases to cart |
+| Hand Camera | 2 | Wrist-mounted RGB cameras |
+| Logitech C920 | 1 | Head-mounted camera |
+
+### Optional
+
+| Component | Notes |
+|---|---|
+| Raspberry Pi 5 | For untethered operation (not needed for basic setup — use your laptop) |
+| Intel RealSense D415 | RGBD depth camera, replaces Logitech C920 |
+| Stereo dual-eye RGB camera | Alternative to single head camera (+~$30) |
+| Meta Quest 3/3S | For VR teleoperation |
+| SO-100 arm set | For leader-follower teleoperation |
+
+### 3D-printed parts
+
+About 90% of the structural parts are 3D-printed. See the [upstream 3D printing guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/3d.html) for STL files and print settings.
+
+## Software
+
+| Requirement | Details |
+|---|---|
+| Operating system | Ubuntu (recommended), macOS, or Windows with WSL |
+| Python | 3.10+ (via conda or system) |
+| Git | For cloning repos |
+| Conda/Miniconda | Recommended for environment management |
+| LeRobot | Installed via `pip install -e .` (editable mode) |
+| Bambot | Motor configuration tool (Windows/Mac; Linux needs `sudo chmod 666 /dev/ttyACM0`) |
+
+:::note
+For the basic version of XLerobot, you don't need a Raspberry Pi. A laptop connected via USB is enough to get started.
+:::
+
+## Tools
+
+| Tool | Purpose |
+|---|---|
+| M3 screws/nuts set | General assembly |
+| M4x10 screws (9x) | Wheel assembly |
+| Flush cutter | Trimming 3D prints |
+| Screwdriver set | Assembly |
+| Needle-nose pliers | Cutting cart mesh for cable routing |
+| Marker | Labeling motors and boards |
+
+## Skills
+
+You should be comfortable with:
+
+- **Linux command line** — navigating directories, running scripts, editing config files
+- **Basic Python** — reading and running scripts, installing packages
+- **Basic electronics** — plugging in cables, identifying connectors, reading wiring diagrams
+- **3D printing** (or access to a printer/service) — printing and post-processing parts
+
+No prior robotics experience is required. The tutorials explain concepts like inverse kinematics, coordinate frames, and motor configuration as they come up.
+
+## Cost estimate
+
+| Configuration | Approximate cost (USD) |
+|---|---|
+| Basic (laptop, single RGB camera) | ~$660 |
+| + Stereo dual-eye RGB | +$30 |
+| + Raspberry Pi 5 | +$79 |
+| + Intel RealSense D415 | +$220 |
+
+Costs exclude 3D printing filament, tools, shipping, and taxes.
+
+## Next step
+
+Once you have the parts and tools ready, head to the [Learning Path](/start-here/learning-path/) for the recommended build sequence.

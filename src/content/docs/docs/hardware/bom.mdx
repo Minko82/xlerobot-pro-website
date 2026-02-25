@@ -1,0 +1,99 @@
+---
+title: Bill of Materials
+description: Complete parts list with pricing and sourcing for building XLerobot.
+---
+
+All prices are approximate and exclude shipping, taxes, and 3D printing costs.
+
+## Cost summary
+
+| Configuration | USD | EUR | CNY | INR |
+|---|---|---|---|---|
+| Basic (laptop + single RGB camera) | ~$660 | ~€680 | ~¥3,999 | ~₹87,000 |
+| + Stereo dual-eye RGB | +$30 | +€30 | +¥199 | +₹6,550 |
+| + Raspberry Pi 5 | +$79 | +€79 | +¥399 | +₹7,999 |
+| + Intel RealSense D415 | +$220 | +€230 | +¥1,499 | +₹35,726 |
+
+## Feature parts
+
+| Part | Qty | ~USD | Notes |
+|---|---|---|---|
+| STS3215 Servo (12V) | 17 | $14 each | 12 for arms, 3 for base, 2 for head |
+| IKEA RÅSKOG Cart | 1 | $40 | Similar carts work with minor base adjustments |
+| Anker SOLIX C300 Power Station | 1 | $180 | Or equivalent with 120W+ dual USB-C output |
+| 4" Omni Wheels | 3 | $10 each | VEX Robotics |
+| Table Clamps (4-pack) | 1 | $9 | For securing arm bases to cart |
+
+## Electronics
+
+| Part | Qty | ~USD | Notes |
+|---|---|---|---|
+| Motor Control Board | 2 | $11 each | One per arm chain |
+| USB-C to USB-A Cable | 2 | $9 (pack) | Connect motor boards to computer/Pi |
+| USB-C Cable | 2 | $9 (pack) | Power delivery |
+| Type-C to DC Cable (12V) | 2 | $9 (pack) | Power motor boards from battery |
+| USB Hub | 1 | $16 | Anker or equivalent |
+| 4ft 5264 Wires | 1 set | $22 | For extending motor cables |
+| Raspberry Pi 5 (optional) | 1 | $60 | Only for untethered operation |
+| microSD Card (if using Pi) | 1 | $11 | — |
+
+:::caution
+Ready-made long 5264 wires may not be available in all regions — only connector kits. You may need to crimp your own extensions. Be careful with polarity — reversed connections will cause errors.
+:::
+
+## Sensors
+
+| Part | Qty | ~USD | Notes |
+|---|---|---|---|
+| Hand Camera (RGB) | 2 | $13 (pair) | Wrist-mounted USB cameras |
+| Logitech C920 | 1 | $66 | Head-mounted overview camera |
+| Intel RealSense D415 (optional) | 1 | $272 | RGBD depth camera, replaces C920 |
+| Stereo dual-eye RGB (optional) | 1 | ~$30 | Alternative to single head camera |
+
+## Assembly tools
+
+| Tool | Qty | ~USD | Notes |
+|---|---|---|---|
+| M3 Screws/Nuts Set | 1 | $15 | General assembly |
+| M4x10 Screws | 9 | — | For wheel assembly (may be in screw set) |
+| Flush Cutter | 1 | $7 | Trimming 3D prints |
+| Screwdriver Set | 1 | $6 | — |
+| Needle-nose Pliers | 1 | — | Cutting cart mesh for cable routing |
+| Marker | 1 | — | Labeling motors and boards |
+
+## Optional add-ons
+
+| Part | Notes |
+|---|---|
+| Soft gripper (TPU95A finray fingers) | 3MF file in the hardware repo |
+| 3M gripper tape | Better grip on smooth objects |
+| SO-100 arm set | For leader-follower teleoperation |
+| Sport sleeves | Cable concealment |
+| Meta Quest 3/3S | VR teleoperation |
+
+## Pre-assembled kits
+
+If you prefer not to source parts individually:
+
+- **Wowrobo** — worldwide shipping, ~$579 for a full kit
+- **Taobao** — China, ~¥3,699
+
+Wowrobo also sells pre-assembled SO-101 arms separately (~1.5 hours saved on arm assembly).
+
+## Sourcing by region
+
+The [upstream BOM page](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/material.html) has direct purchase links for US, EU, China, and India, including region-specific alternatives for each component.
+
+## Alternative components
+
+| Component | Alternative | Constraint |
+|---|---|---|
+| IKEA RÅSKOG Cart | Any similar cart | May need minor adjustments to base connector |
+| Anker SOLIX C300 | Any portable power station | Must supply ~120 W across 2 USB-C fast-charge ports |
+| STS3215 Servo | STS3250 | 1.5x torque, 3x price — only if you need higher payload |
+
+## Next steps
+
+- [3D Printing guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/3d.html) (upstream) — print settings and file locations
+- [Assembly guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html) (upstream) — step-by-step build instructions
+- [Hardware Overview](/docs/hardware/) — specs and design rationale

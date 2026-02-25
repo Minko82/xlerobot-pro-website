@@ -1,63 +1,76 @@
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig } from "astro/config";
+import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
-import icon from "astro-icon";
-import mdx from "@astrojs/mdx";
 
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-import rehypeCitation from "rehype-citation";
-
-import react from "@astrojs/react";
-
-import astroExpressiveCode from "astro-expressive-code";
-
-// https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()],
-  },
-  markdown: {
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [
-      rehypeKatex,
-      [
-        rehypeCitation,
+  integrations: [
+    starlight({
+      title: "XLerobot",
+      description:
+        "Documentation, tutorials, and lab notes for the XLerobot robotics project.",
+      favicon: "/favicon.svg",
+      customCss: ["./src/styles/global.css"],
+      sidebar: [
         {
-          bibliography: "bibliography.bib",
-          linkCitations: true,
+          label: "Start Here",
+          items: [
+            { slug: "start-here" },
+            { slug: "start-here/prerequisites" },
+            { slug: "start-here/learning-path" },
+          ],
+        },
+        {
+          label: "Docs",
+          items: [
+            {
+              label: "Hardware",
+              autogenerate: { directory: "docs/hardware" },
+            },
+            {
+              label: "Software",
+              autogenerate: { directory: "docs/software" },
+            },
+            {
+              label: "Architecture",
+              autogenerate: { directory: "docs/architecture" },
+            },
+            {
+              label: "Calibration",
+              autogenerate: { directory: "docs/calibration" },
+            },
+            {
+              label: "Reference",
+              autogenerate: { directory: "docs/reference" },
+            },
+          ],
+        },
+        {
+          label: "Tutorials",
+          autogenerate: { directory: "tutorials" },
+        },
+        {
+          label: "Troubleshooting",
+          autogenerate: { directory: "troubleshooting" },
+        },
+        {
+          label: "Lab Notes",
+          autogenerate: { directory: "lab-notes" },
+        },
+        {
+          label: "Contributing",
+          autogenerate: { directory: "contributing" },
         },
       ],
-    ],
-  },
-  integrations: [
-    icon(),
-    astroExpressiveCode({
-      styleOverrides: {
-        borderRadius: "0.5rem",
-        borderWidth: "0",
-        codeBackground: ({ theme }) =>
-          `var(--color-zinc-${theme.type === "dark" ? "800" : "200"})`,
-        frames: {
-          shadowColor: "transparent",
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/ranegray/xlerobot-pro-website",
         },
-      },
-      themeCssSelector: (theme) =>
-        theme.type === "dark" ? `[data-theme="dark"]` : `[data-theme="light"]`,
+      ],
     }),
-    mdx(),
-    react(),
   ],
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.google(),
-        name: "Noto Sans",
-        cssVariable: "--font-noto-sans",
-        weights: ["100 900"],
-      },
-    ],
-  },
-  image: {
-    responsiveStyles: true,
+  vite: {
+    plugins: [tailwindcss()],
   },
 });

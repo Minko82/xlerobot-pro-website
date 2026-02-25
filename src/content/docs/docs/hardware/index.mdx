@@ -1,0 +1,121 @@
+---
+title: Hardware Overview
+description: Physical specifications, design rationale, and component overview for XLerobot.
+---
+
+XLerobot is a dual-arm mobile robot built from affordable, widely available components. This page covers the physical system and why each component was chosen.
+
+## System overview
+
+| Spec | Value |
+|---|---|
+| Total weight | ~12 kg |
+| Workspace height | 0.5–1.25 m above ground |
+| Workspace reach | ~40 cm from cart edge (per arm) |
+| Payload per arm | 600–1000 g |
+| Mobility | 3 omnidirectional wheels |
+| Power | Anker SOLIX C300 (288 Wh, 300 W max output) |
+| Battery life | 10+ hours typical operation |
+
+## Arms
+
+Each arm is an SO-100 or [SO-101](https://huggingface.co/docs/lerobot/so101?assembly=Follower) with 6 degrees of freedom, driven by STS3215 servos. Two arms are mounted at the front corners of the cart, giving the robot bimanual manipulation capability.
+
+The system uses **17 servos total**: 12 for the two arms, 3 for the mobile base, and 2 for the head/neck.
+
+:::note
+The SO-101 is the newer revision. Both SO-100 and SO-101 are supported. If buying new, go with SO-101.
+:::
+
+### Alternative servo
+
+The STS3250 offers 1.5x the torque of the STS3215 at roughly 3x the price. Only needed if you plan to manipulate heavier objects.
+
+## Mobile base
+
+The base is built on an **IKEA RÅSKOG cart** with three 4" VEX omnidirectional wheels mounted underneath.
+
+**Why the IKEA cart:**
+- Available worldwide at a consistent price
+- Sturdy metal construction with mesh shelves
+- Right height for household surfaces (counters, tables, stovetops)
+- Built-in storage on lower shelves for battery and electronics
+- Easy to modify — drill, clamp, and route cables through the mesh
+
+The wheels provide holonomic motion (forward, backward, sideways, and rotation) without needing to turn the base.
+
+## Head
+
+A 2-DOF head (pan + tilt) using 2 servos mounts a camera at the top of the robot. The design follows the XLeRobot [arm-base section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#arm-base). The hollow neck saves filament and provides a channel for cable management.
+
+## Cameras
+
+| Camera | Role | Notes |
+|---|---|---|
+| 2x hand cameras (RGB) | Wrist-mounted on each arm | Low-cost USB cameras, using the [SO-101 wrist camera mount](https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module) |
+| Logitech C920 | Head-mounted overview camera | Standard webcam, widely available |
+| Intel RealSense D415 (optional) | RGBD depth camera | Replaces C920 for depth-based tasks |
+| Stereo dual-eye RGB (optional) | Head-mounted stereo pair | +~$30, gives stereo vision |
+
+## Power
+
+The **Anker SOLIX C300** powers the entire system through its USB-C ports:
+- 2x USB-C to DC (12V) cables power the motor control boards
+- 1x USB-C to USB-C cable powers the Raspberry Pi (if used)
+
+**Why this battery:**
+- Three USB-C ports eliminate complex wiring
+- 288 Wh capacity for 10+ hours of operation
+- Fast charging: full charge in ~1 hour at 280 W input
+- Built-in light, doubles as a portable backup power supply
+- Solar panel compatible for outdoor use
+
+**Alternatives:** Any portable power station that supplies 120 W+ across two USB-C fast-charging ports. Options include UGREEN and Anker portable chargers meeting this spec.
+
+## 3D-printed parts
+
+About 90% of the structural components are 3D-printed. The recommended setup:
+
+| Setting | Value |
+|---|---|
+| Printer | BambuLab A1 (~$350–400 USD) or similar |
+| Filament | PLA Matte Black (or PETG HF / PLA CF for strength) |
+| Filament cost | $15–25 USD |
+| Service printing | Under $50 USD total |
+
+STL/3MF files are in the [XLerobot GitHub hardware directory](https://github.com/Vector-Wangel/XLeRobot/tree/main/hardware). See the [upstream 3D printing guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/3d.html) for detailed print settings.
+
+:::tip
+Pre-dry PLA at 45°C for 8 hours if you're in a humid environment. Wet filament causes stringing and weak layer adhesion.
+:::
+
+## Build guide
+
+For step-by-step build instructions, use the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/). It includes:
+
+- Component-specific print settings
+- Ordered assembly workflow
+- 3-bus motor configuration strategy
+- Jetson placement notes
+- Wiring and bring-up checklists
+
+For official step-specific references, also see:
+- [XLeRobot arm-base assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#arm-base)
+- [XLeRobot wheel-base assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wheel-base)
+- [XLeRobot configure motors](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#configure-motors)
+- [XLeRobot wiring](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wiring)
+- [XLeRobot final assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#final-assembly)
+
+## Known limitations
+
+- **Fixed height** — the cart height is not adjustable
+- **Limited reach** — ~40 cm per arm from the cart edge
+- **No in-hand dexterity** — simple gripper fingers, no fine manipulation
+- **Payload** — 600–1000 g per arm; adequate for household objects, not heavy tools
+
+## Next steps
+
+- [Bill of Materials](/docs/hardware/bom/) — full parts list with prices and sourcing
+- [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) — detailed print, assembly, wiring, and bring-up workflow
+- [XLeRobot assembly guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html) — step-by-step build instructions
+- [LeRobot SO-101 follower assembly](https://huggingface.co/docs/lerobot/so101?assembly=Follower) — arm assembly and alignment workflow
