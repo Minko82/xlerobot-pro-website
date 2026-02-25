@@ -1,0 +1,102 @@
+---
+title: Calibration
+description: Motor configuration and calibration procedures for XLerobot.
+---
+
+Calibration ensures that motor IDs are correct, servos respond as expected, and the IK solver produces accurate movements.
+
+## Motor ID configuration
+
+Before first use, every servo must be assigned the correct ID using the **Bambot** application and/or the [LeRobot SO-101 motor configuration flow](https://huggingface.co/docs/lerobot/so101#configure-the-motors).
+
+For the 3-bus build variant, follow the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) and the XLeRobot [configure motors section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#configure-motors).
+
+### Procedure
+
+1. Connect a single motor to a motor control board
+2. Open Bambot (Windows/Mac, or Linux with `sudo chmod 666 /dev/ttyACM0`)
+3. Navigate to the motor configuration page (use `python lerobot/find_port.py` from [Quick Reference](/docs/reference/) to confirm serial ports)
+4. Set the motor ID according to the mapping below
+5. Repeat for all 17 motors
+
+### Motor ID map
+
+| Motor IDs | Component |
+|---|---|
+| 1–6 | Left arm joints (shoulder to gripper) |
+| 1–6 | Right arm joints (shoulder to gripper) |
+| 7–8 | Head (pan, tilt) |
+| 7–9 | Wheel base (3 wheels) |
+
+:::note
+This table reflects the shared-board mapping used in older setups. For the 3-bus draft layout (Bus 1 left arm, Bus 2 right arm, Bus 3 neck/wheels), use the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/).
+:::
+
+:::tip
+Label each motor with a marker after configuration. When wiring, you need to know which motor goes to which control board.
+:::
+
+### Create motor sets
+
+Group the configured motors into sets:
+- **Left arm set**: IDs 1–6, connected to one motor control board
+- **Right arm set**: IDs 1–6, connected to the other motor control board
+- **Head set**: IDs 7–8, connected to one of the arm boards
+- **Wheel set**: IDs 7–9, connected to one of the arm boards
+
+## Verify motor response
+
+After assembly and wiring, run the joint control test:
+
+```bash title="Test all joints"
+python 0_so100_keyboard_joint_control.py
+```
+
+Each joint should move in response to keyboard input. Check:
+
+- All 6 joints on each arm respond
+- Head pans and tilts
+- All 3 wheels rotate
+- No motors are skipped or reversed
+
+If you are using the 3-bus architecture, also run the bus-by-bus checks in the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/).
+
+## IK calibration
+
+The analytical IK solver assumes standard SO-101 geometry. If your arm assembly has slight variations (loose joints, bent links), end-effector positioning may drift.
+
+To verify IK accuracy:
+
+1. Run `1_so100_keyboard_ee_control.py`
+2. Command the arm to a known position
+3. Visually confirm the gripper reaches the expected location
+4. If consistently off, check for loose servo horns or bent brackets
+
+:::note
+There is no software calibration offset for the IK solver at this time. Accuracy depends on mechanical assembly quality.
+:::
+
+## Camera verification
+
+Verify each camera is detected as a USB video device:
+
+```bash title="List video devices"
+ls /dev/video*
+```
+
+You should see entries for each connected camera (typically `/dev/video0`, `/dev/video2`, `/dev/video4` — even-numbered devices).
+
+To test a camera feed:
+
+```bash title="Quick camera test"
+python -c "import cv2; cap = cv2.VideoCapture(0); ret, frame = cap.read(); print('OK' if ret else 'FAIL'); cap.release()"
+```
+
+For physical cable route checks, use the XLeRobot [wiring section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wiring).
+
+## Related pages
+
+- [Install LeRobot](/docs/software/lerobot-install/) — software setup including motor configuration
+- [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) — 3-bus motor mapping, wiring, and bring-up sequence
+- [Troubleshooting](/troubleshooting/) — fixes for motor and camera issues
+- [Architecture](/docs/architecture/) — motor ID mapping and control pipeline

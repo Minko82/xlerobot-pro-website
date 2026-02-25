@@ -1,0 +1,72 @@
+---
+title: Camera Not Detected
+description: Fix for when USB cameras are not showing up as video devices.
+---
+
+## Symptoms
+
+- `ls /dev/video*` shows no entries or fewer cameras than expected
+- `cv2.VideoCapture()` returns `False` for `ret`
+- YOLO tracking script errors with "no camera found" or similar
+- Camera LED is off even though it's plugged in
+
+## Likely causes
+
+1. **USB cable not fully seated** — loose connection or damaged cable
+2. **USB hub not powered** — hub can't supply enough current for cameras
+3. **Wrong device index** — camera is at a different `/dev/video*` path than the script expects
+4. **Kernel driver issue** — camera module not loaded (rare on Ubuntu)
+
+## Fix steps
+
+### 1. Check physical connection
+
+Unplug and replug the camera. Try a different USB port. Try without the USB hub (direct to PC) to isolate the issue.
+
+### 2. Check device detection
+
+```bash title="List video devices"
+ls /dev/video*
+```
+
+You should see even-numbered entries (`/dev/video0`, `/dev/video2`, etc.) — one per camera. If you see none, the camera isn't detected at the OS level.
+
+### 3. Check with v4l2
+
+```bash title="List video devices with details"
+v4l2-ctl --list-devices
+```
+
+This shows which cameras are connected and their device paths.
+
+### 4. Test the camera directly
+
+```bash title="Quick camera test"
+python -c "import cv2; cap = cv2.VideoCapture(0); ret, frame = cap.read(); print('OK' if ret else 'FAIL'); cap.release()"
+```
+
+If this fails, try incrementing the device index (0, 1, 2...) until you find the working camera.
+
+### 5. Check USB power
+
+If using a USB hub, make sure it's powered. Low-power hubs may not supply enough current for multiple cameras. Try connecting the camera directly to the PC.
+
+## Verification
+
+After fixing, confirm:
+
+1. `ls /dev/video*` shows the expected number of devices
+2. The Python camera test returns `OK` for each camera index
+3. The YOLO tracking or teleoperation script runs without camera errors
+
+## Prevention tips
+
+- Use a **powered USB hub** when connecting multiple cameras
+- Always use the **same USB ports** — device paths can change when you move cables
+- Add a camera check to your startup routine before running control scripts
+- Label USB cables to avoid confusion
+
+## Related issues
+
+- [Motor not responding](/troubleshooting/#motor-issues) — also caused by USB connection problems
+- [Architecture: Camera pipeline](/docs/architecture/#camera-pipeline) — how cameras fit into the system

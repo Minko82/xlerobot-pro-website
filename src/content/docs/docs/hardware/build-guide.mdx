@@ -1,0 +1,313 @@
+---
+title: Build Guide (3-Bus Draft)
+description: Detailed print, assembly, wiring, and bring-up flow for an SO-101 + mobile base XLeRobot build using a 3-bus architecture.
+sidebar:
+  order: 2
+---
+
+This guide assumes an XLeRobot-style platform with:
+
+- 2x [SO-101 follower arms](https://huggingface.co/docs/lerobot/so101?assembly=Follower)
+- Neck/head assembly
+- Wheel base and cart
+- NVIDIA Jetson mounted near the neck/base region
+
+It consolidates print, assembly, wiring, and bring-up into a practical order, while pointing to official docs for part-specific procedures.
+
+:::caution
+This page documents a **3-bus draft architecture**. Some older pages still describe a shared/2-bus layout. For this build variant, follow this page.
+:::
+
+## Build overview
+
+### What changed in this version
+
+Use three independent motor buses:
+
+| Bus | Subsystem |
+|---|---|
+| Bus 1 | Left arm |
+| Bus 2 | Right arm |
+| Bus 3 | Neck and wheel base |
+
+This separation simplifies wiring, fault isolation, and motor debugging.
+
+### Recommended build order
+
+1. Print all parts
+2. Assemble both SO-101 arms
+3. Install wrist camera mounts and grippers
+4. Assemble cart and wheel base
+5. Assemble neck / top base / head
+6. Configure motors (before final assembly)
+7. Mount Jetson and route wiring
+8. Final mechanical assembly and cable management
+9. Software bring-up and bus verification
+
+## 1) Print settings
+
+Start from your baseline PrusaSlicer profile (or standard PLA profile), then only change the settings below.
+
+XLeRobot notes that parts were printed on a consumer printer (for example, Bambu A1) with PLA, with orientation/support decisions handled in the slicer. PETG and CF variants are optional strength upgrades. See the [XLeRobot 3D printing guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/3d.html).
+
+### General print notes
+
+- Use PLA for first-pass prototyping and fit checks
+- Prioritize part orientation for structural parts over cosmetic finish
+- Dry filament in high humidity for cleaner fit-up and thread quality
+- For soft finray-style fingers, use TPU95A
+
+### Neck and wheel base
+
+These parts are structural and should use stronger settings than cosmetic covers.
+
+#### Layers and perimeters
+
+- Perimeters (walls): 4
+- Top/bottom solid layers: 5-6
+- Layer height: 0.20 mm (or your normal quality preset)
+
+#### Infill
+
+- 25-35% gyroid (or cubic)
+- Use 35% for base connector parts, motor mounts, and neck structural pieces
+
+:::note
+XLeRobot calls out that the wheel-base connector may need **Z scaling only** to balance load across omni-wheels and cart wheels.
+:::
+
+### Arms
+
+SO-101 links and joint housings need strength plus dimensional accuracy.
+
+#### Layers and perimeters
+
+- Perimeters (walls): 4
+- Top/bottom solid layers: 5
+- Layer height: 0.16-0.20 mm
+- Use 0.16 mm where fit/alignment is more sensitive
+
+#### Infill
+
+- 20-30% gyroid
+- Use 30% for joint housings, base/shoulder parts, and clamp/camera-mount-adjacent parts
+
+#### Arm-specific notes
+
+- Print two **follower** arms for the XLeRobot dual-arm build
+- Leader arm builds are only needed for leader-follower teleop workflows
+- Include the [SO-101 wrist camera mount](https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module) and preferred gripper variant in the same print batch
+
+## 2) Assembly
+
+### A) Cart
+
+Follow the IKEA cart instructions first to establish the rolling structure.
+
+Practical tip:
+- Do not finalize cable routing through the cart yet
+- Leave access for motor extensions, USB data, power, and camera cable routes
+
+### B) Arms (joints 1-5)
+
+Follow the [official SO-101 follower assembly flow](https://huggingface.co/docs/lerobot/so101?assembly=Follower) for both arms.
+
+Wrist camera and gripper order:
+1. Before attaching the gripper to joint 5, install the wrist camera attachment to the gripper
+2. Install the gripper claw/fingers
+3. Use the follower gripper approach on both arms
+
+Use the [SO-101 wrist camera mount reference](https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module). This order avoids reopening the wrist stack later.
+
+### C) Neck (top base and head)
+
+Use the XLeRobot [arm-base assembly section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#arm-base):
+
+- Top Base Assembly
+- Head Assembly
+
+The head assembly follows the same motor style and is derived from early SO-101 link patterns.
+
+### D) Wheels and wheel base
+
+Follow the XLeRobot [wheel-base assembly section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wheel-base).
+
+Key notes:
+
+- Keep omni-wheel orientation/order exactly as documented
+- Use motor cable extensions (do not rely on short direct runs)
+- Leave slack until top-plate routing is finalized
+- Mount top plate and connectors only after route checks
+
+## 3) Motor configuration (before final assembly)
+
+Configure motors before final cable management and hard mounting.
+
+### A) Arm motors (SO-101)
+
+Use the [LeRobot SO-101 motor configuration flow](https://huggingface.co/docs/lerobot/so101#configure-the-motors):
+
+1. Identify each MotorBus serial port (`python lerobot/find_port.py`) using [Quick Reference](/docs/reference/)
+2. Configure motors one at a time
+3. Set IDs and baudrate
+4. Repeat for both follower arms
+
+Many motors ship with default ID 1, so ID assignment must be unique per bus and baudrate must match board plus motors.
+
+### B) Neck and wheel motors (Bus 3)
+
+Use the XLeRobot [configure motors section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#configure-motors) for non-arm motors.
+
+Notes:
+
+- XLeRobot uses Bambot for head/wheel configuration
+- On Linux you may need serial permissions (for example `sudo chmod 666 /dev/ttyACM0`)
+
+### ID planning for 3-bus architecture
+
+Use IDs by bus:
+
+| Bus | Recommended IDs |
+|---|---|
+| Bus 1 - Left arm | 1-6 (SO-101 follower mapping) |
+| Bus 2 - Right arm | 1-6 (same mapping; valid because bus is separate) |
+| Bus 3 - Neck and wheels | 7-11 (example: 7-8 neck, 9-11 wheels) |
+
+Strong recommendation: physically label motors and cables:
+
+- `L-1` ... `L-6`
+- `R-1` ... `R-6`
+- `B-7` ... `B-11`
+
+## 4) NVIDIA Jetson placement
+
+Mount the Jetson at the base of the neck or in the center storage shell area, depending on your printed configuration.
+
+Placement goals:
+
+- Keep mass low for stability
+- Keep USB ports accessible
+- Minimize cable length to the three motor control boards, two wrist cameras, one head camera, and power distribution
+
+TODO: insert Jetson placement image.
+
+## 5) Wiring setup (3-bus)
+
+Use the XLeRobot [wiring section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wiring) as the baseline, applied to the 3-bus layout in this page.
+
+Scope for this build document:
+
+- Motor cables
+- Power cables
+- Camera cables
+
+### A) Motor wiring (3 buses)
+
+Bus 1 - Left arm:
+
+- One controller dedicated to left arm
+- Daisy-chain follower arm motors per standard layout
+- Controller output to first motor in chain (joint 1 / shoulder pan)
+
+Bus 2 - Right arm:
+
+- One controller dedicated to right arm
+- Same layout as left arm
+
+Bus 3 - Neck and wheel base:
+
+- One controller dedicated to neck and wheel motors
+- Use extensions for clean routing from lower wheel plate to upper electronics
+
+Cable routing tips:
+
+- Leave service slack near each joint, especially wrist/gripper
+- Avoid tight bends near motor connectors
+- Keep motion cables away from pinch points
+- Label both ends of each extension
+
+### B) Power wiring
+
+Status: in progress. Recommended structure:
+
+- Battery mounted low and upright in the cart
+- Main power line routed to a distribution point
+- Separate fused outputs for left arm bus, right arm bus, neck/wheel bus, and Jetson power path (if using a separate converter/regulator)
+- Add strain relief at battery and distribution points
+
+### C) Camera wiring
+
+Wrist cameras (x2):
+
+- Route each cable along its arm with full-motion slack
+- Secure cable at intervals (Velcro, sleeve, clips)
+- Keep compute-end connectors accessible
+
+Head camera:
+
+- Route through the hollow neck
+- Leave pan/tilt slack at the head joint
+
+## 6) Final assembly
+
+Follow the XLeRobot [final assembly section](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#final-assembly), substituting Jetson where older instructions reference Raspberry Pi.
+
+Final assembly notes:
+
+- Complete wiring and cable management before clamping top base into the cart
+- Clamp arms onto cart corners after route verification
+- Do not push the fully assembled robot like a normal cart; lift to relocate to protect motor gears
+
+Final checklist:
+
+- All 3 buses configured and tested independently
+- Motor IDs verified
+- Motor directions verified
+- Wrist cameras detected
+- Head camera detected
+- Jetson mounted securely
+- Battery secured and upright
+- No cable pinch points
+- Full arm range without cable snagging
+- Wheel base rotates freely
+
+## 7) Bring-up checklist
+
+Run these checks before full-stack teleoperation or training.
+
+### Bus bring-up
+
+Test one bus at a time:
+
+- Bus 1 (left arm): ping/read all motors
+- Bus 2 (right arm): ping/read all motors
+- Bus 3 (neck/wheels): ping/read all motors
+
+### Camera bring-up
+
+- Wrist camera 1 stream verified
+- Wrist camera 2 stream verified
+- Head camera stream verified
+
+### Motion sanity checks
+
+- Arm joints move correctly
+- Neck axes move correctly
+- Wheels respond with expected direction
+
+## Reference links (official docs)
+
+- [LeRobot SO-101 follower assembly](https://huggingface.co/docs/lerobot/so101?assembly=Follower)
+- [LeRobot SO-101 motor configuration](https://huggingface.co/docs/lerobot/so101#configure-the-motors)
+- [LeRobot install and setup](https://github.com/huggingface/lerobot#installation)
+- [SO-101 wrist camera mount (TheRobotStudio)](https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module)
+- [XLeRobot hardware repository](https://github.com/Vector-Wangel/XLeRobot/tree/main/hardware)
+- [XLeRobot 3D printing guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/3d.html)
+- [XLeRobot arm-base assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#arm-base)
+- [XLeRobot wheel-base assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wheel-base)
+- [XLeRobot configure motors](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#configure-motors)
+- [XLeRobot wiring](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wiring)
+- [XLeRobot final assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#final-assembly)
+- [XLeRobot BOM and sourcing](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/material.html)
+- [Local calibration notes](/docs/calibration/)
+- [Local quick reference](/docs/reference/)

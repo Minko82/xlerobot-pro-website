@@ -1,0 +1,45 @@
+---
+title: Troubleshooting
+description: Symptom-based troubleshooting for common XLerobot issues.
+---
+
+Find your issue by symptom. Each article covers one problem with likely causes, fix steps, and verification.
+
+## Motor issues
+
+| Symptom | Likely cause | Quick fix |
+|---|---|---|
+| No motors move | Power not connected | Check 12V DC cable from battery to motor board |
+| `Permission denied` on serial port | Port access restricted | `sudo chmod 666 /dev/ttyACM0` |
+| Motor count mismatch | Wrong port in script | Run `python lerobot/find_port.py` and update script |
+| Single motor unresponsive | Wrong motor ID | Re-configure ID with Bambot |
+| Arm jerks or moves wrong direction | Motor IDs swapped | Verify IDs match the [motor map](/docs/architecture/#motor-id-mapping) |
+| Grinding noise from gears | Mechanical interference or damaged gear | Inspect servo horn alignment; replace servo if stripped |
+
+## Camera issues
+
+| Symptom | Likely cause | Quick fix |
+|---|---|---|
+| [Camera not detected](/troubleshooting/camera-not-publishing/) | USB not connected or wrong device path | `ls /dev/video*` to check |
+| Black frame from camera | Camera covered or bad exposure | Check lens cap; test with `cv2.VideoCapture` |
+| YOLO tracking not finding objects | Model not loaded or wrong camera index | Verify camera index in script |
+
+## Software issues
+
+| Symptom | Likely cause | Quick fix |
+|---|---|---|
+| Import errors after install | Missing dependencies | Reinstall with `pip install -e .` |
+| Script can't find XLerobot files | Files not copied to correct LeRobot dirs | Check `/model`, `/robots`, `/example` folders |
+| Joy-Con not pairing | `joycond` not installed or Bluetooth off | `sudo apt install joycond`, enable Bluetooth |
+
+## Assembly issues
+
+| Symptom | Likely cause | Quick fix |
+|---|---|---|
+| Arm wobbles or has play | Loose servo horns or screws | Tighten servo horn screws; check bracket fit |
+| Wheels not driving straight | Uneven base connector | Adjust z-axis scale in slicer or use printed washers |
+| Cart tips when reaching | Center of gravity too high | Move battery to lowest shelf |
+
+:::note
+If your issue isn't listed here, check the [upstream docs](https://xlerobot.readthedocs.io/en/latest/) or the [XLerobot Discord](https://discord.gg/bjZveEUh6F).
+:::

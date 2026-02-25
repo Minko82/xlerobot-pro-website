@@ -1,0 +1,57 @@
+---
+title: Start Here
+description: What XLerobot is, who it's for, and how to use this site.
+---
+
+## What is XLerobot?
+
+XLerobot is an open-source, dual-arm mobile household robot built on top of the [LeRobot](https://github.com/huggingface/lerobot) framework by Hugging Face. The goal is to bring embodied AI to everyone at an affordable price point.
+
+The platform combines:
+
+- **Two SO-100/SO-101 robotic arms** for bimanual manipulation
+- **A mobile base** built on an IKEA RÅSKOG cart with omnidirectional wheels
+- **Multiple camera options** (RGB, stereo RGB, or Intel RealSense RGBD)
+- **The LeRobot software stack** for teleoperation, imitation learning, and reinforcement learning
+
+A basic setup starts at around **$660 USD**. The hardware is 90% 3D-printed, uses affordable servos, and can be assembled in under 4 hours.
+
+## What can it do?
+
+- Keyboard, Xbox controller, Switch Joy-Con, and VR teleoperation
+- Vision-based object tracking (YOLO)
+- Autonomous LLM agent control
+- Vision-Language-Action (VLA) training (ACT, SmolVLA, pi0.5)
+- Reinforcement learning in MuJoCo simulation
+- Dual-arm coordination
+
+## Who is this site for?
+
+### Builders and students
+
+You want to build the robot, get it running, and learn from it. This site gives you setup guides, hardware BOMs, tested commands, and troubleshooting help.
+
+### Engineers, recruiters, and collaborators
+
+You want to understand the engineering decisions, see real progress, and evaluate technical depth. The lab notes and architecture docs are for you.
+
+### Contributors
+
+You want to help build docs, tutorials, or the site itself. The [contributing section](/contributing/) has templates, style guides, and review standards.
+
+## How this site relates to upstream docs
+
+The [official XLerobot docs](https://xlerobot.readthedocs.io/en/latest/) cover the upstream project — hardware design, software examples, and simulation.
+
+This site is **not** a mirror. It is:
+
+- The **integration layer** — how everything fits together in practice
+- The **tested workflow** — commands verified on real hardware
+- The **golden path** — the recommended sequence from unboxing to first autonomous task
+- The **operator manual** — troubleshooting, calibration, and maintenance
+
+When we link to upstream docs, we add local context: what to watch for, what we tested, and what broke.
+
+## Next step
+
+Head to [Prerequisites](/start-here/prerequisites/) to check what you need before starting.

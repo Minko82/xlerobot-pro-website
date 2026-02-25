@@ -1,0 +1,107 @@
+---
+title: Style Guide
+description: Writing and formatting standards for XLerobot documentation.
+---
+
+These standards keep the docs consistent and usable. Follow them for all content contributions.
+
+## Writing tone
+
+- **Practical and direct** — say what to do and why
+- **Explain why steps matter** — don't just list commands without context
+- **Avoid "just" and "simply"** — if a step is non-trivial, acknowledge it
+- **Define acronyms on first use** — e.g., "inverse kinematics (IK)"
+- **Short paragraphs** — scan-friendly structure; no walls of text
+
+## Commands
+
+- Must be **copy-pasteable** — no placeholder syntax without explanation
+- Include **exact command syntax**
+- If placeholders are used, explain them immediately:
+
+  ```bash title="Example with placeholder"
+  python script.py --port /dev/ttyACM0  # Replace with your actual port
+  ```
+
+## Verification sections
+
+Every setup guide and tutorial must include a **verification section** that describes:
+
+- What success looks like
+- Expected logs, screenshots, or behavior
+- A quick-check command if possible
+
+## "Tested on" block
+
+Setup guides and tutorials should include:
+
+- Date last tested
+- Hardware used
+- Software versions (OS, Python, LeRobot version, key packages)
+
+Example:
+
+> **Tested on:** Ubuntu 22.04, Python 3.10, LeRobot main branch (2025-01-15), STS3215 servos
+
+## Linking conventions
+
+- **Link to prerequisites** instead of assuming them
+- **Link forward** to next steps at the end of every page
+- **Link to troubleshooting** when mentioning things that can go wrong
+- **Never duplicate setup instructions** — link to the canonical page instead
+
+## Callouts
+
+Use Starlight's built-in callout syntax:
+
+- `:::note` — general information
+- `:::tip` — helpful advice
+- `:::caution` — something to be careful about
+- `:::danger` — something that can cause damage or data loss
+
+## Code blocks
+
+Use fenced code blocks with language and title:
+
+````md
+```bash title="Start the dev server"
+npm run dev
+```
+````
+
+For shell output, use `title` to label what the output is from:
+
+````md
+```bash title="Expected output"
+[server] started at http://localhost:4321
+```
+````
+
+## Headings
+
+- Use `##` (h2) for top-level sections within a page
+- Use `###` (h3) for subsections
+- Don't skip heading levels
+- Keep headings short and descriptive
+
+## Tables
+
+Use tables for structured data (BOMs, command references, comparisons). Keep them simple — no merged cells or complex formatting.
+
+## Images and media
+
+- Place images in `src/content/docs/_assets/images/`
+- Use descriptive filenames: `motor-id-config-bambot.png`, not `screenshot1.png`
+- Add alt text describing what the image shows
+- Use the `DemoClip` component for video with captions
+
+## TODO markers
+
+When information is missing, use explicit placeholders:
+
+```
+TODO(Rane): add tested ROS2 version
+TODO(Rane): add screenshot of Bambot motor config
+```
+
+Never publish a page with critical information missing and no TODO marker.

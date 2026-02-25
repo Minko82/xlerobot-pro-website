@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  number?: number;
+}
+
+const { title, number } = Astro.props;
+---
+
+<div class="not-content border-l-4 border-[var(--sl-color-accent)] pl-4 my-6">
+  <h4 class="font-semibold text-lg">
+    {number && <span class="text-[var(--sl-color-accent)] mr-2">Step {number}.</span>}
+    {title}
+  </h4>
+  <div>
+    <slot />
+  </div>
+</div>

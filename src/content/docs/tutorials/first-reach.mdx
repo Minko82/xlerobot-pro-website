@@ -1,0 +1,69 @@
+---
+title: "Tutorial: First Reach"
+description: Control the robot arm to reach a target position using keyboard end-effector control.
+---
+
+## Outcome
+
+You will move the robot arm's gripper to a specific position using keyboard input and inverse kinematics, confirming that the full control pipeline works.
+
+## Concepts used
+
+- End-effector control (vs. joint control)
+- Analytical inverse kinematics
+- Serial communication with servos
+
+## Prerequisites
+
+- [LeRobot installed](/docs/software/lerobot-install/) with XLerobot files in place
+- Motors configured with correct IDs ([Calibration](/docs/calibration/))
+- Basic joint control verified (`0_so100_keyboard_joint_control.py` works)
+
+## Estimated time
+
+10–15 minutes.
+
+## Steps
+
+### 1. Grant serial port access
+
+```bash title="Linux only"
+sudo chmod 666 /dev/ttyACM0
+```
+
+### 2. Run the end-effector control script
+
+```bash title="Start end-effector control"
+python 1_so100_keyboard_ee_control.py
+```
+
+### 3. Move the arm
+
+Use the keyboard controls to move the end-effector in X, Y, and Z. The script translates your input into Cartesian targets, runs them through the IK solver, and sends joint positions to the servos.
+
+### 4. Reach a target
+
+Place an object (a cup, a bottle, or a small box) on the table in front of the robot. Use keyboard input to guide the gripper to the object.
+
+### 5. Verify accuracy
+
+Check that the gripper arrives at the expected position. If the arm consistently overshoots or undershoots, see the [IK calibration section](/docs/calibration/#ik-calibration).
+
+## Expected output
+
+- The arm moves smoothly in response to keyboard input
+- The gripper reaches the target object within ~1–2 cm accuracy
+- No servo errors or disconnections during movement
+
+:::tip
+If the arm jerks or moves in unexpected directions, the most common cause is a motor ID mismatch. Go back to [motor configuration](/docs/calibration/) and verify IDs.
+:::
+
+## Why this matters
+
+End-effector control is the foundation for everything that follows — teleoperation, vision-guided reaching, and autonomous policy execution all command the arm in Cartesian space via IK. If this works, your control pipeline is solid.
+
+## Next tutorials
+
+- **Dual-arm coordination** — extend to controlling both arms at once
+- **YOLO object tracking** — replace keyboard input with camera-guided targeting

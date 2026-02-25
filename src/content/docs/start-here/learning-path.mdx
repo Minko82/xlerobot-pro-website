@@ -1,0 +1,75 @@
+---
+title: Learning Path
+description: The recommended sequence for getting up and running with XLerobot.
+sidebar:
+  order: 3
+---
+
+This is the golden path — the recommended sequence from unboxing to your first autonomous task. Each step builds on the previous one.
+
+## Phase 1: Build
+
+1. **Check prerequisites**
+   Make sure you have all [required parts, tools, and software](/start-here/prerequisites/).
+
+2. **Print the parts**
+   Follow the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) print section plus the [XLeRobot 3D printing guide](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/3d.html) to print all structural components.
+
+3. **Assemble the robot**
+   Build the SO-101 arms, wheel base, and head using the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) assembly order plus the [XLeRobot arm-base](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#arm-base) and [wheel-base](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wheel-base) assembly sections. Estimated time: 2–4 hours from scratch, 1–2 hours with pre-assembled arms.
+
+4. **Configure motors**
+   Use the [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) motor configuration flow before final assembly, with [LeRobot SO-101 motor configuration](https://huggingface.co/docs/lerobot/so101#configure-the-motors) for arms and [XLeRobot configure motors](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#configure-motors) for neck/wheels. Label each motor and cable.
+
+:::caution
+Once fully assembled, **do not push XLerobot around** like the IKEA cart. This damages the motor gears. Lift the robot (~12 kg) when moving it.
+:::
+
+## Phase 2: Software setup
+
+5. **Install LeRobot**
+   Follow the [upstream install guide](https://xlerobot.readthedocs.io/en/latest/software/getting_started/install.html) to install LeRobot in editable mode (`pip install -e .`) and copy the XLerobot files into the correct directories.
+
+6. **Verify basic motor control**
+   Run `0_so100_keyboard_joint_control.py` to confirm all joints respond to keyboard input. Use [Quick Reference](/docs/reference/) for port checks and [Calibration](/docs/calibration/) if anything fails.
+
+## Phase 3: First teleoperation
+
+7. **Keyboard end-effector control**
+   Run the end-effector control example to move the arm tip using keyboard input via inverse kinematics. This confirms the IK solver and motor chain are working.
+
+8. **Dual-arm control**
+   Run the dual-arm example to control both arms simultaneously via two serial ports (`/dev/ttyACM0` and `/dev/ttyACM1`).
+
+9. **Vision-based tracking**
+   Run the YOLO object-following example to verify camera input and vision pipeline.
+
+## Phase 4: Advanced capabilities
+
+10. **Teleoperation with controllers**
+    Try Xbox controller, Switch Joy-Con, or VR teleoperation for more intuitive control.
+
+11. **Record and replay demonstrations**
+    Collect teleoperation demonstrations for imitation learning.
+
+12. **Train a policy**
+    Use ACT, SmolVLA, or pi0.5 to train a Vision-Language-Action model from your demonstrations.
+
+13. **Reinforcement learning**
+    Train policies in MuJoCo simulation and transfer to hardware.
+
+---
+
+## Where to go from each step
+
+| If you're stuck on... | Go to... |
+|---|---|
+| Assembly | [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) and [XLeRobot final assembly](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#final-assembly) |
+| Motor configuration | [Build Guide (3-Bus Draft)](/docs/hardware/build-guide/) and [Calibration](/docs/calibration/) |
+| Software installation | [Software docs](/docs/software/) |
+| Camera not working | [Troubleshooting](/troubleshooting/) and [XLeRobot wiring](https://xlerobot.readthedocs.io/en/latest/hardware/getting_started/assemble.html#wiring) |
+| Understanding IK / frames | [Architecture docs](/docs/architecture/) |
+
+:::tip
+You don't need to complete every phase before the next one is useful. Once you have keyboard joint control working (step 6), you have a functional robot. Everything after that adds capability.
+:::

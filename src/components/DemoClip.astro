@@ -1,0 +1,26 @@
+---
+interface Props {
+  src: string;
+  caption?: string;
+  lookFor?: string;
+  poster?: string;
+}
+
+const { src, caption, lookFor, poster } = Astro.props;
+---
+
+<figure class="my-6">
+  <video controls preload="metadata" poster={poster} class="w-full rounded-lg">
+    <source src={src} />
+  </video>
+  {caption && (
+    <figcaption class="text-center text-sm mt-2 text-[var(--sl-color-gray-3)]">
+      {caption}
+    </figcaption>
+  )}
+  {lookFor && (
+    <p class="text-sm mt-1 italic text-[var(--sl-color-gray-3)]">
+      <strong>What to look for:</strong> {lookFor}
+    </p>
+  )}
+</figure>

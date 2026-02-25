@@ -1,0 +1,86 @@
+---
+title: Contributing
+description: How to contribute to XLerobot documentation and the docs site.
+---
+
+This site is built collaboratively. Whether you're writing docs, fixing errors, or adding tutorials, this section tells you how.
+
+## Quick start
+
+1. Clone the repo and install dependencies:
+
+   ```bash
+   git clone https://github.com/ranegray/xlerobot-pro-website.git
+   cd xlerobot-pro-website
+   npm install
+   ```
+
+2. Start the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+3. Create or edit content in `src/content/docs/` — all pages are MDX files.
+
+4. Preview your changes in the browser at `http://localhost:4321`.
+
+5. Submit a pull request.
+
+## Repo structure
+
+```
+src/
+  content/
+    docs/           ← all site content (MDX files)
+      start-here/
+      docs/
+        hardware/
+        software/
+        architecture/
+        calibration/
+        reference/
+      tutorials/
+      troubleshooting/
+      lab-notes/
+      contributing/
+  components/       ← custom Astro components
+  styles/           ← global CSS
+```
+
+## Page types
+
+Every page must use one of the defined [page templates](/contributing/templates/). No freestyle layouts.
+
+| Type | Use for | Key sections |
+|---|---|---|
+| Setup Guide | Installation and configuration | Goal, Prerequisites, Steps, Verify, Common Issues |
+| Tutorial | Outcome-based learning | Outcome, Concepts, Steps, Expected Output |
+| Reference | Commands, config, specs | Scope, Quick Answer, Details |
+| Troubleshooting | One failure mode | Symptoms, Causes, Fix Steps, Verification |
+| Lab Note | Engineering progress | Date, What Changed, Problems, Evidence, Next Step |
+
+## PR checklist
+
+Before submitting, confirm:
+
+- [ ] Correct page template used
+- [ ] Clear purpose and audience
+- [ ] Prerequisites listed
+- [ ] "Tested on" block included (if setup/tutorial)
+- [ ] Verification section included
+- [ ] Commands are copy-pasteable
+- [ ] Related links and next steps added
+- [ ] No broken links
+- [ ] `npm run build` passes
+
+## Roles
+
+**Technical owner (Rane)** — defines architecture and standards, provides source material, reviews technical correctness.
+
+**Contributors** — create pages from templates, format content in MDX, maintain links, submit PRs.
+
+## Next steps
+
+- [Style Guide](/contributing/style-guide/) — writing and formatting standards
+- [Page Templates](/contributing/templates/) — copy-paste templates for each page type

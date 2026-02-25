@@ -1,0 +1,44 @@
+---
+title: XLerobot
+description: Documentation, tutorials, and lab notes for the XLerobot robotics project.
+template: splash
+hero:
+  title: XLerobot
+  tagline: Build, run, and understand XLerobot — hardware, software, and beyond.
+  actions:
+    - text: Get Started
+      link: /start-here/
+      icon: right-arrow
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## What you'll find here
+
+<CardGrid>
+  <Card title="Start Here" icon="rocket">
+    New to XLerobot? Begin with [the overview](/start-here/), check [prerequisites](/start-here/prerequisites/), and follow the [learning path](/start-here/learning-path/).
+  </Card>
+  <Card title="Docs" icon="open-book">
+    [Hardware specs](/docs/hardware/), [software setup](/docs/software/), [architecture](/docs/architecture/), [calibration](/docs/calibration/), and [quick reference](/docs/reference/).
+  </Card>
+  <Card title="Tutorials" icon="puzzle">
+    Hands-on walkthroughs from [first motor test](/tutorials/first-reach/) to policy training.
+  </Card>
+  <Card title="Troubleshooting" icon="warning">
+    [Symptom-based fixes](/troubleshooting/) for motors, cameras, software, and assembly.
+  </Card>
+</CardGrid>
+
+## About the project
+
+XLerobot is an open-source, dual-arm mobile household robot built on the [LeRobot](https://github.com/huggingface/lerobot) framework. It combines affordable hardware (~$660 USD) with modern AI capabilities — teleoperation, imitation learning, reinforcement learning, and vision-language-action models.
+
+This site is the practical operator manual: tested workflows, golden-path guides, and honest engineering notes.
+
+## Links
+
+- [XLerobot GitHub](https://github.com/Vector-Wangel/XLeRobot)
+- [Upstream docs](https://xlerobot.readthedocs.io/en/latest/)
+- [LeRobot framework](https://github.com/huggingface/lerobot)
+- [Discord community](https://discord.gg/bjZveEUh6F)
