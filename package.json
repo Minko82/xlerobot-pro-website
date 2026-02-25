@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/prefix-base-links.mjs dist",
     "preview": "astro preview --host",
     "astro": "astro",
     "check": "astro check",

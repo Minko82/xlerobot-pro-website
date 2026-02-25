@@ -72,6 +72,11 @@ jobs:
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
+      - name: Prefix internal root links with Pages base path
+        run: node scripts/prefix-base-links.mjs dist
+        working-directory: ${{ env.BUILD_PATH }}
+        env:
+          SITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
