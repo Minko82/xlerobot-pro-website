@@ -3,6 +3,9 @@ import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  site: "https://minko82.github.io",
+  base: "/xlerobot-pro-website",
+  trailingSlash: "always",
   integrations: [
     starlight({
       title: "XLerobot",
