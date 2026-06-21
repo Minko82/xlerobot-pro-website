@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XLeRobot-Pro | Platform Overview</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ambient-blob blob-cyan"></div>
+    <div class="ambient-blob blob-purple"></div>
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="index.html" class="brand">
+                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
+                XLeRobot-Pro
+            </a>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link active">Overview</a>
+                <a href="components.html" class="nav-link">Components</a>
+                <a href="build-guide.html" class="nav-link">Build Guide</a>
+                <a href="software.html" class="nav-link">Software</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" class="btn-neon btn-github">GitHub ↗</a>
+                <a href="https://arxiv.org/abs/2603.09051" target="_blank" class="btn-neon btn-arxiv">arXiv ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        
+        <header class="hero">
+            <span class="tech-badge">Open-Source Research Platform</span>
+            <h1 class="hero-title">Democratizing Embodied AI.</h1>
+            <p class="hero-desc">XLeRobot-Pro is a highly capable, $1,200 bimanual mobile manipulator. Designed for researchers and labs to rapidly deploy imitation learning, VLA models, and autonomous robotic agents.</p>
+        </header>
+
+        <div class="hero-image-wrapper">
+            <img src="media/images/full_battery.jpg" alt="XLeRobot-Pro Platform Overview" class="full-width-image mt-4">
+        </div>
+
+        <section class="card neon-hover-cyan">
+            <h2>Why XLeRobot-Pro?</h2>
+            <p>The barrier to entry for advanced robotics research has traditionally been gated by six-figure hardware. XLeRobot-Pro bridges the gap between simulation and reality by providing a robust, highly reproducible physical platform.</p>
+            <p>By leveraging mostly 3D-printed components, affordable hardware, and a mobile base, labs can scale their data collection pipelines and deploy fleet-level reinforcement learning without massive capital constraints.</p>
+            
+            <div class="video-frame">
+                <video controls autoplay loop muted playsinline>
+                    <source src="media/video/IROS_Video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="mt-4 flex-wrap-gap">
+                <span class="tech-badge purple">Teleoperation</span>
+                <span class="tech-badge">Imitation Learning</span>
+                <span class="tech-badge purple">Sim-to-Real</span>
+                <span class="tech-badge">Vision-Language-Action (VLA)</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>System Capabilities</h2>
+            <p>Native integration with the Hugging Face <strong>LeRobot</strong> framework allows for out-of-the-box data collection and policy training. See the system in action below.</p>
+            
+            <img src="media/images/grid.png" alt="System Capabilities Long Gallery" class="full-width-image mt-4 mb-4">
+
+            <div class="grid-2 mt-4">
+                <div>
+                    <video class="full-width-image" controls autoplay loop muted playsinline>
+                        <source src="media/video/chen.mov" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p class="mt-4 credits-text"><strong>Bimanual Teleoperation:</strong> Smooth leader-follower kinematics using dual SO-101 arms for high-fidelity dataset collection.</p>
+                </div>
+
+                <div>
+                    <video class="full-width-image" controls autoplay loop muted playsinline>
+                        <source src="media/video/SLAM.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p class="mt-4 credits-text"><strong>Autonomous Execution:</strong> Built-in SLAM execution capabilities for autonomous mapping.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card neon-hover-purple">
+            <h2>Hardware Architecture</h2>
+            <p>Designed for modularity. Swap compute nodes, upgrade sensor suites, or modify the chassis parameters to fit your specific research parameters.</p>
+            
+            <div class="grid-2 mt-4">
+                <div class="card card-no-margin">
+                    <h3 class="font-med mt-2">SO-101 Arms</h3>
+                    <p class="font-small mt-2">Providing high-fidelity 6-DOF movement for complex bimanual manipulation tasks.</p>
+                    <img src="media/images/arm.png" alt="SO-101 robotic arm" class="full-width-image mt-4">
+                </div>
+                
+                <div class="card card-no-margin">
+                    <h3 class="font-med mt-2">Fin-Ray End-Effectors</h3>
+                    <p class="font-small mt-2">Enabling precision and compliant grasps across a wide variety of unstructured objects.</p>
+                    <img src="media/images/gripper.png" alt="Fin-ray end-effector" class="full-width-image mt-4">
+                </div>
+
+                <div class="card card-no-margin">
+                    <h3 class="font-med mt-2">Functionally Graded Chassis</h3>
+                    <p class="font-small mt-2">Ensuring structural stability and vibration damping during dynamic mobile operations.</p>
+                    <img src="media/images/chassis.png" alt="Functionally graded chassis" class="full-width-image mt-4">
+                </div>
+                
+                <div class="card card-no-margin">
+                    <h3 class="font-med mt-2">Compute Deck + Sensor Suite</h3>
+                    <p class="font-small mt-2">Centralizing processing power and multi-modal perception for real-time autonomous decision making.</p>
+                    <img src="media/images/schematic.png" alt="Compute deck and sensor suite schematic" class="full-width-image mt-4">
+                </div>
+            </div>
+        </section>
+
+        <section class="card neon-hover-pink">
+            <h2>Software Stack & Algorithms</h2>
+            <p>The XLeRobot-Pro utilizes a hybrid approach, merging precise classical robotics control with state-of-the-art end-to-end learning models.</p>
+
+            <div class="grid-2 mt-4">
+                <div class="card card-no-margin">
+                    <h3 class="font-med">Inverse Kinematics (IK) via Pink</h3>
+                    <p class="font-small mt-2">Leveraging the Pink (Pinocchio-based Inverse Kinematics) library to translate high-level spatial objectives into precise, singularity-robust joint movements in real time.</p>
+                    <img src="media/images/board_close.jpg" alt="IK implementation on peg-in-hole board, close-up" class="full-width-image mt-4">
+                </div>
+
+                <div class="card card-no-margin">
+                    <h3 class="font-med">SLAM & Navigation</h3>
+                    <p class="font-small mt-2">Implementing a ROS 2 pipeline using RTAB-Map and a RealSense D435 for visual odometry and localization. Global planning and closed-loop execution are handled by Nav2 utilizing 2D costmaps.</p>
+                    <img src="media/images/nav.png" alt="SLAM Navigation mapped environment" class="full-width-image mt-4">
+                </div>
+
+                <div class="card card-no-margin">
+                    <h3 class="font-med">Visual Perception</h3>
+                    <p class="font-small mt-2">Extracting critical visual features via HSV thresholding and contour detection to isolate target objects, providing real-time geometric priors for upstream algorithms.</p>
+                    <img src="media/images/ik.png" alt="Color segmentation vision processing" class="full-width-image mt-4">
+                </div>
+
+                <div class="card card-no-margin">
+                    <h3 class="font-med">LeRobot Integration</h3>
+                    <p class="font-small mt-2">Native support for the Hugging Face LeRobot framework, streamlining the pipeline from standardized data collection to end-to-end policy training (e.g., Action Chunking with Transformers).</p>
+                     <img src="media/images/ai.png" alt="Inference benchmarks on Jetson Orin Nano (MAXN Super mode)" class="full-width-image mt-4">
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Hardware Overview & Specifications</h2>
+            <p>XLeRobot-Pro is a dual-arm mobile robot built from affordable, widely available components. Below covers the physical system requirements and limitations.</p>
+            
+            <div class="mt-4">
+                <h3 class="font-med">System Specifications</h3>
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <div class="spec-label">Total Weight</div>
+                        <div class="spec-value">~12 kg</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Workspace Height</div>
+                        <div class="spec-value">0.5–1.25 m</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Workspace Reach</div>
+                        <div class="spec-value">~40 cm</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Payload</div>
+                        <div class="spec-value">600–1000 g</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Mobility</div>
+                        <div class="spec-value">3 Omni Wheels</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Battery Life</div>
+                        <div class="spec-value">10+ Hours</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-large" style="margin-top: 3rem;">
+                <h3 class="font-med">Known Limitations</h3>
+                <div class="flex-wrap-gap mt-4">
+                    <span class="tech-badge">Fixed Height</span>
+                    <span class="tech-badge">Reach ~40cm</span>
+                    <span class="tech-badge">No In-Hand Dexterity</span>
+                    <span class="tech-badge">Payload max 1000g</span>
+                </div>
+                <p class="font-small mt-4 text-muted">See the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a> for more details.</p>
+            </div>
+        </section>
+
+        <section class="card card-credits">
+            <h2>Credits & Acknowledgements</h2>
+            
+            <div class="credits-grid">
+                <div class="credits-col">
+                    <h3>Project Creators</h3>
+                    <p class="credits-text">
+                        <a href="https://artemisrobotics.org/" target="_blank" rel="noopener noreferrer" class="text-neon purple text-underline">Artemis Shaw</a>,
+                        <a href="https://github.com/robonana" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">Chen Liu</a>,
+                        <a href="https://github.com/JustinCosta10" target="_blank" rel="noopener noreferrer" class="text-neon purple text-underline">Justin Costa</a>,
+                        <a href="https://github.com/ranegray" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">Rane Gray</a>,
+                        <a href="https://github.com/AlinaSkowronek" target="_blank" rel="noopener noreferrer" class="text-neon purple text-underline">Alina Skowronek</a>,
+                        <span class="text-neon static-name">Kevin Diaz</span>,
+                        <span class="text-neon static-name">Nam Bui</span>,
+                        <a href="https://www.colorado.edu/lab/correll" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">Nikolaus Correll</a>.
+                    </p>
+                </div>
+                <div class="credits-col">
+                    <h3>Core Frameworks</h3>
+                    <ul class="credits-list">
+                        <li>
+                            <strong>LeRobot:</strong> Built upon the foundational work of the 
+                            <a href="https://github.com/huggingface/lerobot" target="_blank" class="text-neon text-underline">Hugging Face LeRobot team</a>.
+                        </li>
+                        <li>
+                            <strong>XLeRobot:</strong> Referencing the architectural design and initial implementation by 
+                            <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" class="text-neon text-underline">Vector-Wangel</a>.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="text-center mt-large">
+            <p class="credits-text cta-lead">Ready to start?</p>
+            <a href="build-guide.html" class="btn-neon btn-github btn-cta">Start Building ↗</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XLeRobot-Pro | Software Setup</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ambient-blob blob-cyan"></div>
+    <div class="ambient-blob blob-purple"></div>
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="index.html" class="brand">
+                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
+                XLeRobot-Pro
+            </a>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Overview</a>
+                <a href="components.html" class="nav-link">Components</a>
+                <a href="build-guide.html" class="nav-link">Build Guide</a>
+                <a href="software.html" class="nav-link active">Software</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" class="btn-neon btn-github">GitHub ↗</a>
+                <a href="https://arxiv.org/abs/2603.09051" target="_blank" class="btn-neon btn-arxiv">arXiv ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        
+        <header class="page-header">
+            <span class="tech-badge">Compute: Jetson Orin Nano / Laptop</span>
+            <h1>Software Architecture & Setup</h1>
+            <p>Deploy the XLeRobot-Pro stack. One repository, full control.</p>
+        </header>
+
+        <section class="card neon-hover-cyan">
+            <h2>1. System Architecture</h2>
+            <p>Core computing (IK, Vision, VLA Policy inference) runs either on your <strong>Host Laptop</strong> or the onboard <strong>NVIDIA Jetson Orin Nano</strong>.</p>
+            
+            
+
+            <div class="ascii-diagram-box">
+<pre>
+┌──────────────┐                  ┌────────────────────────┐
+│  Bus 1 & 2   │      USB-C       │    Compute Node        │
+│ (Follower    │◄────────────────►│                        │
+│    Arms)     │                  │  - Jetson Orin Nano    │
+└──────────────┘                  │         OR             │
+                                  │  - Laptop / PC         │
+┌──────────────┐      USB-C       │                        │
+│    Bus 3     │◄────────────────►│   Running:             │
+│ (Neck/Wheels)│                  │   - LeRobot Stack      │
+└──────────────┘                  │   - Pink (Pinocchio) IK│
+                                  │   - YOLO / VLA         │
+┌──────────────┐      USB         └───────────┬────────────┘
+│ Cameras (3x) │◄─────────────────────────────┘
+└──────────────┘
+</pre>
+            </div>
+        </section>
+
+        <section class="card neon-hover-purple">
+            <h2>2. Framework Installation</h2>
+            <p>We recommend <strong>Ubuntu 22.04</strong> and <strong>Python 3.10</strong>.</p>
+
+            <h3 class="mt-4">Clone & Install</h3>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># Clone the unified pro repository</span><br>
+                    <span>$</span> git clone https://github.com/Minko82/xlerobot-pro<br>
+                    <span>$</span> cd xlerobot-pro<br><br>
+                    <span class="log-info"># Install dependencies in editable mode</span><br>
+                    <span>$</span> pip install -e .
+                </div>
+            </div>
+
+            <div class="alert-box alert-note">
+                <div class="alert-accent-line"></div>
+                <strong>JETSON USERS:</strong> Ensure <strong>JetPack 5.1.x or 6.0</strong> is installed. Enable "Max Power Mode" via <code>sudo nvpmodel -m 0</code> for policy inference.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>3. Environment & Port Configuration</h2>
+            
+            <h3 class="mt-4">A. USB Serial Permissions</h3>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Grant Permissions</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> sudo chmod 666 /dev/ttyACM*<br><br>
+                    <span class="log-info"># Verify your connected ports:</span><br>
+                    <span>$</span> lerobot-find-port
+                </div>
+            </div>
+
+            <h3 class="mt-4">B. Camera Verification</h3>
+            <div class="terminal-box mt-2">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>V4L2 Check</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> v4l2-ctl --list-devices
+                </div>
+            </div>
+        </section>
+
+        <section class="card neon-hover-pink">
+            <h2>4. Control & Teleoperation</h2>
+            <p>Test hardware integration using the tested scripts in the <code>examples/</code> directory (run them from there with <code>python3</code>). More — YOLO tracking, Joy-Con, and full keyboard/VR teleop — live in <code>examples/provided_examples/</code> as reference-only examples.</p>
+
+            <div class="table-container mt-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Mode</th><th>Script Name</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Joint control</strong></td><td><code>0_so100_keyboard_joint_control.py</code></td><td>Single-arm joint movement validation</td></tr>
+                        <tr><td><strong>End-effector (IK)</strong></td><td><code>2_dual_so100_keyboard_ee_control.py</code></td><td>Dual-arm joint + end-effector control</td></tr>
+                        <tr><td><strong>Wrist cameras</strong></td><td><code>9_dual_wrist_camera.py</code></td><td>Dual wrist-camera verification</td></tr>
+                        <tr><td><strong>Xbox teleop</strong></td><td><code>5_xlerobot_teleop_xbox.py</code></td><td>Gamepad control of the full platform</td></tr>
+                        <tr><td><strong>VR teleop</strong></td><td><code>teleop_hand_and_arm.py</code></td><td>VR hand + arm teleoperation</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="flex-wrap-center mb-4">
+                <h2 class="card-no-margin">Troubleshooting Quick Reference</h2>
+                <a href="troubleshooting.html" class="btn-neon btn-outline-pink">Full Diagnostic Guide ➔</a>
+            </div>
+            
+            <div class="grid-2 mt-4">
+                <div class="diag-grid-card">
+                    <strong>Permission Denied</strong>
+                    <p>Run <code>sudo chmod 666 /dev/ttyACM*</code> to unlock USB ports.</p>
+                </div>
+                <div class="diag-grid-card">
+                    <strong>Import Error</strong>
+                    <p>Ensure you ran <code>pip install -e .</code> inside the <code>xlerobot-pro</code> folder.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="text-center mt-large">
+            <p class="credits-text cta-lead">Ready to train your robot?</p>
+            <a href="tutorial-first-reach.html" class="btn-neon btn-github btn-cta">Start the First Reach Tutorial ↗</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

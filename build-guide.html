@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XLeRobot-Pro | Build Guide</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ambient-blob blob-cyan"></div>
+    <div class="ambient-blob blob-purple"></div>
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="index.html" class="brand">
+                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
+                XLeRobot-Pro
+            </a>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Overview</a>
+                <a href="components.html" class="nav-link">Components</a>
+                <a href="build-guide.html" class="nav-link active">Build Guide</a>
+                <a href="software.html" class="nav-link">Software</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
+                <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer" class="btn-neon btn-arxiv">arXiv ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+
+        <header class="page-header">
+            <span class="tech-badge">3-Bus Architecture</span>
+            <h1>Build &amp; Calibration Guide</h1>
+            <p>Consolidated instructions for printing, assembly, wiring, and physical validation of the dual-arm XLeRobot-Pro platform.</p>
+        </header>
+
+        <div class="alert-box alert-caution">
+            <div class="alert-accent-line"></div>
+            <strong>CAUTION:</strong> This page documents a <strong>3-bus architecture</strong> (Bus 1 = left arm, Bus 2 = right arm, Bus 3 = neck + wheel base). Some older references describe a shared/2-bus layout — for this build, follow this page.
+        </div>
+
+        <section class="card">
+            <h2>1. Build Overview</h2>
+            <p>This guide walks you through building the platform with 2× SO-101 follower arms, a neck/head assembly, an omni-wheel base on an IKEA RÅSKOG cart, and an NVIDIA Jetson compute node mounted near the neck/base region.</p>
+
+            <h3 class="mt-4">The 3-Bus Separation</h3>
+            <p>We use three independent motor buses to simplify wiring and isolate faults during motor debugging.</p>
+
+            <div class="table-container mt-4 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Bus</th><th>Subsystem</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Bus 1</strong></td><td>Left arm</td></tr>
+                        <tr><td><strong>Bus 2</strong></td><td>Right arm</td></tr>
+                        <tr><td><strong>Bus 3</strong></td><td>Neck and wheel base</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="mt-4">Recommended Build Order</h3>
+            <ol class="mt-2">
+                <li>Print all parts</li>
+                <li>Assemble both SO-101 arms</li>
+                <li>Install wrist camera mounts and grippers</li>
+                <li>Assemble cart and wheel base</li>
+                <li>Assemble neck / top base / head</li>
+                <li>Configure motors (before final assembly)</li>
+                <li>Mount Jetson and route wiring</li>
+                <li>Final mechanical assembly and cable management</li>
+                <li>Software bring-up and bus verification</li>
+            </ol>
+        </section>
+
+        <section class="card">
+            <h2>2. 3D-Printed Parts</h2>
+            <p>About 90% of the structural components are 3D-printed. Download the combined 3MF and apply the Pro print settings below.</p>
+            <div class="mt-4 mb-4">
+                <a href="https://github.com/Vector-Wangel/XLeRobot/blob/main/hardware/XLeRobot_0_3_0.3mf" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">3D Printing File (3MF) ↗</a>
+            </div>
+            <p class="font-small text-muted">On the GitHub page that opens, click the <strong>“Raw file”</strong> button (top-right of the file viewer) to download the <code>.3mf</code>.</p>
+            <div class="mt-4 mb-4">
+                <a href="https://www.printables.com/model/1629120-mounting-frame-for-nvidia-jetson-orin-nano" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">Jetson Orin Nano Mount ↗</a>
+            </div>
+            <p>You will need: two SO-101 follower arms, the neck/head assembly, the omni-wheel base, and a wrist-camera mount per arm. Print the soft finray gripper fingers in TPU95A.</p>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>TIP:</strong> Pre-dry PLA at ~45°C for 8 hours in humid environments. Wet filament causes stringing, weak layer adhesion, and poor thread/fit quality on structural parts.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>3. Print Settings</h2>
+            <p>Start from your baseline PrusaSlicer profile (or a standard PLA profile), then change only the settings below. Parts were validated on a consumer printer (e.g. Bambu A1) in PLA; PETG and CF variants are optional strength upgrades.</p>
+
+            <h3 class="mt-4">General Print Notes</h3>
+            <ul class="mt-2">
+                <li>Use PLA for first-pass prototyping and fit checks</li>
+                <li>Prioritize part orientation for structural parts over cosmetic finish</li>
+                <li>Dry filament in high humidity for cleaner fit-up and thread quality</li>
+                <li>For soft finray-style fingers, use <strong>TPU95A</strong></li>
+            </ul>
+
+            <div class="grid-2 mt-4">
+                <div class="card print-card">
+                    <h3>Neck &amp; Wheel Base</h3>
+                    <p>Structural parts requiring high rigidity.</p>
+                    <ul class="mt-2">
+                        <li><strong>Perimeters:</strong> 4</li>
+                        <li><strong>Top/bottom layers:</strong> 5–6</li>
+                        <li><strong>Infill:</strong> 25–35% Gyroid (use 35% for base connectors, motor mounts, neck structure)</li>
+                        <li><strong>Layer Height:</strong> 0.20 mm</li>
+                    </ul>
+                </div>
+
+                <div class="card print-card">
+                    <h3>Arm Joints (SO-101)</h3>
+                    <p>High dimensional accuracy required.</p>
+                    <ul class="mt-2">
+                        <li><strong>Perimeters:</strong> 4</li>
+                        <li><strong>Top/bottom layers:</strong> 5</li>
+                        <li><strong>Infill:</strong> 20–30% Gyroid (use 30% for joint housings, base/shoulder, clamp/camera-mount parts)</li>
+                        <li><strong>Layer Height:</strong> 0.16–0.20 mm (use 0.16 mm where fit/alignment is sensitive)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>NOTE:</strong> The wheel-base connector may need <strong>Z scaling only</strong> to balance the load across the omni-wheels and cart wheels. Do not uniformly scale the part.
+            </div>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>ARM TIP:</strong> Print two <strong>follower</strong> arms for the dual-arm build — leader arms are only needed for leader-follower teleop. Batch the wrist-camera mount and your preferred gripper variant with the arm prints.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>4. Assembly</h2>
+
+            <h3 class="mt-4">Overall Assembly</h3>
+            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=6s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the overall assembly guide</a> for a complete walkthrough of the build process.</p>
+
+            <h3 class="mt-4">A) Cart</h3>
+            <p><a href="https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart__AA-573329-8_pub.pdf" target="_blank" rel="noopener noreferrer" class="text-neon">Assemble the IKEA RÅSKOG cart</a> first to establish the rolling structure.</p>
+            <ul class="mt-2">
+                <li>Do <strong>not</strong> finalize cable routing through the cart yet</li>
+                <li>Leave access for motor extensions, USB data, power, and camera cable routes</li>
+            </ul>
+
+            <h3 class="mt-4">B) Arms (Joints 1–5)</h3>
+            <p><a href="https://www.youtube.com/watch?v=70GuJf2jbYk" target="_blank" rel="noopener noreferrer" class="text-neon">Assemble both SO-101 follower arms</a> (step-by-step build video). <strong>Crucial wrist/gripper order:</strong></p>
+            <ol class="mt-2">
+                <li>Before attaching the gripper to joint 5, install the wrist-camera attachment to the gripper</li>
+                <li>Install the gripper claw/fingers</li>
+                <li>Use the follower gripper approach on both arms</li>
+            </ol>
+            <p class="font-small mt-2 text-muted">This order avoids reopening the wrist stack later.</p>
+
+            <h3 class="mt-4">C) Neck (Top Base &amp; Head)</h3>
+            <p>Assemble the Top Base and Head. The head follows the same motor style and is derived from early SO-101 link patterns. The hollow neck doubles as a cable channel.</p>
+            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=0s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the neck assembly</a> (overall assembly video, <strong>0:00–18:51</strong>).</p>
+
+            <h3 class="mt-4">D) Wheels &amp; Wheel Base</h3>
+            <p>Assemble the wheels and wheel base.</p>
+            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=1132s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the wheel assembly</a> (overall assembly video, <strong>18:52–32:30</strong>).</p>
+            <ul class="mt-2">
+                <li>Keep omni-wheel orientation/order exactly as documented</li>
+                <li>Use motor cable extensions — do not rely on short direct runs</li>
+                <li>Leave slack until top-plate routing is finalized</li>
+                <li>Mount the top plate and connectors only after route checks</li>
+            </ul>
+
+            <h3 class="mt-4">E) Integrating Components onto the Cart</h3>
+            <p>Bring the arms, neck, and wheel base together on the cart for the full platform.</p>
+            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=1955s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the full integration onto the cart</a> (overall assembly video, <strong>32:35–39:52</strong>).</p>
+        </section>
+
+        <section class="card" id="motor-configuration">
+            <h2>5. Motor Configuration &amp; IDs</h2>
+            <p>Configure motors <strong>before</strong> final cable management and hard mounting. Many servos ship with default ID 1, so each ID must be unique per bus and the baudrate must match the board and motors.</p>
+
+            <h3 class="mt-4">A) Arm Motors (SO-101)</h3>
+            <p>Identify each serial port, then configure the motors one at a time — set each ID and the baudrate, and repeat for both follower arms.</p>
+
+            <h3 class="mt-4">B) Neck &amp; Wheel Motors (Bus 3)</h3>
+            <p>Assign each ID one at a time with the repo's <code>set_motor_id.py</code> tool. On Linux you may need serial permissions (<code>sudo chmod 666 /dev/ttyACM0</code>).</p>
+
+            <h3 class="mt-4">ID Planning</h3>
+            <div class="table-container mt-2">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Bus</th><th>Recommended IDs</th><th>Mapping Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Bus 1 (Left Arm)</strong></td><td>1–6</td><td>SO-101 follower mapping</td></tr>
+                        <tr><td><strong>Bus 2 (Right Arm)</strong></td><td>1–6</td><td>Valid due to bus separation</td></tr>
+                        <tr><td><strong>Bus 3 (Neck &amp; Wheels)</strong></td><td>7–11</td><td>7–8 Neck, 9–11 Wheels</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="terminal-box mt-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Identify Motor Ports</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># Identify active serial ports</span><br>
+                    <span>$</span> lerobot-find-port<br><br>
+                    <span class="log-info"># Assign a unique ID to one connected motor (repeat per motor)</span><br>
+                    <span>$</span> python set_motor_id.py --port <span class="text-neon">/dev/ttyACM0</span> --id 7 --model sts3215<br><br>
+                    <span class="log-info"># Grant serial permissions on Linux</span><br>
+                    <span>$</span> sudo chmod 666 <span class="text-neon">/dev/ttyACM0</span>
+                </div>
+            </div>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>TIP:</strong> Physically label every motor and both ends of every cable after configuration — <code>L-1</code>…<code>L-6</code>, <code>R-1</code>…<code>R-6</code>, <code>B-7</code>…<code>B-11</code>.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>6. NVIDIA Jetson Placement</h2>
+            <p>Mount the Jetson at the base of the neck or in the center storage shell area, depending on your printed configuration.</p>
+            <ul class="mt-2">
+                <li>Keep mass low for stability</li>
+                <li>Keep USB ports accessible</li>
+                <li>Minimize cable length to the three motor control boards, two wrist cameras, one head camera, and power distribution</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>7. Wiring (3-Bus)</h2>
+            <p>Wire the three buses as below.</p>
+
+            <h3 class="mt-4">A) Motor Wiring</h3>
+            <ul class="mt-2">
+                <li><strong>Bus 1 — Left arm:</strong> one dedicated controller; daisy-chain follower motors; controller output to joint 1 (shoulder pan)</li>
+                <li><strong>Bus 2 — Right arm:</strong> one dedicated controller; same layout as left arm</li>
+                <li><strong>Bus 3 — Neck &amp; wheels:</strong> one dedicated controller; use extensions for clean routing from the lower wheel plate to the upper electronics</li>
+            </ul>
+            <p class="font-small mt-2 text-muted">Leave service slack near each joint (especially wrist/gripper), avoid tight bends near connectors, keep motion cables away from pinch points, and label both ends of every extension.</p>
+
+            <h3 class="mt-4">B) Power Wiring</h3>
+            <ul class="mt-2">
+                <li>Battery mounted low and upright in the cart</li>
+                <li>Main power line routed to a distribution point</li>
+                <li>Separate fused outputs for left-arm bus, right-arm bus, neck/wheel bus, and the Jetson power path</li>
+                <li>Add strain relief at the battery and distribution points</li>
+            </ul>
+
+            <h3 class="mt-4">C) Camera Wiring</h3>
+            <ul class="mt-2">
+                <li><strong>Wrist cameras (×2):</strong> route each cable along its arm with full-motion slack; secure at intervals; keep compute-end connectors accessible</li>
+                <li><strong>Head camera:</strong> route through the hollow neck; leave pan/tilt slack at the head joint</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>8. Final Assembly</h2>
+            <p>Complete final assembly, substituting the Jetson where older instructions reference a Raspberry Pi.</p>
+            <ul class="mt-2">
+                <li>Complete wiring and cable management before clamping the top base into the cart</li>
+                <li>Clamp arms onto the cart corners after route verification</li>
+            </ul>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>CAUTION:</strong> Do not push the fully assembled robot like a normal cart — <strong>lift it (~12 kg) to relocate</strong> to protect the motor gears.
+            </div>
+
+            <h3 class="mt-4">Final Checklist</h3>
+            <div class="grid-2 mt-2">
+                <div class="status-card-green">
+                    <h4 class="status-title-green">Mechanical &amp; Power</h4>
+                    <ul class="status-list status-list-green">
+                        <li>Jetson mounted securely</li>
+                        <li>Battery secured and upright</li>
+                        <li>No cable pinch points</li>
+                        <li>Full arm range without cable snagging</li>
+                        <li>Wheel base rotates freely</li>
+                    </ul>
+                </div>
+                <div class="status-card-blue">
+                    <h4 class="status-title-blue">Electrical &amp; Sensing</h4>
+                    <ul class="status-list status-list-blue">
+                        <li>All 3 buses configured and tested independently</li>
+                        <li>Motor IDs verified</li>
+                        <li>Motor directions verified</li>
+                        <li>Both wrist cameras detected</li>
+                        <li>Head camera detected</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>9. Hardware Calibration &amp; Validation</h2>
+            <p>Run these checks before full-stack teleoperation or training. Test one bus at a time.</p>
+
+            <h3 class="mt-4">A) Bus &amp; Joint Control Sanity Check</h3>
+            <p class="font-small">Ping/read all motors per bus, then confirm joints respond to keyboard input.</p>
+            <div class="terminal-box mt-2">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Test Joint Movements</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python 0_so100_keyboard_joint_control.py
+                </div>
+            </div>
+
+            <h3 class="mt-4">B) Mechanical IK Calibration</h3>
+            <p class="font-small">Verify the gripper reaches the expected location. Check for loose servo horns or bent brackets if accuracy is low — accuracy depends on mechanical assembly quality.</p>
+            <div class="terminal-box mt-2">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Verify IK Accuracy</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python provided_examples/1_so100_keyboard_ee_control.py
+                </div>
+            </div>
+
+            <h3 class="mt-4">C) Motion &amp; Camera Bring-up</h3>
+            <ul class="mt-2">
+                <li>Arm joints move correctly; neck axes move correctly; wheels respond with expected direction</li>
+                <li>Wrist camera 1, wrist camera 2, and head camera streams verified</li>
+            </ul>
+        </section>
+
+        <section class="card footer-cta">
+            <div class="flex-wrap-center">
+                <div class="card-no-margin">
+                    <h2>Having Assembly Issues?</h2>
+                    <p class="font-small">If gear noises persist or play is detected, check our diagnostics.</p>
+                </div>
+                <a href="troubleshooting.html" class="btn-neon btn-outline-cyan">Assembly Troubleshooting ➔</a>
+            </div>
+        </section>
+
+        <div class="text-center mt-large">
+            <p class="credits-text cta-lead">Hardware validated? Move on to software configuration.</p>
+            <a href="software.html" class="btn-neon btn-github btn-cta">Next Step: Software Setup ↗</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XLeRobot-Pro | Components</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .bom-link {
+            color: inherit;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, 0.3);
+            text-underline-offset: 3px;
+            transition: all 0.2s ease;
+        }
+        .bom-link:hover {
+            color: #00f0ff; 
+            text-decoration-color: #00f0ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-blob blob-cyan"></div>
+    <div class="ambient-blob blob-purple"></div>
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="index.html" class="brand">
+                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
+                XLeRobot-Pro
+            </a>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Overview</a>
+                <a href="components.html" class="nav-link active">Components</a>
+                <a href="build-guide.html" class="nav-link">Build Guide</a>
+                <a href="software.html" class="nav-link">Software</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
+                <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer" class="btn-neon btn-arxiv">arXiv ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        
+        <div class="page-header">
+            <h1>Hardware Components</h1>
+            <p>Key system architecture and the complete Bill of Materials (BOM).</p>
+        </div>
+
+        <section class="card">
+            <h2>System Architecture</h2>
+            <p>XLeRobot-Pro is designed to be fully untethered, balancing compute power with battery efficiency.</p>
+            
+            <div class="grid-2 mt-4">
+                <div class="card arch-card neon-hover-purple">
+                    <h3><span class="diag-icon"></span> Tri-Bus Power Topology</h3>
+                    <p>Isolates high-transient motor loads from the Jetson Orin Nano, completely eliminating power brownouts during aggressive maneuvers.</p>
+                </div>
+                
+                <div class="card arch-card neon-hover-cyan">
+                    <h3><span class="diag-icon"></span> Embedded Autonomy</h3>
+                    <p>NVIDIA Jetson Orin Nano Super provides full onboard GPU compute. No external PC tethering required for VLA models.</p>
+                </div>
+
+                <div class="card arch-card neon-hover-cyan">
+                    <h3><span class="diag-icon"></span> Robust Perception</h3>
+                    <p>Intel RealSense D435 RGB-D camera enabling high-fidelity SLAM navigation and vision-based bimanual manipulation.</p>
+                </div>
+
+                <div class="card arch-card neon-hover-purple">
+                    <h3><span class="diag-icon"></span> Optimized Structure</h3>
+                    <p>Functionally graded 3D-printed links utilizing High-Shell topology to achieve maximum stiffness-to-weight ratio.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="bom-header-flex">
+                <div>
+                    <h2>Bill of Materials (BOM)</h2>
+                    <p class="font-small">Full hardware requirements for the standalone configuration.</p>
+                </div>
+                <div class="price-tag-container">
+                    <span class="tech-badge purple">Untethered Config</span>
+                    <div class="price-amount">$1,202.27</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="tech-table">
+                    <thead>
+                        <tr>
+                            <th>Subsystem</th>
+                            <th>Component</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-right">Cost (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Compute</td><td><a href="https://www.amazon.com/NVIDIA-Jetson-Orin-Nano-Developer/dp/B0BZJTQ5YP?tag=ustxtaddt-20&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">NVIDIA Jetson Orin Nano Super [18]</a></td><td class="text-center">1</td><td class="text-right font-mono">$249.00</td></tr>
+                        <tr><td>Compute</td><td><a href="https://www.amazon.com/SanDisk-Extreme-microSDXC-Memory-Adapter/dp/B09X7C7LL1/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">microSD Card</a></td><td class="text-center">1</td><td class="text-right font-mono">$11.23</td></tr>
+                        <tr><td>Peripherals</td><td><a href="https://www.amazon.com/dp/B00XMD7KPU" target="_blank" rel="noopener noreferrer" class="bom-link">Anker 4-in-1 USB-C Hub</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
+                        <tr><td>Actuation</td><td><a href="https://shop.wowrobo.com/products/feetech-sts3215-servo-12v-30kg-high-torque-servo-for-so-arm100" target="_blank" rel="noopener noreferrer" class="bom-link">Feetech STS-3215 Servos (12V) [21]</a></td><td class="text-center">17</td><td class="text-right font-mono">$271.83</td></tr>
+                        <tr><td>Actuation</td><td><a href="https://www.horizonhobby.com/product/servo-wire-50-3-color/HRC57417.html" target="_blank" rel="noopener noreferrer" class="bom-link">Servo Wire: 50’ 3-Color</a></td><td class="text-center">1</td><td class="text-right font-mono">$15.97</td></tr>
+                        <tr><td>Actuation</td><td><a href="https://www.amazon.com/Waveshare-Integrates-Control-Circuit-Supports/dp/B0CTMM4LWK/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">Waveshare Serial Bus Servo Driver Board</a></td><td class="text-center">2</td><td class="text-right font-mono">$21.10</td></tr>
+                        <tr><td>Power</td><td><a href="https://www.ankersolix.com/products/c300-dc?variant=49702163972426&amp;ref=naviMenu_pps" target="_blank" rel="noopener noreferrer" class="bom-link">Anker SOLIX C300 Power Station [22]</a></td><td class="text-center">1</td><td class="text-right font-mono">$159.99</td></tr>
+                        <tr><td>Structure</td><td><a href="https://www.amazon.com/dp/B07PGY2JP1" target="_blank" rel="noopener noreferrer" class="bom-link">PLA Filament (3kg)</a></td><td class="text-center">1</td><td class="text-right font-mono">$45.00</td></tr>
+                        <tr><td>Structure</td><td><a href="https://www.amazon.com/dp/B0BRWCFD6Q?_encoding=UTF8&amp;ref=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;ref_=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;social_share=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;previewDoh=1&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">M3 Screws and Nuts Set</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
+                        <tr><td>Frame</td><td><a href="https://www.ikea.com/us/en/p/raskog-utility-cart-black-40582181/#content" target="_blank" rel="noopener noreferrer" class="bom-link">IKEA RÅSKOG Utility Cart</a></td><td class="text-center">1</td><td class="text-right font-mono">$39.99</td></tr>
+                        <tr><td>Mobility</td><td><a href="https://www.vexrobotics.com/omni-wheels.html" target="_blank" rel="noopener noreferrer" class="bom-link">4” Omni Wheels</a></td><td class="text-center">3</td><td class="text-right font-mono">$29.97</td></tr>
+                        <tr><td>Perception</td><td>Intel RealSense D435*</td><td class="text-center">1</td><td class="text-right font-mono">$333.75</td></tr>
+                        <tr><td>Power Cable</td><td><a href="https://www.amazon.com/dp/B0CDBWHXDZ?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to DC5521 Cable</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
+                        <tr><td>Power Cable</td><td>USB-C to DC5525 PD 140W Cable</td><td class="text-center">1</td><td class="text-right font-mono">$11.99</td></tr>
+                        <tr><td>Power Cable</td><td>DC5521 Car Cigarette Lighter Cable</td><td class="text-center">1</td><td class="text-right font-mono">$9.49</td></tr>
+                        <tr><td>Data Cable</td><td><a href="https://www.amazon.com/dp/B09N94MZG9" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to USB-C Cable (2 pcs)</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-right font-bold" style="padding-top: 15px;">TOTAL Untethered XLeRobot-Pro</td>
+                            <td class="text-right font-mono font-bold" style="padding-top: 15px;">$1202.27</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <p class="mt-4 font-small">* Note: The sum of the listed items is $1,247.27. The 3kg of PLA filament ($45.00) is included in this BOM for reference but is calculated as a general lab consumable rather than a direct platform cost, bringing the official total to $1,202.27.</p>
+        </section>
+
+        <section class="card neon-hover-purple">
+            <div class="bom-header-flex">
+                <div>
+                    <h2>3D-Printed Structure</h2>
+                    <p class="font-small">About 90% of the chassis, arms, neck, and base are 3D-printed. The BOM above covers the filament; download the combined 3MF below.</p>
+                </div>
+                <div class="price-tag-container">
+                    <span class="tech-badge purple">~90% printed</span>
+                </div>
+            </div>
+
+            <div class="mt-4 mb-4">
+                <a href="https://github.com/Vector-Wangel/XLeRobot/blob/main/hardware/XLeRobot_0_3_0.3mf" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">3D Printing File (3MF) ↗</a>
+            </div>
+            <p class="font-small text-muted mb-4">On the GitHub page that opens, click the <strong>“Raw file”</strong> button (top-right of the file viewer) to download the <code>.3mf</code>.</p>
+
+            <p class="font-small">Recommended: Bambu Lab A1 or Prusa i3 MK4 printing PLA Matte Black, with PETG HF / PLA CF as optional strength upgrades and TPU95A for soft finray fingers. Full print settings, build order, and assembly steps are in the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a>.</p>
+        </section>
+
+        <section class="card">
+            <h2>Hardware/Software Interface</h2>
+            <p>Ensure your driver boards are properly recognized by the compute node before proceeding to calibration.</p>
+            
+            <div class="terminal-box mt-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Port Verification</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> lerobot-find-port<br><br>
+                    <span class="log-info">[INFO]</span> Scanning active USB interfaces...<br>
+                    <span class="log-info">[INFO]</span> Found motor boards on <span class="text-neon">/dev/ttyACM0</span> and <span class="text-neon">/dev/ttyACM1</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

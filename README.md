@@ -1,18 +1,26 @@
-# XLerobot Docs
+# XLeRobot-Pro — Website
 
-Documentation, tutorials, and lab notes for the XLerobot robotics project.
+The XLeRobot-Pro project website. A plain static HTML/CSS site (no build step).
 
-Built with [Astro](https://astro.build) + [Starlight](https://starlight.astro.build).
+**Live:** https://minko82.github.io/xlerobot-pro-website/
 
-## Development
+## Pages
+- `index.html` — Overview
+- `components.html` — Components & Bill of Materials
+- `build-guide.html` — Build & Calibration Guide
+- `software.html` — Software setup
+- `tutorial-first-reach.html` — First Reach tutorial
+- `troubleshooting.html` — Troubleshooting
+
+## Run locally
+Open `index.html` directly, or serve the folder:
 
 ```bash
-npm install
-npm run dev
+python3 -m http.server 8000
+# then visit http://localhost:8000
 ```
 
-## Build
-
-```bash
-npm run build
-```
+## Deploy
+Every push to `main` publishes to GitHub Pages via
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) — the files are
+served as-is, with no build step.

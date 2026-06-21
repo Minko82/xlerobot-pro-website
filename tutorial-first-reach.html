@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial: First Reach | XLeRobot-Pro</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ambient-blob blob-cyan"></div>
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="index.html" class="brand">
+                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
+                XLeRobot-Pro
+            </a>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Overview</a>
+                <a href="components.html" class="nav-link">Components</a>
+                <a href="build-guide.html" class="nav-link">Build Guide</a>
+                <a href="software.html" class="nav-link active">Software</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
+                <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer" class="btn-neon btn-arxiv">arXiv ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+
+        <a href="software.html" class="btn-neon btn-outline-cyan back-link">← Back to Software Setup</a>
+
+        <header class="page-header">
+            <span class="tech-badge">Tutorial 01</span>
+            <h1>First Reach: Cartesian Control</h1>
+            <p>Move the gripper to a specific coordinate using Inverse Kinematics (IK) and keyboard input.</p>
+        </header>
+
+        <div class="grid-stack-mobile">
+            <section class="card card-no-margin">
+                <h2 class="font-med text-cyan">Outcome</h2>
+                <p class="font-small">Successfully navigate the gripper to a physical object on your desk, confirming the full IK-to-Servo control pipeline is functional.</p>
+                
+                <h2 class="font-med text-cyan mt-4">Concepts</h2>
+                <ul class="font-small">
+                    <li>End-Effector (EE) vs. Joint Control</li>
+                    <li>Pink (Pinocchio-based) Inverse Kinematics</li>
+                    <li>Real-time Serial Communication</li>
+                </ul>
+            </section>
+
+            <section class="card card-no-margin card-accent-purple">
+                <h2 class="font-med">Prerequisites</h2>
+                <ul class="font-small">
+                    <li><code>xlerobot-pro</code> repository installed.</li>
+                    <li>Motors configured with unique IDs (1-6).</li>
+                    <li><strong>Verified:</strong> Joint control script runs without errors.</li>
+                </ul>
+                <div class="info-badge-block">
+                    ⏱ <strong>Estimated Time:</strong> 10–15 Minutes
+                </div>
+            </section>
+        </div>
+
+        <section class="card">
+            <h2>Instructions</h2>
+
+            <h3 class="mt-4">1. Grant Serial Permissions</h3>
+            <p>Ensure your compute node has permission to talk to the motor controllers over USB.</p>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># Allow access to all ACM devices</span><br>
+                    <span>$</span> sudo chmod 666 /dev/ttyACM*
+                </div>
+            </div>
+
+            <h3 class="mt-4">2. Launch the EE Control Script</h3>
+            <p>Run the script that initializes the Pink (Pinocchio-based) IK solver and waits for keyboard input.</p>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python provided_examples/1_so100_keyboard_ee_control.py
+                </div>
+            </div>
+
+            <h3 class="mt-4">3. Reach a Physical Target</h3>
+            <p>Place a small object (like a cup or bottle) approximately 15-20cm in front of the robot base.</p>
+
+            
+            
+            <div class="table-container mt-2">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Key</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>W / S</strong></td><td>Move Forward / Backward (X-axis)</td></tr>
+                        <tr><td><strong>A / D</strong></td><td>Move Left / Right (Y-axis)</td></tr>
+                        <tr><td><strong>R / F</strong></td><td>Move Up / Down (Z-axis)</td></tr>
+                        <tr><td><strong>Space</strong></td><td>Toggle Gripper (Open/Close)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box alert-success mt-4">
+                <div class="alert-accent"></div>
+                <strong>PRO TIP:</strong> Start with small taps. The script calculates the "Goal Pose" in Cartesian space and the IK solver instantly snaps the joints to reach it.
+            </div>
+        </section>
+
+        <section class="card neon-hover-purple">
+            <h2>Expected Output & Validation</h2>
+            <div class="grid-stack-mobile mt-4">
+                <div class="card card-no-margin">
+                    <strong class="text-purple">Physical Behavior</strong>
+                    <p class="font-small mt-2">The arm should move in straight lines relative to the table. Accuracy should be within 1–2 cm of the target object.</p>
+                </div>
+                <div class="card card-no-margin">
+                    <strong class="text-purple">Software Feedback</strong>
+                    <p class="font-small mt-2">The terminal will print live [X, Y, Z] coordinates. Ensure the coordinates update as you press keys.</p>
+                </div>
+            </div>
+
+            <div class="troubleshoot-box">
+                <h4>Troubleshooting</h4>
+                <p class="troubleshoot-text"><strong>Arm jerks or moves wildly?</strong> This is usually a Motor ID mismatch or a reversed servo horn. Double check the <a href="build-guide.html#motor-configuration" class="text-neon text-underline"><strong>Motor Configuration</strong></a> guide.</p>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
