@@ -19,8 +19,65 @@
             transition: all 0.2s ease;
         }
         .bom-link:hover {
-            color: #00f0ff; 
+            color: #00f0ff;
             text-decoration-color: #00f0ff;
+        }
+        .plate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px;
+            margin-top: 1.25rem;
+        }
+        .plate-card {
+            margin: 0;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            overflow: hidden;
+            background: var(--bg-card);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+            transition: var(--smooth);
+        }
+        .plate-bed {
+            aspect-ratio: 1 / 1;
+            display: grid;
+            place-items: center;
+            padding: 10px;
+            background-color: #f1f5f9;
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .plate-bed img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.2));
+        }
+        .plate-card figcaption {
+            padding: 9px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-top: 1px solid var(--border-light);
+        }
+        .plate-card figcaption span {
+            color: var(--text-body);
+            font-weight: 400;
+        }
+        .layout-img {
+            display: block;
+            width: 100%;
+            max-width: 920px;
+            margin: 1rem auto 0;
+            padding: 16px;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            background-color: #f1f5f9;
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+            background-size: 26px 26px;
         }
     </style>
 </head>
@@ -55,35 +112,8 @@
         
         <div class="page-header">
             <h1>Hardware Components</h1>
-            <p>Key system architecture and the complete Bill of Materials (BOM).</p>
+            <p>The complete Bill of Materials (BOM), print files, and print settings.</p>
         </div>
-
-        <section class="card">
-            <h2>System Architecture</h2>
-            <p>XLeRobot-Pro is designed to be fully untethered, balancing compute power with battery efficiency.</p>
-            
-            <div class="grid-2 mt-4">
-                <div class="card arch-card neon-hover-purple">
-                    <h3><span class="diag-icon"></span> Tri-Bus Power Topology</h3>
-                    <p>Isolates high-transient motor loads from the Jetson Orin Nano, completely eliminating power brownouts during aggressive maneuvers.</p>
-                </div>
-                
-                <div class="card arch-card neon-hover-cyan">
-                    <h3><span class="diag-icon"></span> Embedded Autonomy</h3>
-                    <p>NVIDIA Jetson Orin Nano Super provides full onboard GPU compute. No external PC tethering required for VLA models.</p>
-                </div>
-
-                <div class="card arch-card neon-hover-cyan">
-                    <h3><span class="diag-icon"></span> Robust Perception</h3>
-                    <p>Intel RealSense D435 RGB-D camera enabling high-fidelity SLAM navigation and vision-based bimanual manipulation.</p>
-                </div>
-
-                <div class="card arch-card neon-hover-purple">
-                    <h3><span class="diag-icon"></span> Optimized Structure</h3>
-                    <p>Functionally graded 3D-printed links utilizing High-Shell topology to achieve maximum stiffness-to-weight ratio.</p>
-                </div>
-            </div>
-        </section>
 
         <section class="card">
             <div class="bom-header-flex">
@@ -93,66 +123,137 @@
                 </div>
                 <div class="price-tag-container">
                     <span class="tech-badge purple">Untethered Config</span>
-                    <div class="price-amount">$1,202.27</div>
+                    <div class="price-amount">$1,247.27</div>
                 </div>
             </div>
 
             <div class="table-container">
-                <table class="tech-table">
+                <table class="tech-table bom-table">
                     <thead>
                         <tr>
-                            <th>Subsystem</th>
                             <th>Component</th>
                             <th class="text-center">Qty</th>
                             <th class="text-right">Cost (USD)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Compute</td><td><a href="https://www.amazon.com/NVIDIA-Jetson-Orin-Nano-Developer/dp/B0BZJTQ5YP?tag=ustxtaddt-20&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">NVIDIA Jetson Orin Nano Super [18]</a></td><td class="text-center">1</td><td class="text-right font-mono">$249.00</td></tr>
-                        <tr><td>Compute</td><td><a href="https://www.amazon.com/SanDisk-Extreme-microSDXC-Memory-Adapter/dp/B09X7C7LL1/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">microSD Card</a></td><td class="text-center">1</td><td class="text-right font-mono">$11.23</td></tr>
-                        <tr><td>Peripherals</td><td><a href="https://www.amazon.com/dp/B00XMD7KPU" target="_blank" rel="noopener noreferrer" class="bom-link">Anker 4-in-1 USB-C Hub</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
-                        <tr><td>Actuation</td><td><a href="https://shop.wowrobo.com/products/feetech-sts3215-servo-12v-30kg-high-torque-servo-for-so-arm100" target="_blank" rel="noopener noreferrer" class="bom-link">Feetech STS-3215 Servos (12V) [21]</a></td><td class="text-center">17</td><td class="text-right font-mono">$271.83</td></tr>
-                        <tr><td>Actuation</td><td><a href="https://www.horizonhobby.com/product/servo-wire-50-3-color/HRC57417.html" target="_blank" rel="noopener noreferrer" class="bom-link">Servo Wire: 50’ 3-Color</a></td><td class="text-center">1</td><td class="text-right font-mono">$15.97</td></tr>
-                        <tr><td>Actuation</td><td><a href="https://www.amazon.com/Waveshare-Integrates-Control-Circuit-Supports/dp/B0CTMM4LWK/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">Waveshare Serial Bus Servo Driver Board</a></td><td class="text-center">2</td><td class="text-right font-mono">$21.10</td></tr>
-                        <tr><td>Power</td><td><a href="https://www.ankersolix.com/products/c300-dc?variant=49702163972426&amp;ref=naviMenu_pps" target="_blank" rel="noopener noreferrer" class="bom-link">Anker SOLIX C300 Power Station [22]</a></td><td class="text-center">1</td><td class="text-right font-mono">$159.99</td></tr>
-                        <tr><td>Structure</td><td><a href="https://www.amazon.com/dp/B07PGY2JP1" target="_blank" rel="noopener noreferrer" class="bom-link">PLA Filament (3kg)</a></td><td class="text-center">1</td><td class="text-right font-mono">$45.00</td></tr>
-                        <tr><td>Structure</td><td><a href="https://www.amazon.com/dp/B0BRWCFD6Q?_encoding=UTF8&amp;ref=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;ref_=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;social_share=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;previewDoh=1&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">M3 Screws and Nuts Set</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
-                        <tr><td>Frame</td><td><a href="https://www.ikea.com/us/en/p/raskog-utility-cart-black-40582181/#content" target="_blank" rel="noopener noreferrer" class="bom-link">IKEA RÅSKOG Utility Cart</a></td><td class="text-center">1</td><td class="text-right font-mono">$39.99</td></tr>
-                        <tr><td>Mobility</td><td><a href="https://www.vexrobotics.com/omni-wheels.html" target="_blank" rel="noopener noreferrer" class="bom-link">4” Omni Wheels</a></td><td class="text-center">3</td><td class="text-right font-mono">$29.97</td></tr>
-                        <tr><td>Perception</td><td>Intel RealSense D435*</td><td class="text-center">1</td><td class="text-right font-mono">$333.75</td></tr>
-                        <tr><td>Power Cable</td><td><a href="https://www.amazon.com/dp/B0CDBWHXDZ?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to DC5521 Cable</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
-                        <tr><td>Power Cable</td><td>USB-C to DC5525 PD 140W Cable</td><td class="text-center">1</td><td class="text-right font-mono">$11.99</td></tr>
-                        <tr><td>Power Cable</td><td>DC5521 Car Cigarette Lighter Cable</td><td class="text-center">1</td><td class="text-right font-mono">$9.49</td></tr>
-                        <tr><td>Data Cable</td><td><a href="https://www.amazon.com/dp/B09N94MZG9" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to USB-C Cable (2 pcs)</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
+                        <tr><td><a href="https://www.amazon.com/NVIDIA-Jetson-Orin-Nano-Developer/dp/B0BZJTQ5YP?tag=ustxtaddt-20&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">NVIDIA Jetson Orin Nano Super [18]</a></td><td class="text-center">1</td><td class="text-right font-mono">$249.00</td></tr>
+                        <tr><td><a href="https://www.amazon.com/SanDisk-Extreme-microSDXC-Memory-Adapter/dp/B09X7C7LL1/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">microSD Card</a></td><td class="text-center">1</td><td class="text-right font-mono">$11.23</td></tr>
+                        <tr><td><a href="https://www.amazon.com/dp/B00XMD7KPU" target="_blank" rel="noopener noreferrer" class="bom-link">Anker 4-in-1 USB-C Hub</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
+                        <tr><td><a href="https://shop.wowrobo.com/products/feetech-sts3215-servo-12v-30kg-high-torque-servo-for-so-arm100" target="_blank" rel="noopener noreferrer" class="bom-link">Feetech STS-3215 Servos (12V) [21]</a></td><td class="text-center">17</td><td class="text-right font-mono">$271.83</td></tr>
+                        <tr><td><a href="https://www.horizonhobby.com/product/servo-wire-50-3-color/HRC57417.html" target="_blank" rel="noopener noreferrer" class="bom-link">Servo Wire: 50’ 3-Color</a></td><td class="text-center">1</td><td class="text-right font-mono">$15.97</td></tr>
+                        <tr><td><a href="https://www.amazon.com/Waveshare-Integrates-Control-Circuit-Supports/dp/B0CTMM4LWK/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">Waveshare Serial Bus Servo Driver Board</a></td><td class="text-center">2</td><td class="text-right font-mono">$21.10</td></tr>
+                        <tr><td><a href="https://www.ankersolix.com/products/c300-dc?variant=49702163972426&amp;ref=naviMenu_pps" target="_blank" rel="noopener noreferrer" class="bom-link">Anker SOLIX C300 Power Station [22]</a></td><td class="text-center">1</td><td class="text-right font-mono">$159.99</td></tr>
+                        <tr><td><a href="https://www.amazon.com/dp/B07PGY2JP1" target="_blank" rel="noopener noreferrer" class="bom-link">PLA Filament (3kg)</a></td><td class="text-center">1</td><td class="text-right font-mono">$45.00</td></tr>
+                        <tr><td><a href="https://www.amazon.com/dp/B0BRWCFD6Q?_encoding=UTF8&amp;ref=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;ref_=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;social_share=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;previewDoh=1&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">M3 Screws and Nuts Set</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
+                        <tr><td><a href="https://www.ikea.com/us/en/p/raskog-utility-cart-black-40582181/#content" target="_blank" rel="noopener noreferrer" class="bom-link">IKEA RÅSKOG Utility Cart</a></td><td class="text-center">1</td><td class="text-right font-mono">$39.99</td></tr>
+                        <tr><td><a href="https://www.vexrobotics.com/omni-wheels.html" target="_blank" rel="noopener noreferrer" class="bom-link">4” Omni Wheels</a></td><td class="text-center">3</td><td class="text-right font-mono">$29.97</td></tr>
+                        <tr><td>Intel RealSense D435</td><td class="text-center">1</td><td class="text-right font-mono">$333.75</td></tr>
+                        <tr><td><a href="https://www.amazon.com/dp/B0CDBWHXDZ?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to DC5521 Cable</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
+                        <tr><td>USB-C to DC5525 PD 140W Cable</td><td class="text-center">1</td><td class="text-right font-mono">$11.99</td></tr>
+                        <tr><td>DC5521 Car Cigarette Lighter Cable</td><td class="text-center">1</td><td class="text-right font-mono">$9.49</td></tr>
+                        <tr><td><a href="https://www.amazon.com/dp/B09N94MZG9" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to USB-C Cable (2 pcs)</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="text-right font-bold" style="padding-top: 15px;">TOTAL Untethered XLeRobot-Pro</td>
-                            <td class="text-right font-mono font-bold" style="padding-top: 15px;">$1202.27</td>
+                            <td colspan="2" class="text-right font-bold" style="padding-top: 15px;">TOTAL Untethered XLeRobot-Pro</td>
+                            <td class="text-right font-mono font-bold" style="padding-top: 15px;">$1247.27</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-            <p class="mt-4 font-small">* Note: The sum of the listed items is $1,247.27. The 3kg of PLA filament ($45.00) is included in this BOM for reference but is calculated as a general lab consumable rather than a direct platform cost, bringing the official total to $1,202.27.</p>
+            <p class="mt-4 font-small">Note: The total includes the 3kg of PLA filament ($45.00). Prices are approximate and vary by retailer and region.</p>
         </section>
 
-        <section class="card neon-hover-purple">
+        <section class="card neon-hover-purple" id="printing">
             <div class="bom-header-flex">
                 <div>
                     <h2>3D-Printed Structure</h2>
-                    <p class="font-small">About 90% of the chassis, arms, neck, and base are 3D-printed. The BOM above covers the filament; download the combined 3MF below.</p>
-                </div>
-                <div class="price-tag-container">
-                    <span class="tech-badge purple">~90% printed</span>
+                    <p class="font-small">About 90% of the chassis, arms, neck, and base are 3D-printed. The BOM above covers the filament; download the print files below and apply the Pro print settings.</p>
                 </div>
             </div>
 
+            <h3 class="mt-4">Print Files</h3>
+            <p class="font-small">The full XLeRobot-Pro print set — every part laid out and ready to slice. Download the PrusaSlicer 3MF project, or a single STL of the whole model.</p>
             <div class="mt-4 mb-4">
-                <a href="https://github.com/Vector-Wangel/XLeRobot/blob/main/hardware/XLeRobot_0_3_0.3mf" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">3D Printing File (3MF) ↗</a>
+                <a href="hardware/XLeRobot-Pro.3mf" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (3MF) ↓</a>
+                <a href="hardware/XLeRobot-Pro.stl" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (STL) ↓</a>
             </div>
-            <p class="font-small text-muted mb-4">On the GitHub page that opens, click the <strong>“Raw file”</strong> button (top-right of the file viewer) to download the <code>.3mf</code>.</p>
+            <p>You will need:</p>
+            <ul class="mt-2">
+                <li>two SO-101 follower arms</li>
+                <li>the neck/head assembly</li>
+                <li>the omni-wheel base</li>
+                <li>a wrist-camera mount per arm</li>
+            </ul>
+            <p class="mt-2">Print the soft finray gripper fingers in TPU95A.</p>
 
-            <p class="font-small">Recommended: Bambu Lab A1 or Prusa i3 MK4 printing PLA Matte Black, with PETG HF / PLA CF as optional strength upgrades and TPU95A for soft finray fingers. Full print settings, build order, and assembly steps are in the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a>.</p>
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>TIP:</strong> Pre-dry PLA at ~45°C for 8 hours in humid environments. Wet filament causes stringing, weak layer adhesion, and poor thread/fit quality on structural parts.
+            </div>
+
+            <h3 class="mt-4">Print Plates</h3>
+            <p class="font-small">The XLeRobot-Pro print set laid out across six build plates.</p>
+            <div class="plate-grid">
+                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_1.png" alt="Print plate 1"></div><figcaption>Plate 1 <span>· 9 parts</span></figcaption></figure>
+                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_2.png" alt="Print plate 2"></div><figcaption>Plate 2 <span>· 8 parts</span></figcaption></figure>
+                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_3.png" alt="Print plate 3"></div><figcaption>Plate 3 <span>· 15 parts</span></figcaption></figure>
+                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_4.png" alt="Print plate 4"></div><figcaption>Plate 4 <span>· 10 parts</span></figcaption></figure>
+                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_5.png" alt="Print plate 5"></div><figcaption>Plate 5 <span>· 14 parts</span></figcaption></figure>
+                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_6.png" alt="Print plate 6"></div><figcaption>Plate 6 <span>· 4 parts</span></figcaption></figure>
+            </div>
+
+            <h3 class="mt-4">Print Settings</h3>
+            <p>Start from your baseline PrusaSlicer profile (or a standard PLA profile), then change only the settings below. Parts were validated on a consumer printer (e.g. Bambu A1) in PLA; PETG and CF variants are optional strength upgrades.</p>
+
+            <div class="grid-2 mt-4">
+                <div class="card print-card">
+                    <h3>Neck &amp; Wheel Base</h3>
+                    <p>Structural parts requiring high rigidity.</p>
+                    <ul class="mt-2">
+                        <li><strong>Perimeters:</strong> 4</li>
+                        <li><strong>Top/bottom layers:</strong> 5–6</li>
+                        <li><strong>Infill:</strong> 25–35% Gyroid (use 35% for base connectors, motor mounts, neck structure)</li>
+                        <li><strong>Layer Height:</strong> 0.20 mm</li>
+                    </ul>
+                </div>
+
+                <div class="card print-card">
+                    <h3>Arm Joints (SO-101)</h3>
+                    <p>High dimensional accuracy required.</p>
+                    <ul class="mt-2">
+                        <li><strong>Perimeters:</strong> 4</li>
+                        <li><strong>Top/bottom layers:</strong> 5</li>
+                        <li><strong>Infill:</strong> 20–30% Gyroid (use 30% for joint housings, base/shoulder, clamp/camera-mount parts)</li>
+                        <li><strong>Layer Height:</strong> 0.16–0.20 mm (use 0.16 mm where fit/alignment is sensitive)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <ul class="mt-4">
+                <li>Use PLA for first-pass prototyping and fit checks</li>
+                <li>Prioritize part orientation for structural parts over cosmetic finish</li>
+                <li>Dry filament in high humidity for cleaner fit-up and thread quality</li>
+                <li>For soft finray-style fingers, use <strong>TPU95A</strong></li>
+            </ul>
+
+            <div class="alert-box alert-caution mt-4" style="margin-bottom: 0.75rem;">
+                <div class="alert-accent-line"></div>
+                <strong>IMPORTANT:</strong> Print structural parts <strong>vertically</strong> where possible, so the filament rows (layer lines) run along the load direction for stronger parts.
+            </div>
+
+            <div class="alert-box alert-note" style="margin: 0.75rem 0;">
+                <div class="alert-accent-line"></div>
+                <strong>NOTE:</strong> The wheel-base connector may need <strong>Z scaling only</strong> to balance the load across the omni-wheels and cart wheels. Do not uniformly scale the part.
+            </div>
+
+            <div class="alert-box alert-tip" style="margin-top: 0.75rem;">
+                <div class="alert-accent-line"></div>
+                <strong>TIP:</strong> Print two <strong>follower</strong> arms for the dual-arm build — leader arms are only needed for leader-follower teleop. Batch the wrist-camera mount and your preferred gripper variant with the arm prints.
+            </div>
+
+            <p class="mt-4 font-small">Recommended: Bambu Lab A1 or Prusa i3 MK4 printing PLA Matte Black, with PETG HF / PLA CF as optional strength upgrades and TPU95A for soft finray fingers. Build order and assembly steps are in the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a>.</p>
         </section>
 
         <section class="card">

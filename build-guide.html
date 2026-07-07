@@ -43,7 +43,7 @@
         <header class="page-header">
             <span class="tech-badge">3-Bus Architecture</span>
             <h1>Build &amp; Calibration Guide</h1>
-            <p>Consolidated instructions for printing, assembly, wiring, and physical validation of the dual-arm XLeRobot-Pro platform.</p>
+            <p>Consolidated instructions for assembly, wiring, and physical validation of the dual-arm XLeRobot-Pro platform. 3D-printing files and print settings live on the <a href="components.html#printing" class="text-neon text-underline">Components</a> page.</p>
         </header>
 
         <div class="alert-box alert-caution">
@@ -54,6 +54,11 @@
         <section class="card">
             <h2>1. Build Overview</h2>
             <p>This guide walks you through building the platform with 2× SO-101 follower arms, a neck/head assembly, an omni-wheel base on an IKEA RÅSKOG cart, and an NVIDIA Jetson compute node mounted near the neck/base region.</p>
+
+            <figure class="build-render">
+                <img src="media/images/assembled_robot.png" alt="Fully assembled XLeRobot-Pro — dual SO-101 arms and a neck-mounted camera on a three-tier IKEA RÅSKOG cart with omni-wheels" loading="lazy">
+                <figcaption>The finished platform you're building toward — rendered from the robot's URDF.</figcaption>
+            </figure>
 
             <h3 class="mt-4">The 3-Bus Separation</h3>
             <p>We use three independent motor buses to simplify wiring and isolate faults during motor debugging.</p>
@@ -73,7 +78,7 @@
 
             <h3 class="mt-4">Recommended Build Order</h3>
             <ol class="mt-2">
-                <li>Print all parts</li>
+                <li>Print all parts (<a href="components.html#printing" class="text-neon text-underline">files &amp; print settings on Components</a>)</li>
                 <li>Assemble both SO-101 arms</li>
                 <li>Install wrist camera mounts and grippers</li>
                 <li>Assemble cart and wheel base</li>
@@ -86,75 +91,13 @@
         </section>
 
         <section class="card">
-            <h2>2. 3D-Printed Parts</h2>
-            <p>About 90% of the structural components are 3D-printed. Download the combined 3MF and apply the Pro print settings below.</p>
-            <div class="mt-4 mb-4">
-                <a href="https://github.com/Vector-Wangel/XLeRobot/blob/main/hardware/XLeRobot_0_3_0.3mf" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">3D Printing File (3MF) ↗</a>
-            </div>
-            <p class="font-small text-muted">On the GitHub page that opens, click the <strong>“Raw file”</strong> button (top-right of the file viewer) to download the <code>.3mf</code>.</p>
-            <div class="mt-4 mb-4">
-                <a href="https://www.printables.com/model/1629120-mounting-frame-for-nvidia-jetson-orin-nano" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">Jetson Orin Nano Mount ↗</a>
-            </div>
-            <p>You will need: two SO-101 follower arms, the neck/head assembly, the omni-wheel base, and a wrist-camera mount per arm. Print the soft finray gripper fingers in TPU95A.</p>
-
-            <div class="alert-box alert-tip mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>TIP:</strong> Pre-dry PLA at ~45°C for 8 hours in humid environments. Wet filament causes stringing, weak layer adhesion, and poor thread/fit quality on structural parts.
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>3. Print Settings</h2>
-            <p>Start from your baseline PrusaSlicer profile (or a standard PLA profile), then change only the settings below. Parts were validated on a consumer printer (e.g. Bambu A1) in PLA; PETG and CF variants are optional strength upgrades.</p>
-
-            <h3 class="mt-4">General Print Notes</h3>
-            <ul class="mt-2">
-                <li>Use PLA for first-pass prototyping and fit checks</li>
-                <li>Prioritize part orientation for structural parts over cosmetic finish</li>
-                <li>Dry filament in high humidity for cleaner fit-up and thread quality</li>
-                <li>For soft finray-style fingers, use <strong>TPU95A</strong></li>
-            </ul>
-
-            <div class="grid-2 mt-4">
-                <div class="card print-card">
-                    <h3>Neck &amp; Wheel Base</h3>
-                    <p>Structural parts requiring high rigidity.</p>
-                    <ul class="mt-2">
-                        <li><strong>Perimeters:</strong> 4</li>
-                        <li><strong>Top/bottom layers:</strong> 5–6</li>
-                        <li><strong>Infill:</strong> 25–35% Gyroid (use 35% for base connectors, motor mounts, neck structure)</li>
-                        <li><strong>Layer Height:</strong> 0.20 mm</li>
-                    </ul>
-                </div>
-
-                <div class="card print-card">
-                    <h3>Arm Joints (SO-101)</h3>
-                    <p>High dimensional accuracy required.</p>
-                    <ul class="mt-2">
-                        <li><strong>Perimeters:</strong> 4</li>
-                        <li><strong>Top/bottom layers:</strong> 5</li>
-                        <li><strong>Infill:</strong> 20–30% Gyroid (use 30% for joint housings, base/shoulder, clamp/camera-mount parts)</li>
-                        <li><strong>Layer Height:</strong> 0.16–0.20 mm (use 0.16 mm where fit/alignment is sensitive)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>NOTE:</strong> The wheel-base connector may need <strong>Z scaling only</strong> to balance the load across the omni-wheels and cart wheels. Do not uniformly scale the part.
-            </div>
-
-            <div class="alert-box alert-tip mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>ARM TIP:</strong> Print two <strong>follower</strong> arms for the dual-arm build — leader arms are only needed for leader-follower teleop. Batch the wrist-camera mount and your preferred gripper variant with the arm prints.
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>4. Assembly</h2>
+            <h2>2. Assembly</h2>
 
             <h3 class="mt-4">Overall Assembly</h3>
-            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=6s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the overall assembly guide</a> for a complete walkthrough of the build process.</p>
+            <p>A complete walkthrough of the build process. Use the chapter links in the sections below to jump this video straight to that step.</p>
+            <div class="video-frame">
+                <iframe id="assembly-video" data-embed="https://www.youtube-nocookie.com/embed/upB1CEFeOlk" src="https://www.youtube-nocookie.com/embed/upB1CEFeOlk" title="XLeRobot-Pro — overall assembly walkthrough" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
 
             <h3 class="mt-4">A) Cart</h3>
             <p><a href="https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart__AA-573329-8_pub.pdf" target="_blank" rel="noopener noreferrer" class="text-neon">Assemble the IKEA RÅSKOG cart</a> first to establish the rolling structure.</p>
@@ -164,7 +107,11 @@
             </ul>
 
             <h3 class="mt-4">B) Arms (Joints 1–5)</h3>
-            <p><a href="https://www.youtube.com/watch?v=70GuJf2jbYk" target="_blank" rel="noopener noreferrer" class="text-neon">Assemble both SO-101 follower arms</a> (step-by-step build video). <strong>Crucial wrist/gripper order:</strong></p>
+            <p>Assemble both SO-101 follower arms using the step-by-step build video below.</p>
+            <div class="video-frame">
+                <iframe src="https://www.youtube-nocookie.com/embed/70GuJf2jbYk" title="SO-101 follower arm assembly" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <p><strong>Crucial wrist/gripper order:</strong></p>
             <ol class="mt-2">
                 <li>Before attaching the gripper to joint 5, install the wrist-camera attachment to the gripper</li>
                 <li>Install the gripper claw/fingers</li>
@@ -173,12 +120,16 @@
             <p class="font-small mt-2 text-muted">This order avoids reopening the wrist stack later.</p>
 
             <h3 class="mt-4">C) Neck (Top Base &amp; Head)</h3>
-            <p>Assemble the Top Base and Head. The head follows the same motor style and is derived from early SO-101 link patterns. The hollow neck doubles as a cable channel.</p>
-            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=0s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the neck assembly</a> (overall assembly video, <strong>0:00–18:51</strong>).</p>
+            <ul class="mt-2">
+                <li>Assemble the Top Base and Head.</li>
+                <li>The head follows the same motor style and is derived from early SO-101 link patterns.</li>
+                <li>The hollow neck doubles as a cable channel.</li>
+            </ul>
+            <p><a href="#assembly-video" class="text-neon jump-to" data-t="0">Jump to the neck assembly</a> in the video above (<strong>0:00–18:51</strong>).</p>
 
             <h3 class="mt-4">D) Wheels &amp; Wheel Base</h3>
             <p>Assemble the wheels and wheel base.</p>
-            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=1132s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the wheel assembly</a> (overall assembly video, <strong>18:52–32:30</strong>).</p>
+            <p><a href="#assembly-video" class="text-neon jump-to" data-t="1132">Jump to the wheel assembly</a> in the video above (<strong>18:52–32:30</strong>).</p>
             <ul class="mt-2">
                 <li>Keep omni-wheel orientation/order exactly as documented</li>
                 <li>Use motor cable extensions — do not rely on short direct runs</li>
@@ -188,11 +139,14 @@
 
             <h3 class="mt-4">E) Integrating Components onto the Cart</h3>
             <p>Bring the arms, neck, and wheel base together on the cart for the full platform.</p>
-            <p><a href="https://www.youtube.com/watch?v=upB1CEFeOlk&t=1955s" target="_blank" rel="noopener noreferrer" class="text-neon">Watch the full integration onto the cart</a> (overall assembly video, <strong>32:35–39:52</strong>).</p>
+            <ul class="mt-2">
+                <li><strong>Secure each arm base to the cart:</strong> pass a screw down through the arm base and the cart shelf, then thread a nut onto it from the underside — sandwich the cart shelf between the arm base and the nut, and tighten so the base clamps firmly to the cart.</li>
+            </ul>
+            <p><a href="#assembly-video" class="text-neon jump-to" data-t="1955">Jump to the full cart integration</a> in the video above (<strong>32:35–39:52</strong>).</p>
         </section>
 
         <section class="card" id="motor-configuration">
-            <h2>5. Motor Configuration &amp; IDs</h2>
+            <h2>3. Motor Configuration &amp; IDs</h2>
             <p>Configure motors <strong>before</strong> final cable management and hard mounting. Many servos ship with default ID 1, so each ID must be unique per bus and the baudrate must match the board and motors.</p>
 
             <h3 class="mt-4">A) Arm Motors (SO-101)</h3>
@@ -237,8 +191,8 @@
         </section>
 
         <section class="card">
-            <h2>6. NVIDIA Jetson Placement</h2>
-            <p>Mount the Jetson at the base of the neck or in the center storage shell area, depending on your printed configuration.</p>
+            <h2>4. NVIDIA Jetson Placement</h2>
+            <p>Mount the Jetson in the <strong>center rack</strong> of the cart, between the wheel base and the top plate.</p>
             <ul class="mt-2">
                 <li>Keep mass low for stability</li>
                 <li>Keep USB ports accessible</li>
@@ -247,8 +201,10 @@
         </section>
 
         <section class="card">
-            <h2>7. Wiring (3-Bus)</h2>
+            <h2>5. Wiring (3-Bus)</h2>
             <p>Wire the three buses as below.</p>
+
+            <img src="media/images/schematic.png" alt="3-bus wiring schematic: compute deck, motor controllers, power distribution, and cameras" class="full-width-image img-compact mt-4 mb-4">
 
             <h3 class="mt-4">A) Motor Wiring</h3>
             <ul class="mt-2">
@@ -274,7 +230,7 @@
         </section>
 
         <section class="card">
-            <h2>8. Final Assembly</h2>
+            <h2>6. Final Assembly</h2>
             <p>Complete final assembly, substituting the Jetson where older instructions reference a Raspberry Pi.</p>
             <ul class="mt-2">
                 <li>Complete wiring and cable management before clamping the top base into the cart</li>
@@ -312,7 +268,7 @@
         </section>
 
         <section class="card">
-            <h2>9. Hardware Calibration &amp; Validation</h2>
+            <h2>7. Hardware Calibration &amp; Validation</h2>
             <p>Run these checks before full-stack teleoperation or training. Test one bus at a time.</p>
 
             <h3 class="mt-4">A) Bus &amp; Joint Control Sanity Check</h3>
@@ -362,6 +318,19 @@
         </div>
 
     </main>
+
+    <script>
+        document.querySelectorAll('a.jump-to').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var frame = document.getElementById('assembly-video');
+                if (!frame) return;
+                var start = link.getAttribute('data-t') || '0';
+                frame.src = frame.getAttribute('data-embed') + '?start=' + start + '&autoplay=1';
+                frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -7,3 +7,6 @@
 # editor folders
 .idea/
 .vscode/
+
+# local tooling
+.claude/

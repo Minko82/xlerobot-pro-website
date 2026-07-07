@@ -29,6 +29,16 @@ body {
     overflow-x: hidden;
 }
 
+/* Text-selection highlight color (brand cyan) */
+::selection {
+    background: var(--neon-cyan);
+    color: #ffffff;
+}
+::-moz-selection {
+    background: var(--neon-cyan);
+    color: #ffffff;
+}
+
 h1, h2, h3, h4 {
     font-family: 'Outfit', sans-serif;
     color: var(--text-main);
@@ -328,6 +338,8 @@ h1, h2, h3, h4 {
 .tech-table th { background: #f8fafc; font-family: 'Outfit'; font-weight: 600; padding: 1rem; border-bottom: 1px solid var(--border-light); }
 .tech-table td { padding: 1rem; border-bottom: 1px solid var(--border-light); color: var(--text-main); }
 .tech-table tr:hover td { background: #f1f5f9; }
+/* Compact variant to keep the long BOM from running too tall */
+.tech-table.bom-table th, .tech-table.bom-table td { padding: 0.45rem 1rem; }
 
 /* Dark Terminal Box */
 .terminal-box {
@@ -404,6 +416,15 @@ pre {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: 12px;
+}
+
+.video-frame iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: 0;
     border-radius: 12px;
 }
 
@@ -541,11 +562,7 @@ video.full-width-image {
     background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
 }
 
-.spec-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(6, 182, 212, 0.15);
-    border-color: var(--neon-cyan);
-}
+/* Spec cards are read-only stats, not links — no hover glow/lift */
 
 .spec-card .spec-label {
     font-size: 0.72rem;
@@ -652,6 +669,7 @@ video.full-width-image {
 }
 
 .diag-icon { margin-right: 8px; }
+.diag-icon svg { vertical-align: -4px; }
 
 .table-small { font-size: 0.85rem; }
 
@@ -906,6 +924,32 @@ video.full-width-image {
 img.full-width-image {
     height: auto;
     object-fit: initial; /* Resets any lingering object-fit rules */
+}
+
+/* Smaller, centered variant for diagrams that don't need full width */
+img.full-width-image.img-compact {
+    max-width: 440px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Rendered "finished build" figure */
+.build-render {
+    margin: 1.75rem auto;
+    max-width: 230px;
+    text-align: center;
+}
+.build-render img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 14px 28px rgba(15, 23, 42, 0.18));
+}
+.build-render figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
+    color: var(--text-body);
 }
 
 /* Images inside nested feature cards (Hardware Architecture / Software Stack):
