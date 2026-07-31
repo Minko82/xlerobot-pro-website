@@ -41,14 +41,14 @@
     <main class="page-container">
 
         <header class="page-header">
-            <span class="tech-badge">3-Bus Architecture</span>
+            <span class="tech-badge">2-Bus Architecture</span>
             <h1>Build &amp; Calibration Guide</h1>
             <p>Consolidated instructions for assembly, wiring, and physical validation of the dual-arm XLeRobot-Pro platform. 3D-printing files and print settings live on the <a href="components.html#printing" class="text-neon text-underline">Components</a> page.</p>
         </header>
 
         <div class="alert-box alert-caution">
             <div class="alert-accent-line"></div>
-            <strong>CAUTION:</strong> This page documents a <strong>3-bus architecture</strong> (Bus 1 = left arm, Bus 2 = right arm, Bus 3 = neck + wheel base). Some older references describe a shared/2-bus layout — for this build, follow this page.
+            <strong>CAUTION:</strong> This page documents the current <strong>2-bus architecture</strong> (Bus 1 = both arms, IDs 1–12; Bus 2 = head + wheels, IDs 1–5). Older references describe a 3-bus layout with a separate neck/wheel bus — that wiring is superseded. For this build, follow this page.
         </div>
 
         <section class="card">
@@ -60,18 +60,17 @@
                 <figcaption>The finished platform you're building toward — rendered from the robot's URDF.</figcaption>
             </figure>
 
-            <h3 class="mt-4">The 3-Bus Separation</h3>
-            <p>We use three independent motor buses to simplify wiring and isolate faults during motor debugging.</p>
+            <h3 class="mt-4">The 2-Bus Separation</h3>
+            <p>All 17 motors run on two independent buses, each carrying two daisy chains. Splitting the buses this way keeps the high-torque wheel and neck motors off the same power budget as the arms, so an arm stall cannot brown out the drive base.</p>
 
             <div class="table-container mt-4 mb-4">
                 <table class="tech-table">
                     <thead>
-                        <tr><th>Bus</th><th>Subsystem</th></tr>
+                        <tr><th>Bus</th><th>Subsystem</th><th>Motors</th><th>Serial Port</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Bus 1</strong></td><td>Left arm</td></tr>
-                        <tr><td><strong>Bus 2</strong></td><td>Right arm</td></tr>
-                        <tr><td><strong>Bus 3</strong></td><td>Neck and wheel base</td></tr>
+                        <tr><td><strong>Bus 1</strong></td><td>Left arm + right arm</td><td>12</td><td><code>/dev/xle_arms</code></td></tr>
+                        <tr><td><strong>Bus 2</strong></td><td>Head + wheel base</td><td>5</td><td><code>/dev/xle_head</code></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -152,7 +151,7 @@
             <h3 class="mt-4">A) Arm Motors (SO-101)</h3>
             <p>Identify each serial port, then configure the motors one at a time — set each ID and the baudrate, and repeat for both follower arms.</p>
 
-            <h3 class="mt-4">B) Neck &amp; Wheel Motors (Bus 3)</h3>
+            <h3 class="mt-4">B) Head &amp; Wheel Motors (Bus 2)</h3>
             <p>Assign each ID one at a time with the repo's <code>set_motor_id.py</code> tool. On Linux you may need serial permissions (<code>sudo chmod 666 /dev/ttyACM0</code>).</p>
 
             <h3 class="mt-4">ID Planning</h3>
@@ -162,9 +161,8 @@
                         <tr><th>Bus</th><th>Recommended IDs</th><th>Mapping Notes</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Bus 1 (Left Arm)</strong></td><td>1–6</td><td>SO-101 follower mapping</td></tr>
-                        <tr><td><strong>Bus 2 (Right Arm)</strong></td><td>1–6</td><td>Valid due to bus separation</td></tr>
-                        <tr><td><strong>Bus 3 (Neck &amp; Wheels)</strong></td><td>7–11</td><td>7–8 Neck, 9–11 Wheels</td></tr>
+                        <tr><td><strong>Bus 1 (Both Arms)</strong></td><td>1–12</td><td>1–6 left arm, 7–12 right arm — SO-101 follower mapping, shoulder to gripper</td></tr>
+                        <tr><td><strong>Bus 2 (Head &amp; Wheels)</strong></td><td>1–5</td><td>1–2 head (pan, tilt), 3–5 wheels</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -186,7 +184,7 @@
 
             <div class="alert-box alert-tip mt-4">
                 <div class="alert-accent-line"></div>
-                <strong>TIP:</strong> Physically label every motor and both ends of every cable after configuration — <code>L-1</code>…<code>L-6</code>, <code>R-1</code>…<code>R-6</code>, <code>B-7</code>…<code>B-11</code>.
+                <strong>TIP:</strong> Physically label every motor and both ends of every cable after configuration — <code>L-1</code>…<code>L-6</code>, <code>R-7</code>…<code>R-12</code>, <code>H-1</code>…<code>H-2</code>, <code>W-3</code>…<code>W-5</code>.
             </div>
         </section>
 
@@ -201,32 +199,41 @@
         </section>
 
         <section class="card">
-            <h2>5. Wiring (3-Bus)</h2>
-            <p>Wire the three buses as below.</p>
+            <h2>5. Wiring (2-Bus)</h2>
+            <p>Seventeen motors, four daisy chains, two bus hubs, five USB cables. The diagram below is the complete reference — chain order per limb, which chain lands on which hub, and how the hubs and cameras reach the Jetson. Motor positions are taken straight from the robot's URDF.</p>
 
-            <img src="media/images/schematic.png" alt="3-bus wiring schematic: compute deck, motor controllers, power distribution, and cameras" class="full-width-image img-compact mt-4 mb-4">
+            <figure class="mt-4 mb-4">
+                <a href="media/images/wiring-guide.png" target="_blank" rel="noopener">
+                    <img src="media/images/wiring-guide.png" alt="Complete XLeRobot-Pro wiring guide: 17 motors in four daisy chains — left arm IDs 1-6, right arm IDs 7-12, head IDs 1-2, wheels IDs 3-5. Arm chains join Bus 1 hub, head and wheel chains join Bus 2 hub, each hub reaching the Jetson through one USB adapter. The three cameras connect directly to the Jetson, and a 12 V battery feeds both hubs and the computer." class="full-width-image" loading="lazy">
+                </a>
+                <figcaption class="font-small mt-2 text-muted">Full wiring reference — click to open at full size. Each motor has two identical sockets, so either one can be "in" or "out"; the last motor in every chain leaves one socket empty.</figcaption>
+            </figure>
 
             <h3 class="mt-4">A) Motor Wiring</h3>
+            <p class="mt-2">Four daisy chains. One cable carries both power and the control signal, which is why each motor needs only the single wire to its neighbour. The free socket on the last motor of each chain goes to its bus hub.</p>
             <ul class="mt-2">
-                <li><strong>Bus 1 — Left arm:</strong> one dedicated controller; daisy-chain follower motors; controller output to joint 1 (shoulder pan)</li>
-                <li><strong>Bus 2 — Right arm:</strong> one dedicated controller; same layout as left arm</li>
-                <li><strong>Bus 3 — Neck &amp; wheels:</strong> one dedicated controller; use extensions for clean routing from the lower wheel plate to the upper electronics</li>
+                <li><strong>Bus 1 — Left arm (1→2→3→4→5→6):</strong> start at the shoulder, end at the gripper; chain head plugs into the Bus 1 hub</li>
+                <li><strong>Bus 1 — Right arm (7→8→9→10→11→12):</strong> exactly the same order on the other arm; also into the Bus 1 hub</li>
+                <li><strong>Bus 2 — Head (1→2):</strong> pan motor first, then the tilt motor</li>
+                <li><strong>Bus 2 — Wheels (3→4→5):</strong> run the cable around the rim of the wheel plate; use extensions for clean routing up to the middle shelf</li>
             </ul>
             <p class="font-small mt-2 text-muted">Leave service slack near each joint (especially wrist/gripper), avoid tight bends near connectors, keep motion cables away from pinch points, and label both ends of every extension.</p>
 
             <h3 class="mt-4">B) Power Wiring</h3>
             <ul class="mt-2">
-                <li>Battery mounted low and upright in the cart</li>
-                <li>Main power line routed to a distribution point</li>
-                <li>Separate fused outputs for left-arm bus, right-arm bus, neck/wheel bus, and the Jetson power path</li>
+                <li>12 V battery mounted low and upright in the cart</li>
+                <li>Main power line routed to a distribution point on the middle shelf</li>
+                <li>Separate fused outputs for the Bus 1 hub (arms), the Bus 2 hub (head + wheels), and the Jetson power path — size each fuse to its bus, since the wheel and neck motors draw considerably more than the arms</li>
                 <li>Add strain relief at the battery and distribution points</li>
             </ul>
 
             <h3 class="mt-4">C) Camera Wiring</h3>
+            <p class="mt-2">The cameras do not touch the motor buses at all — each one runs its own cable into its own USB port on the Jetson, never through a bus hub.</p>
             <ul class="mt-2">
                 <li><strong>Wrist cameras (×2):</strong> route each cable along its arm with full-motion slack; secure at intervals; keep compute-end connectors accessible</li>
-                <li><strong>Head camera:</strong> route through the hollow neck; leave pan/tilt slack at the head joint</li>
+                <li><strong>Head camera (RealSense):</strong> route through the hollow neck into a USB 3.0 port; leave pan/tilt slack at the head joint</li>
             </ul>
+            <p class="font-small mt-2 text-muted">That accounts for all five USB cables: two bus adapters and three cameras.</p>
         </section>
 
         <section class="card">
