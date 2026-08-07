@@ -29,6 +29,7 @@
                 <a href="components.html" class="nav-link">Components</a>
                 <a href="build-guide.html" class="nav-link">Build Guide</a>
                 <a href="software.html" class="nav-link active">Software</a>
+                <a href="troubleshooting.html" class="nav-link">Troubleshooting</a>
             </div>
             <div class="nav-actions">
                 <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
@@ -44,28 +45,29 @@
         <header class="page-header">
             <span class="tech-badge">Tutorial 01</span>
             <h1>First Reach: Cartesian Control</h1>
-            <p>Move the gripper to a specific coordinate using Inverse Kinematics (IK) and keyboard input.</p>
+            <p>Tell the gripper <em>where to go</em> instead of <em>what angle each joint should hold</em>. This is the moment the robot stops being six servos and starts being an arm.</p>
         </header>
 
         <div class="grid-stack-mobile">
             <section class="card card-no-margin">
                 <h2 class="font-med text-cyan">Outcome</h2>
-                <p class="font-small">Successfully navigate the gripper to a physical object on your desk, confirming the full IK-to-Servo control pipeline is functional.</p>
-                
-                <h2 class="font-med text-cyan mt-4">Concepts</h2>
+                <p class="font-small">Walk the gripper to a physical object on your desk using coordinates rather than joint angles, confirming that the whole command-to-servo pipeline works on your hardware.</p>
+
+                <h2 class="font-med text-cyan mt-4">What you will learn</h2>
                 <ul class="font-small">
-                    <li>End-Effector (EE) vs. Joint Control</li>
-                    <li>Pink (Pinocchio-based) Inverse Kinematics</li>
-                    <li>Real-time Serial Communication</li>
+                    <li>Joint space vs. Cartesian space</li>
+                    <li>What an inverse-kinematics solver is for</li>
+                    <li>How to tell a software error from a mechanical one</li>
                 </ul>
             </section>
 
             <section class="card card-no-margin card-accent-purple">
                 <h2 class="font-med">Prerequisites</h2>
                 <ul class="font-small">
-                    <li><code>xlerobot-pro</code> repository installed.</li>
-                    <li>Motors configured with unique IDs (1-6).</li>
-                    <li><strong>Verified:</strong> Joint control script runs without errors.</li>
+                    <li><a href="software.html" class="text-neon text-underline">Software setup</a> finished through step 9.</li>
+                    <li>One arm's motors have unique IDs and the arm is <strong>calibrated</strong>.</li>
+                    <li>Every motor answers <code>diagnostics/check_bus.py</code>.</li>
+                    <li>The workspace in front of the arm is clear.</li>
                 </ul>
                 <div class="info-badge-block">
                     ⏱ <strong>Estimated Time:</strong> 10–15 Minutes
@@ -73,77 +75,177 @@
             </section>
         </div>
 
-        <section class="card">
-            <h2>Instructions</h2>
+        <section class="card neon-hover-cyan">
+            <h2>What Inverse Kinematics Actually Does</h2>
+            <p>Up to now you have moved the robot the way the motors think: <em>shoulder to 30°, elbow to −45°</em>. That is <strong>joint space</strong>. It works, but it is a terrible way to describe "touch that cup" — you would have to solve the geometry in your head.</p>
+            <p><strong>Inverse kinematics</strong> flips the problem around. You name a point in space and the solver works backwards to the joint angles that put the gripper there. That is <strong>Cartesian space</strong>, and it is how every useful manipulation task is expressed.</p>
 
-            <h3 class="mt-4">1. Grant Serial Permissions</h3>
-            <p>Ensure your compute node has permission to talk to the motor controllers over USB.</p>
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Terminal</span>
-                </div>
-                <div class="terminal-body">
-                    <span class="log-info"># Allow access to all ACM devices</span><br>
-                    <span>$</span> sudo chmod 666 /dev/ttyACM*
-                </div>
-            </div>
-
-            <h3 class="mt-4">2. Launch the EE Control Script</h3>
-            <p>Run the script that initializes the Pink (Pinocchio-based) IK solver and waits for keyboard input.</p>
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Terminal</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> python provided_examples/1_so100_keyboard_ee_control.py
-                </div>
-            </div>
-
-            <h3 class="mt-4">3. Reach a Physical Target</h3>
-            <p>Place a small object (like a cup or bottle) approximately 15-20cm in front of the robot base.</p>
-
-            
-            
-            <div class="table-container mt-2">
+            <h3 class="mt-4">This robot has two IK solvers, and they are for different jobs</h3>
+            <div class="table-container mt-2 mb-4">
                 <table class="tech-table">
                     <thead>
-                        <tr><th>Key</th><th>Action</th></tr>
+                        <tr><th>Solver</th><th>How it works</th><th>Used by</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>W / S</strong></td><td>Move Forward / Backward (X-axis)</td></tr>
-                        <tr><td><strong>A / D</strong></td><td>Move Left / Right (Y-axis)</td></tr>
-                        <tr><td><strong>R / F</strong></td><td>Move Up / Down (Z-axis)</td></tr>
-                        <tr><td><strong>Space</strong></td><td>Toggle Gripper (Open/Close)</td></tr>
+                        <tr>
+                            <td><strong>Closed-form 2-link</strong><br><span class="font-small text-muted">this tutorial</span></td>
+                            <td>Law of cosines on the shoulder-lift and elbow pair. One equation, instant answer, no iteration. Only solves the arm's vertical plane.</td>
+                            <td><code>1_so100_keyboard_ee_control.py</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pink (Pinocchio)</strong><br><span class="font-small text-muted">the autonomous demos</span></td>
+                            <td>Differential IK over the full arm model — nudges all joints toward the target a step at a time, handling orientation and singularities.</td>
+                            <td><code>xlerobot_pro.IK_SO101</code>, used across <code>examples/vision/</code></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="alert-box alert-success mt-4">
-                <div class="alert-accent"></div>
-                <strong>PRO TIP:</strong> Start with small taps. The script calculates the "Goal Pose" in Cartesian space and the IK solver instantly snaps the joints to reach it.
+            <p>You are starting with the simple one on purpose. It has almost nothing that can go wrong, so anything that <em>does</em> go wrong here is your hardware — which is exactly what this tutorial is for.</p>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>THE SOLVER TRUSTS YOUR CALIBRATION COMPLETELY.</strong> It has a model of the arm's link lengths and it assumes the joint angles it reads are true. If calibration is off, IK will confidently compute a perfect answer to the wrong question — and the arm will miss by exactly that much. This is why <a href="build-guide.html" class="text-neon text-underline">calibration gets verified</a> before you reach this page.
             </div>
         </section>
 
+        <section class="card">
+            <h2>Instructions</h2>
+
+            <h3 class="mt-4">1. Set the terminal up</h3>
+            <p>Activate the environment and move to the repository root.</p>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> source ~/.venvs/xlerobot-pro/bin/activate<br>
+                    <span>$</span> cd ~/xlerobot-pro
+                </div>
+            </div>
+
+            <div class="alert-box alert-note">
+                <div class="alert-accent-line"></div>
+                <strong>Serial permission errors?</strong> <code>Permission denied: /dev/ttyACM0</code> means you are not in the <code>dialout</code> group — or you added yourself and never logged back out. Run <code>sudo usermod -aG dialout $USER</code>, then log out and in. <code>sudo chmod 666 /dev/ttyACM*</code> also works, but only until the next reboot.
+            </div>
+
+            <h3 class="mt-4">2. Launch the script</h3>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python examples/xlerobot_examples/1_so100_keyboard_ee_control.py
+                </div>
+            </div>
+
+            <p>It asks you two questions before anything moves.</p>
+
+            <div class="table-container mt-2 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Prompt</th><th>What to answer</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><em>"Please enter the USB port…"</em></td>
+                            <td><strong>Full 2-bus robot:</strong> <code>/dev/xle_arms</code><br><strong>Benchtop rig:</strong> <code>/dev/ttyACM0</code>, or just press <kbd>Enter</kbd> for that default</td>
+                        </tr>
+                        <tr>
+                            <td><em>"Do you want to recalibrate the robot? (y/n)"</em></td>
+                            <td><strong><code>n</code></strong> — you already calibrated in software setup. Answering <code>y</code> throws that away and starts over.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>THIS SCRIPT DRIVES ONE ARM AT MOTOR IDs 1–6.</strong> On the full robot, those are the <strong>left</strong> arm. Pointing it at <code>/dev/xle_arms</code> moves the left arm and never the right — the right arm lives at IDs 7–12, which needs a different motor map, not just a different port. For two-armed work use the <a href="software.html#step-11" class="text-neon text-underline">whole-robot teleop</a> instead.
+            </div>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>THE ARM MOVES UNDER POWER AS SOON AS IT CONNECTS.</strong> It first drives slowly to its zero position, then holds. Clear the workspace, keep your hands out of the swept volume, and keep a hand near the supply switch. Torque and acceleration are clamped by <code>src/xlerobot_pro/firmware_limits.py</code>, but a clamped arm still hits hard enough to hurt.
+            </div>
+
+            <h3 class="mt-4">3. Learn the keys</h3>
+            <p>Three of these pairs are Cartesian — they name a point and let IK find the angles. The rest are direct joint control, because a 2-link solver cannot express them.</p>
+
+            <div class="table-container mt-2 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Keys</th><th>What moves</th><th>Kind</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>W / S</strong></td><td>End-effector <strong>X</strong> — reach in and out</td><td>Cartesian (drives joints 2+3)</td></tr>
+                        <tr><td><strong>E / D</strong></td><td>End-effector <strong>Y</strong> — height in the arm's vertical plane</td><td>Cartesian (drives joints 2+3)</td></tr>
+                        <tr><td><strong>Q / A</strong></td><td><code>shoulder_pan</code> — swings the whole arm left and right</td><td>Direct joint</td></tr>
+                        <tr><td><strong>R / F</strong></td><td>Pitch adjustment — tilts <code>wrist_flex</code></td><td>Direct joint</td></tr>
+                        <tr><td><strong>T / G</strong></td><td><code>wrist_roll</code></td><td>Direct joint</td></tr>
+                        <tr><td><strong>Y / H</strong></td><td><code>gripper</code> — close and open</td><td>Direct joint</td></tr>
+                        <tr><td><strong>X</strong></td><td>Exit — returns to the start position first</td><td>—</td></tr>
+                        <tr><td><strong>Esc</strong></td><td>Exit immediately</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box alert-note">
+                <div class="alert-accent-line"></div>
+                <strong>PREFER <kbd>X</kbd> OVER <kbd>Esc</kbd> TO QUIT.</strong> <kbd>X</kbd> walks the arm back to where it started before releasing it. <kbd>Esc</kbd> stops where it stands, which is fine at rest and unpleasant if the arm is extended.
+            </div>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>DO NOT GUESS THE SIGN CONVENTION — TAP AND READ.</strong> Press <kbd>W</kbd> once and watch the terminal print <code>Update x coordinate: …</code>. One tap tells you which way that key sends the gripper on <em>your</em> build, and each step is only 4&nbsp;mm, so a wrong guess costs nothing. Holding a key queues a long move that is hard to stop cleanly.
+            </div>
+
+            <h3 class="mt-4">4. Reach a physical target</h3>
+            <p>Place a small object — a cup or a bottle — roughly 15–20&nbsp;cm in front of the arm base. Then work in this order, which is easier than it sounds once you try it:</p>
+            <ol class="mt-2">
+                <li><strong>Q / A</strong> to swing the arm until it is pointing at the object.</li>
+                <li><strong>E / D</strong> to set the height.</li>
+                <li><strong>W / S</strong> to reach out until the gripper is around it.</li>
+                <li><strong>Y / H</strong> to close the gripper.</li>
+            </ol>
+            <p class="font-small mt-2 text-muted">Aiming with pan first and reaching last keeps the gripper away from the object while you are still finding the range.</p>
+        </section>
+
         <section class="card neon-hover-purple">
-            <h2>Expected Output & Validation</h2>
+            <h2>Expected Output &amp; Validation</h2>
             <div class="grid-stack-mobile mt-4">
                 <div class="card card-no-margin">
-                    <strong class="text-purple">Physical Behavior</strong>
-                    <p class="font-small mt-2">The arm should move in straight lines relative to the table. Accuracy should be within 1–2 cm of the target object.</p>
+                    <strong class="text-purple">Physical behaviour</strong>
+                    <p class="font-small mt-2">The gripper tracks the coordinate you set, smoothly — the script runs a P-control loop toward the target rather than snapping. Accuracy within <strong>1–2&nbsp;cm</strong> is normal for a well-built arm.</p>
                 </div>
                 <div class="card card-no-margin">
-                    <strong class="text-purple">Software Feedback</strong>
-                    <p class="font-small mt-2">The terminal will print live [X, Y, Z] coordinates. Ensure the coordinates update as you press keys.</p>
+                    <strong class="text-purple">Software feedback</strong>
+                    <p class="font-small mt-2">Every keypress prints the updated coordinate or joint target. Those lines should appear on <em>every</em> press — even when the arm physically cannot get there.</p>
                 </div>
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>THE SOLVER CLAMPS INSTEAD OF FAILING.</strong> Ask for a point beyond the arm's reach and it scales the request back to the workspace boundary rather than erroring. So an arm that stops following your keypresses is usually at the edge of its reach, not broken.
             </div>
 
             <div class="troubleshoot-box">
                 <h4>Troubleshooting</h4>
-                <p class="troubleshoot-text"><strong>Arm jerks or moves wildly?</strong> This is usually a Motor ID mismatch or a reversed servo horn. Double check the <a href="build-guide.html#motor-configuration" class="text-neon text-underline"><strong>Motor Configuration</strong></a> guide.</p>
+                <p class="troubleshoot-text"><strong>Arm jerks or moves wildly.</strong> Almost always a motor ID mismatch or a servo horn installed a tooth off. Recheck <a href="build-guide.html#motor-configuration" class="text-neon text-underline"><strong>Motor Configuration</strong></a>.</p>
+                <p class="troubleshoot-text"><strong>Coordinates update but nothing moves.</strong> The solver is running and the bus is not. Most often the motors have logic power but no motor power — a 5&nbsp;V rail instead of 12&nbsp;V. Confirm with <code>python diagnostics/check_bus.py --motors arm</code>.</p>
+                <p class="troubleshoot-text"><strong>Straight-line motion, but it consistently misses in one direction.</strong> That is calibration, not IK. Re-run calibration and check the left/right symmetry table in the <a href="build-guide.html" class="text-neon text-underline"><strong>Build Guide</strong></a>.</p>
+                <p class="troubleshoot-text"><strong>It will not reach a point you are sure is reachable.</strong> A joint's calibrated range is probably narrower than its real travel, because it was not swept all the way to both end stops during calibration.</p>
+                <p class="troubleshoot-text"><strong>The arm drops when you quit.</strong> Torque was cut rather than bled off. Quit with <kbd>X</kbd> so it returns to start first, and never cut torque on a loaded arm.</p>
+                <p class="troubleshoot-text"><strong>The bus dies partway through a long move.</strong> A cable is being tugged at a joint's travel extreme. Add a service loop at that joint — it will otherwise recur mid-grasp, under power.</p>
             </div>
         </section>
+
+        <div class="text-center mt-large">
+            <p class="credits-text cta-lead">Reaching by hand works. Let the camera pick the target next.</p>
+            <a href="software.html#step-12" class="btn-neon btn-github btn-cta">Autonomous Cube Grasp ↗</a>
+        </div>
 
     </main>
 

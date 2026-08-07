@@ -100,6 +100,7 @@
                 <a href="components.html" class="nav-link active">Components</a>
                 <a href="build-guide.html" class="nav-link">Build Guide</a>
                 <a href="software.html" class="nav-link">Software</a>
+                <a href="troubleshooting.html" class="nav-link">Troubleshooting</a>
             </div>
             <div class="nav-actions">
                 <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
@@ -163,6 +164,73 @@
                 </table>
             </div>
             <p class="mt-4 font-small">Note: The total includes the 3kg of PLA filament ($45.00). Prices are approximate and vary by retailer and region.</p>
+        </section>
+
+        <section class="card neon-hover-cyan">
+            <h2>Specifications That Matter</h2>
+            <p class="font-small">The list above tells you what to buy. This one tells you what to check before you buy it — every row here is load-bearing, and substitutions have specific failure modes.</p>
+
+            <div class="table-container mt-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Item</th><th>Requirement</th><th>Why it matters</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Jetson Orin Nano Super Devkit</strong></td>
+                            <td>8 GB, carrier P3768</td>
+                            <td>67 TOPS class. 8 GB is workable, but RAM is the binding constraint under the vision stack.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>microSD card</strong></td>
+                            <td>64 GB minimum, <strong>128 GB advised</strong>, UHS-I, <strong>A2</strong></td>
+                            <td>The A2 random-IO rating is what keeps pip installs and model loads bearable. A full install lands near 50 GB, so 64 GB runs tight.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>USB-serial adapters ×2</strong></td>
+                            <td>CH343 / CH9102 class (<code>1a86:55d3</code>)</td>
+                            <td>One per bus. Each needs <strong>its own barrel-jack power</strong> — they drive the bus transceiver off the servo rail, not off USB.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Feetech STS3215 ×17</strong></td>
+                            <td>12 arm, 2 neck, 3 wheel</td>
+                            <td>Wants 6–12 V. Below that they respond erratically or not at all — and give no visible sign of it.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Intel RealSense D435</strong></td>
+                            <td>USB 3.0</td>
+                            <td>Bandwidth-hungry. Give it a port that is not shared with the motor adapters.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>12 V supply</strong></td>
+                            <td>Several amps of headroom</td>
+                            <td>Twelve arm servos are the largest aggregate load on the robot. A marginal supply carries three wheels fine and fails on the arm bus.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DisplayPort cable + USB keyboard</strong></td>
+                            <td>—</td>
+                            <td>The carrier has <strong>DisplayPort, not HDMI</strong>. Needed for first boot only, but you cannot flash without it.</td>
+                        </tr>
+                        <tr>
+                            <td>NVMe SSD <em>(optional)</em></td>
+                            <td>M.2 2280, M-key, PCIe Gen3</td>
+                            <td>Only needed for dataset recording or on-device training. Not required for bring-up.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>THE USB HUB IS NOT FOR THE MOTOR ADAPTERS.</strong> Both USB-serial adapters must plug <strong>directly into the Jetson</strong>. Behind a hub — especially one shared with the RealSense — they frequently fail to enumerate, which looks like a dead bus rather than a USB problem. Use the hub for keyboard and other low-bandwidth peripherals only.
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>BUILDING IN THE US? PLAN ON MAKING YOUR OWN SERVO CABLES.</strong> The long 3-pin servo cables that daisy-chain the motors together are hard to source domestically — most US listings only carry the short lengths that ship with the servos, and the long runs you need for the wheel base and the neck are usually import-only with slow shipping.
+                <br><br>
+                That is why the BOM includes <strong>bulk 3-conductor servo wire</strong> rather than a set of finished cables: expect to cut and crimp your own to length. Budget the extra time, and pick up spare 3-pin connectors and a crimping tool while you are ordering — making them is straightforward, but not something you want to discover mid-assembly.
+            </div>
         </section>
 
         <section class="card neon-hover-purple" id="printing">

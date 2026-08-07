@@ -10,6 +10,96 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+    /* ---- Step-by-step setup styling ---- */
+
+    .phase-label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--neon-purple);
+        margin: 3.5rem 0 0.75rem;
+    }
+    .phase-label:first-of-type { margin-top: 2rem; }
+
+    .step-card { scroll-margin-top: 96px; }
+
+    .step-head {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        margin-bottom: 0.25rem;
+    }
+    .step-num {
+        flex: 0 0 auto;
+        font-family: var(--font-display, inherit);
+        font-weight: 800;
+        font-size: 0.95rem;
+        color: #fff;
+        background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+        border-radius: 999px;
+        min-width: 2rem;
+        height: 2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.55rem;
+    }
+    .step-head h2 { margin: 0; }
+
+    .step-meta {
+        font-size: 0.82rem;
+        color: var(--text-muted, #64748b);
+        margin: 0 0 1.25rem 2.75rem;
+    }
+    .step-meta strong { color: var(--text-main); }
+
+    /* "You are done when" block */
+    .done-when {
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        background: rgba(16, 185, 129, 0.07);
+        border-radius: 12px;
+        padding: 1rem 1.15rem;
+        margin-top: 1.5rem;
+    }
+    .done-when h4 {
+        margin: 0 0 0.5rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #059669;
+    }
+    .done-when p, .done-when ul { margin: 0; font-size: 0.92rem; }
+    .done-when ul { padding-left: 1.1rem; }
+    .done-when li + li { margin-top: 0.3rem; }
+
+    /* "If it fails" block */
+    .if-fails {
+        border: 1px solid rgba(236, 72, 153, 0.3);
+        background: rgba(236, 72, 153, 0.06);
+        border-radius: 12px;
+        padding: 1rem 1.15rem;
+        margin-top: 1rem;
+    }
+    .if-fails h4 {
+        margin: 0 0 0.5rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #db2777;
+    }
+    .if-fails ul { margin: 0; padding-left: 1.1rem; font-size: 0.92rem; }
+    .if-fails li + li { margin-top: 0.3rem; }
+
+    /* Roadmap table: keep step numbers tight */
+    .roadmap-table td:first-child { white-space: nowrap; font-weight: 600; }
+
+    /* Plain-language glossary */
+    .glossary dt { font-weight: 700; margin-top: 0.9rem; color: var(--text-main); }
+    .glossary dd { margin: 0.2rem 0 0; font-size: 0.92rem; color: var(--text-body); }
+    </style>
 </head>
 <body>
     <div class="ambient-blob blob-cyan"></div>
@@ -30,141 +120,1020 @@
                 <a href="components.html" class="nav-link">Components</a>
                 <a href="build-guide.html" class="nav-link">Build Guide</a>
                 <a href="software.html" class="nav-link active">Software</a>
+                <a href="troubleshooting.html" class="nav-link">Troubleshooting</a>
             </div>
             <div class="nav-actions">
-                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" class="btn-neon btn-github">GitHub ↗</a>
-                <a href="https://arxiv.org/abs/2603.09051" target="_blank" class="btn-neon btn-arxiv">arXiv ↗</a>
+                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
+                <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer" class="btn-neon btn-arxiv">arXiv ↗</a>
             </div>
         </div>
     </nav>
 
     <main class="page-container">
-        
+
         <header class="page-header">
-            <span class="tech-badge">Compute: Jetson Orin Nano / Laptop</span>
-            <h1>Software Architecture & Setup</h1>
-            <p>Deploy the XLeRobot-Pro stack. One repository, full control.</p>
+            <span class="tech-badge">Start to finish · ~3–4 hours</span>
+            <h1>Software Setup</h1>
+            <p>From a blank SD card to a robot that moves. Thirteen steps, in order — each one tells you what to run, what success looks like, and what to do when it doesn't work.</p>
         </header>
 
         <section class="card neon-hover-cyan">
-            <h2>1. System Architecture</h2>
-            <p>Core computing (IK, Vision, VLA Policy inference) runs either on your <strong>Host Laptop</strong> or the onboard <strong>NVIDIA Jetson Orin Nano</strong>.</p>
-            
-            
+            <h2>Read This First</h2>
+            <p>This page assumes <strong>no prior robotics experience</strong>. If you can copy a command into a terminal and read what comes back, you can finish it.</p>
 
-            <div class="ascii-diagram-box">
-<pre>
-┌──────────────┐                  ┌────────────────────────┐
-│    Bus 1     │      USB-C       │    Compute Node        │
-│ (Follower    │◄────────────────►│                        │
-│    Arms)     │                  │  - Jetson Orin Nano    │
-└──────────────┘                  │         OR             │
-                                  │  - Laptop / PC         │
-┌──────────────┐      USB-C       │                        │
-│    Bus 2     │◄────────────────►│   Running:             │
-│ (Head/Wheels)│                  │   - LeRobot Stack      │
-└──────────────┘                  │   - Pink (Pinocchio) IK│
-                                  │   - YOLO / VLA         │
-┌──────────────┐      USB         └───────────┬────────────┘
-│ Cameras (3x) │◄─────────────────────────────┘
-└──────────────┘
-</pre>
+            <h3 class="mt-4">Do the hardware first</h3>
+            <p class="mt-2">Nothing here works until the robot is built and wired. Both arms, the head, and the wheel base must be assembled, every motor must have its ID assigned, and both bus adapters must be plugged into the Jetson over USB. That is all on the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a> — finish it, then come back.</p>
+
+            <h3 class="mt-4">Which robot are you setting up?</h3>
+            <p class="mt-2">The repository supports two shapes, and mixing them up is the single most common way to get stuck. Decide now which one you have:</p>
+
+            <div class="table-container mt-2 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Shape</th><th>What it is</th><th>Wiring</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Full robot</strong><br><span class="font-small text-muted">2-bus</span></td>
+                            <td>The complete platform: two arms, head, wheel base, 17 motors</td>
+                            <td><code>/dev/xle_arms</code> — left arm IDs 1–6, right arm 7–12<br><code>/dev/xle_head</code> — head 1–2, wheels 3–5</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Benchtop rig</strong><br><span class="font-small text-muted">single-bus</span></td>
+                            <td>One arm plus the head on a desk — how the vision and IK stack was developed and how its demos are written</td>
+                            <td>One adapter: head IDs 1–2 and one arm at IDs 7–12 on the same chain</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>Steps 1–9 are identical for both. Steps 10–12 are where the two diverge, and each step says which shape it applies to.</p>
+
+            <h3 class="mt-4">Words you will see</h3>
+            <dl class="glossary">
+                <dt>Bus</dt>
+                <dd>One chain of motors sharing a single wire back to the computer. This robot has two.</dd>
+                <dt>Motor ID</dt>
+                <dd>A number, 1–253, stored inside each servo. It is how the computer addresses one motor out of a chain. Two motors with the same ID break the whole chain.</dd>
+                <dt>Calibration</dt>
+                <dd>A one-time recording of where each joint's centre and end stops are, so a commanded angle means the same thing on every robot.</dd>
+                <dt>udev symlink</dt>
+                <dd>A permanent nickname for a USB device. Without one, Linux renames your buses at random on every reboot.</dd>
+                <dt>venv</dt>
+                <dd>An isolated Python installation, so this project's packages cannot break anything else on the machine.</dd>
+            </dl>
+        </section>
+
+        <section class="card">
+            <h2>The Roadmap</h2>
+            <p>Work top to bottom. Do not skip ahead — every step assumes the one above it passed.</p>
+
+            <div class="table-container mt-4">
+                <table class="tech-table roadmap-table">
+                    <thead>
+                        <tr><th>Step</th><th>What you do</th><th>Time</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" class="text-muted font-small"><strong>Phase A — Prepare the computer</strong></td></tr>
+                        <tr><td><a href="#step-1" class="text-neon">1</a></td><td>Flash JetPack 6.2.1 onto the Jetson</td><td>45–90 min</td></tr>
+                        <tr><td><a href="#step-2" class="text-neon">2</a></td><td>Get on Wi-Fi and switch to SSH</td><td>10 min</td></tr>
+                        <tr><td colspan="3" class="text-muted font-small"><strong>Phase B — Install the software</strong></td></tr>
+                        <tr><td><a href="#step-3" class="text-neon">3</a></td><td>Create the Python environment</td><td>5 min</td></tr>
+                        <tr><td><a href="#step-4" class="text-neon">4</a></td><td>Install PyTorch from the Jetson index</td><td>15 min</td></tr>
+                        <tr><td><a href="#step-5" class="text-neon">5</a></td><td>Install XLeRobot-Pro and the vision stack</td><td>30–45 min</td></tr>
+                        <tr><td><a href="#step-6" class="text-neon">6</a></td><td>Verify the install — no hardware needed</td><td>5 min</td></tr>
+                        <tr><td colspan="3" class="text-muted font-small"><strong>Phase C — Connect the robot</strong></td></tr>
+                        <tr><td><a href="#step-7" class="text-neon">7</a></td><td>Grant serial access and name the buses</td><td>10 min</td></tr>
+                        <tr><td><a href="#step-8" class="text-neon">8</a></td><td>Confirm every motor answers</td><td>10 min</td></tr>
+                        <tr><td><a href="#step-9" class="text-neon">9</a></td><td>Calibrate the robot, then check the calibration</td><td>20 min</td></tr>
+                        <tr><td colspan="3" class="text-muted font-small"><strong>Phase D — Make it move</strong></td></tr>
+                        <tr><td><a href="#step-10" class="text-neon">10</a></td><td>First motion — the wheels</td><td>5 min</td></tr>
+                        <tr><td><a href="#step-11" class="text-neon">11</a></td><td>First motion — the arms</td><td>15 min</td></tr>
+                        <tr><td><a href="#step-12" class="text-neon">12</a></td><td>Autonomous cube grasp</td><td>20 min</td></tr>
+                        <tr><td><a href="#step-13" class="text-neon">13</a></td><td>Safety limits and Jetson tuning</td><td>10 min</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>ONE CHANGE AT A TIME.</strong> If a step fails, fix that step before moving on. Almost every hard-to-debug problem on this platform comes from a working subsystem being disturbed while chasing a broken one.
             </div>
         </section>
 
-        <section class="card neon-hover-purple">
-            <h2>2. Framework Installation</h2>
-            <p>We recommend <strong>Ubuntu 22.04</strong> and <strong>Python 3.10</strong>.</p>
+        <section class="card">
+            <h2>How to Read the Commands</h2>
 
-            <h3 class="mt-4">Clone & Install</h3>
+            <p>Every command on this page is run <strong>on the Jetson</strong>, from the <strong>repository root</strong>, with the <strong>environment activated</strong>. Those three conditions look like this:</p>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Every new terminal starts this way</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> source ~/.venvs/xlerobot-pro/bin/activate<br>
+                    <span>$</span> cd ~/xlerobot-pro
+                </div>
+            </div>
+
+            <p>You will know the environment is active because your prompt gains a <code>(xlerobot-pro)</code> prefix. If a command fails with <code>ModuleNotFoundError</code>, that prefix is almost always missing.</p>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>The repo root matters.</strong> Several scripts read and write capture files under <code>./outputs/</code>, relative to wherever you launched them. Running from another directory puts the RealSense capture where the detector will not look for it.
+            </div>
+        </section>
+
+        <!-- ══════════════════ PHASE A ══════════════════ -->
+        <span class="phase-label">Phase A — Prepare the computer</span>
+
+        <section class="card step-card neon-hover-purple" id="step-1">
+            <div class="step-head">
+                <span class="step-num">1</span>
+                <h2>Flash JetPack 6.2.1</h2>
+            </div>
+            <p class="step-meta">Skip if your Jetson already runs JetPack 6.2.x · <strong>45–90 minutes</strong></p>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>THE VERSION IS PINNED, NOT PREFERENTIAL.</strong> The stack requires <strong>Ubuntu 22.04 / Python 3.10</strong>. JetPack 7.x ships Ubuntu 24.04 with a different Python and CUDA, so the pinned PyTorch wheel index does not resolve and the vision dependencies need reworking. Stay on the 6.2.x line even though 7.x is newer.
+            </div>
+
+            <h3 class="mt-4">1a — Read the firmware version</h3>
+            <p class="mt-2">Attach a monitor and USB keyboard, power on, and press <kbd>Esc</kbd> repeatedly at the NVIDIA splash. The UEFI banner shows the version. Note the carrier has <strong>DisplayPort, not HDMI</strong> — this is needed for first boot only.</p>
+
+            <div class="table-container mt-2 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Firmware</th><th>Meaning</th><th>What to do</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>36.x or newer</strong></td><td>JetPack 6 generation</td><td>Single flash — skip to 1b</td></tr>
+                        <tr><td><strong>35.x or older</strong></td><td>Factory firmware; cannot boot JetPack 6</td><td>Two-stage bridge required first</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>If you need the bridge: boot a <strong>JetPack 5.1.3</strong> card, finish Ubuntu setup, connect to the internet, reboot once to let the initial firmware update run, then:</p>
+
             <div class="terminal-box mt-2 mb-4">
                 <div class="terminal-header">
                     <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Terminal</span>
+                    <span>QSPI firmware bridge</span>
                 </div>
                 <div class="terminal-body">
-                    <span class="log-info"># Clone the unified pro repository</span><br>
-                    <span>$</span> git clone https://github.com/Minko82/xlerobot-pro<br>
-                    <span>$</span> cd xlerobot-pro<br><br>
-                    <span class="log-info"># Install dependencies in editable mode</span><br>
-                    <span>$</span> pip install -e .
+                    <span>$</span> sudo apt update && sudo apt install nvidia-l4t-jetson-orin-nano-qspi-updater
+                </div>
+            </div>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>DO NOT INTERRUPT POWER</strong> while QSPI flashes after that reboot. This is the only genuinely risky moment in the whole build — a half-written firmware bricks the module.
+            </div>
+
+            <h3 class="mt-4">1b — Write the card</h3>
+            <p class="mt-2">Download <code>jp62-r1-orin-nano-sd-card-image.zip</code> (Jetson Linux 36.4.4) from NVIDIA's JetPack 6.2.1 page and write it with Balena Etcher. Etcher runs on macOS and Windows, so <strong>no Ubuntu host or SDK Manager is required</strong> for the devkit.</p>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>The microSD slot is on the module, not the carrier.</strong> It sits on the <strong>underside of the Orin module</strong>, tucked under its top edge — the opposite end from the I/O bank. Look into the gap between module and carrier with a flashlight; contacts face up. It is push-push: if it springs back out, it never seated.
+            </div>
+
+            <h3 class="mt-4">1c — First boot</h3>
+            <p class="mt-2">Complete the Ubuntu OEM wizard. When it asks for <strong>APP partition size, take the maximum</strong> — the default can leave a cramped root filesystem that is tedious to resize later. <strong>Join Wi-Fi during the wizard</strong>; step 2 depends on it.</p>
+
+            <div class="terminal-box mt-2">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Confirm the release</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> cat /etc/nv_tegra_release
+                </div>
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <p>That command prints <code>R36</code>, revision <strong>4.4 or later</strong>, and the machine is on your Wi-Fi network.</p>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><code>UEFI Interactive Shell v2.2 — Shell&gt;</code> means nothing bootable was found. Run <code>map -r</code>: if the only entries are <code>MemoryMapped</code> and <code>Fv(...)</code>, no card is being seen — reseat it, or confirm firmware is 36.x.</li>
+                    <li><code>Error: could not make network connection</code> is <em>not</em> a network fault. UEFI exhausted its boot order and fell through to PXE. It disappears once a bootable card is present.</li>
+                    <li>More boot-time signatures on the <a href="troubleshooting.html" class="text-neon text-underline">Troubleshooting</a> page.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-2">
+            <div class="step-head">
+                <span class="step-num">2</span>
+                <h2>Switch to SSH</h2>
+            </div>
+            <p class="step-meta">Work from your laptop instead of a monitor · <strong>10 minutes</strong></p>
+
+            <p>This is the single change that makes the rest of the setup pleasant, and it is not optional in practice. The Jetson has few USB ports, and the two bus adapters plus three cameras need five of them.</p>
+
+            <ul class="mt-2">
+                <li><strong>No hub required.</strong> A keyboard and monitor occupy ports you need for hardware. Working remotely leaves every port free — so you never have to put a motor adapter behind a hub, and you avoid the enumeration failures that come with it.</li>
+                <li><strong>Every connection stays direct.</strong> Fewer things in the USB tree means fewer things that can drop out mid-run, and one less variable when something misbehaves.</li>
+                <li><strong>You can work while the robot moves.</strong> No cable tethering you to the cart.</li>
+            </ul>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>On the Jetson, once</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> sudo apt install -y openssh-server<br>
+                    <span>$</span> hostname -I<br>
+                    <span class="log-info"># note the first address it prints</span>
+                </div>
+            </div>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>From your laptop</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> ssh &lt;user&gt;@<span class="text-neon">&lt;jetson-ip&gt;</span>
+                </div>
+            </div>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>DISCONNECT THE MONITOR WHEN YOU ARE DONE.</strong> The robot is meant to drive around untethered — a DisplayPort cable running to a desk is a leash, and it will either stop the robot short or get yanked out of the carrier mid-run. Once SSH works, unplug the monitor and keyboard and leave them off.
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <p>You are logged into the Jetson from your laptop, and the monitor and keyboard are unplugged.</p>
+            </div>
+        </section>
+
+        <!-- ══════════════════ PHASE B ══════════════════ -->
+        <span class="phase-label">Phase B — Install the software</span>
+
+        <section class="card step-card neon-hover-cyan" id="step-3">
+            <div class="step-head">
+                <span class="step-num">3</span>
+                <h2>Create the Python Environment</h2>
+            </div>
+            <p class="step-meta">System Python 3.10, isolated in a venv · <strong>5 minutes</strong></p>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>DO NOT INSTALL INTO A CONDA ENVIRONMENT.</strong> The Jetson PyTorch wheels are built against JetPack's <strong>system</strong> Python 3.10 and the system CUDA libraries. Inside conda they hit its bundled <code>libstdc++</code> and OpenMP runtime, and either fail at import or — worse — leave <code>torch.cuda.is_available()</code> silently <code>False</code>. If a conda base auto-activates in your shell, run <code>conda deactivate</code> before building the venv.
+            </div>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Build the environment</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> sudo apt install -y git python3.10-venv python3.10-dev<br>
+                    <span>$</span> /usr/bin/python3.10 -m venv ~/.venvs/xlerobot-pro<br>
+                    <span>$</span> source ~/.venvs/xlerobot-pro/bin/activate<br>
+                    <span>$</span> pip install --upgrade pip
+                </div>
+            </div>
+
+            <p><code>python3.10-dev</code> is not optional — <code>quadprog</code>, used by the IK solver, builds from source and needs the Python headers.</p>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Clone the repository</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> git clone https://github.com/Minko82/xlerobot-pro.git ~/xlerobot-pro<br>
+                    <span>$</span> cd ~/xlerobot-pro
+                </div>
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <ul>
+                    <li>Your prompt shows <code>(xlerobot-pro)</code>.</li>
+                    <li><code>python --version</code> prints <strong>3.10.x</strong>.</li>
+                    <li><code>~/xlerobot-pro</code> exists and contains <code>pyproject.toml</code>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-4">
+            <div class="step-head">
+                <span class="step-num">4</span>
+                <h2>Install PyTorch</h2>
+            </div>
+            <p class="step-meta">Jetson only — skip on a laptop · <strong>15 minutes</strong></p>
+
+            <p><strong>Do this before installing the project.</strong> The generic PyPI <code>torch</code> wheel is CPU-only on aarch64, so NVIDIA's JetPack 6 build has to land first — otherwise pip pulls the wrong one and CUDA silently never works.</p>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>PyTorch from the Jetson index</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> pip install torch torchvision \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;--index-url <span class="text-neon">https://pypi.jetson-ai-lab.io/jp6/cu126</span>
+                </div>
+            </div>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Check which wheel you got</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python -c "import torch; print(torch.__version__, torch.cuda.is_available())"<br>
+                    <span class="log-info"># want: 2.10.0 True   —   bad: anything ending in +cpu, or False</span>
+                </div>
+            </div>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>WHY THE CPU WHEEL WINS IF YOU LET IT.</strong> PyPI publishes an aarch64 build tagged <code>2.10.0+cpu</code>. Under PEP&nbsp;440 a local-version segment sorts <strong>higher</strong> than plain <code>2.10.0</code>, so if PyPI is reachable during the resolve — for instance via <code>--extra-index-url</code> — pip prefers the CPU build. Use <code>--index-url</code> exactly as written above. If you already got <code>+cpu</code>, reinstall by direct wheel URL from the index.
+                <br><br>
+                Note the index moved to <code>pypi.jetson-ai-lab.<strong>io</strong></code>; the old <code>.dev</code> domain no longer resolves.
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <p>The check prints a version with <strong>no <code>+cpu</code> suffix</strong>, followed by <code>True</code>.</p>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><code>False</code> with a clean version number → torch is probably installed inside conda. Deactivate conda, rebuild the venv from <a href="#step-3" class="text-neon">step 3</a>.</li>
+                    <li><code>+cpu</code> in the version → the resolve reached PyPI. Uninstall torch and reinstall with <code>--index-url</code> only.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-5">
+            <div class="step-head">
+                <span class="step-num">5</span>
+                <h2>Install XLeRobot-Pro</h2>
+            </div>
+            <p class="step-meta">The robot stack, then the vision and IK stack · <strong>30–45 minutes</strong></p>
+
+            <p>Two installs. The first brings in the vendored LeRobot fork with all robot, camera, and teleop extras. The second adds perception and inverse kinematics.</p>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>1 — the robot stack</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> cd ~/xlerobot-pro<br>
+                    <span>$</span> pip install -e ".[all]"<br>
+                    <span class="log-info"># equivalent to: make install</span>
+                </div>
+            </div>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>2 — the vision stack (Jetson)</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> grep -v '^open3d' requirements/requirements-vision.txt &gt; /tmp/req-vision.txt<br>
+                    <span>$</span> pip install -r /tmp/req-vision.txt --no-cache-dir
                 </div>
             </div>
 
             <div class="alert-box alert-note">
                 <div class="alert-accent-line"></div>
-                <strong>JETSON USERS:</strong> Ensure <strong>JetPack 5.1.x or 6.0</strong> is installed. Enable "Max Power Mode" via <code>sudo nvpmodel -m 0</code> for policy inference.
+                <strong><code>open3d</code> is excluded deliberately on aarch64.</strong> No wheel exists for it there, so pip attempts a multi-hour source build. Nothing in the verification suite or the cube demo needs it — it affects only <code>point_cloud.py</code> and <code>diagnostics/visualize_point_cloud.py</code>. Everything else (pinocchio, pink, MuJoCo, RealSense) has aarch64 wheels, and <code>quadprog</code> builds from source in seconds given <code>python3.10-dev</code>.
+                <br><br>
+                <strong>On a laptop</strong>, install the file directly — <code>pip install -r requirements/requirements-vision.txt</code> — and keep open3d.
+            </div>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>DISK RUNS TIGHT ON A 64&nbsp;GB CARD.</strong> Expect roughly <strong>50&nbsp;GB used</strong> after a full install; <code>pip cache purge</code> reclaims 1–2&nbsp;GB afterwards. Recorded LeRobot datasets live under <code>~/.cache/huggingface/lerobot/</code> — that directory also holds your <strong>calibrations</strong>, so never clear it wholesale.
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>Want an exactly reproducible machine?</strong> Use the pinned lockfiles instead of <code>.[all]</code>: <code>requirements/requirements-ubuntu.txt</code> (Ubuntu 24.04, x86_64) or <code>requirements/requirements-macos.txt</code> (macOS arm64). They match a known-good development machine, not the Jetson.
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <p>Both installs finish without errors and <code>python -c "import lerobot, xlerobot_pro"</code> prints nothing at all. Silence is success.</p>
+            </div>
+        </section>
+
+        <section class="card step-card neon-hover-cyan" id="step-6">
+            <div class="step-head">
+                <span class="step-num">6</span>
+                <h2>Verify the Install</h2>
+            </div>
+            <p class="step-meta">No motors, no camera, no risk · <strong>5 minutes</strong></p>
+
+            <p>Prove the software before involving hardware. A failure here is far cheaper to diagnose on its own than one tangled up with a wiring fault.</p>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Offline verification</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> make smoke<br>
+                    <span>$</span> python tests/vision_offline_suite.py
+                </div>
+            </div>
+
+            <p><code>make smoke</code> compiles every Python file in the repo and runs the hardware-free test suite: model assets present, config paths resolve, calibration files parse, and the firmware limits are actually wired into every robot class and demo. The vision suite then exercises the whole perception → frame-transform → IK → FK chain in software.</p>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <ul>
+                    <li><code>make smoke</code> reports <strong>7 passed</strong>.</li>
+                    <li><code>vision_offline_suite.py</code> reports <strong>49/49 passed, 0 failed</strong>.</li>
+                </ul>
+                <p class="mt-2">A pass means every install decision above was correct. Stop here and fix anything that failed.</p>
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>SEEING "6 passed, 1 skipped" INSTEAD?</strong> That is not a failure — the seventh test skips itself when the vision extras are absent, and says so in the skip reason. It means part 2 of <a href="#step-5" class="text-neon">step 5</a> did not take. Install <code>requirements-vision.txt</code> and re-run; you want all seven.
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><code>ModuleNotFoundError: lerobot</code> → the venv is not active, or <a href="#step-5" class="text-neon">step 5</a> did not finish. Re-run <code>source ~/.venvs/xlerobot-pro/bin/activate</code> then <code>pip install -e ".[all]"</code>.</li>
+                    <li>Errors mentioning <code>pin</code>, <code>pink</code>, or <code>quadprog</code> → the vision install is incomplete. Confirm <code>python3.10-dev</code> is installed and re-run part 2 of step 5.</li>
+                    <li><code>libgomp</code> / OpenMP errors → add <code>echo 'export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libgomp.so.1' &gt;&gt; ~/.bashrc</code> and open a new shell.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ══════════════════ PHASE C ══════════════════ -->
+        <span class="phase-label">Phase C — Connect the robot</span>
+
+        <section class="card step-card neon-hover-purple" id="step-7">
+            <div class="step-head">
+                <span class="step-num">7</span>
+                <h2>Name the Buses</h2>
+            </div>
+            <p class="step-meta">Serial permissions, then stable device names · <strong>10 minutes</strong></p>
+
+            <p>Plug both bus adapters <strong>directly into the Jetson</strong> — not through a hub — and power the motors. Then two things have to happen before any script can talk to them.</p>
+
+            <h3 class="mt-4">7a — Serial permissions</h3>
+            <p class="mt-2">The buses are USB serial devices, so your user needs permission to open them.</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Grant serial access</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> sudo usermod -aG dialout $USER<br>
+                    <span class="log-info"># log out and back in — the group does not apply to your current shell</span>
+                </div>
+            </div>
+
+            <p class="font-small text-muted">On macOS no extra permission is needed; the buses appear as <code>/dev/tty.usbmodem*</code>.</p>
+
+            <h3 class="mt-4">7b — Give the buses permanent names</h3>
+            <p class="mt-2">Both adapters use the same USB-serial chip, so Linux names them <code>/dev/ttyACM0</code> and <code>/dev/ttyACM1</code> in whatever order they happen to enumerate — and that order changes between boots and after any replug. Every entry point in this project opens <code>/dev/xle_arms</code> and <code>/dev/xle_head</code> instead. Those are stable nicknames keyed to each adapter's own serial number, and one script creates them for you.</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Identify the buses and install the rules</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># see what it found first</span><br>
+                    <span>$</span> python diagnostics/detect_buses.py<br><br>
+                    <span class="log-info"># happy with the result? write the rules (asks for sudo)</span><br>
+                    <span>$</span> python diagnostics/detect_buses.py --write<br><br>
+                    <span>$</span> sudo udevadm control --reload-rules && sudo udevadm trigger<br>
+                    <span class="log-info"># now unplug and replug BOTH adapters</span><br>
+                    <span>$</span> ls -l /dev/xle_arms /dev/xle_head
+                </div>
+            </div>
+
+            <p>The script pings every ID on each port and works out which adapter is which by what answers: the arms bus replies on IDs 1–12, the head/base bus on 1–5. It then writes <code>/etc/udev/rules.d/99-xlerobot.rules</code> with each adapter's serial filled in.</p>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>Delete any older rules file first.</strong> If you have a <code>99-xlerobot.rules</code> from a previous build with different serials, remove it. Stale rules are confusing and can define names that nothing uses.
+            </div>
+
+            <div class="alert-box alert-tip mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>PORTS ARE OVERRIDABLE</strong> with the <code>XLEROBOT_ARMS_PORT</code> and <code>XLEROBOT_HEAD_PORT</code> environment variables if you would rather point at raw device names. The symlinks are strongly preferred though — without them, a replug can silently swap which bus a script talks to, and the arms will move as if they were the head.
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <p><code>ls -l /dev/xle_arms /dev/xle_head</code> lists <strong>both</strong> symlinks, each pointing at a <code>ttyACM</code> device.</p>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><strong>No <code>/dev/ttyACM*</code> devices at all</strong> → this is a USB problem, not a motor problem. Check <code>dmesg</code> for <code>error -110</code> (timeout) or <code>error -71</code> (protocol error) and <code>unable to enumerate USB device</code>. Try a new cable first, then a different port, and only then suspect the adapter. Never put a bus adapter behind a hub.</li>
+                    <li><strong>Devices exist but <code>detect_buses.py</code> finds no motors</strong> → the adapters have logic power but the servos do not. See <a href="#step-8" class="text-neon">step 8</a>.</li>
+                    <li><strong>Both ports answer the same ID range</strong> → you have duplicate motor IDs across buses. Go back to <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-8">
+            <div class="step-head">
+                <span class="step-num">8</span>
+                <h2>Confirm Every Motor Answers</h2>
+            </div>
+            <p class="step-meta">Read-only — nothing moves · <strong>10 minutes</strong></p>
+
+            <p>Before anything is commanded to move, prove that all 17 motors are reachable and reporting sane values.</p>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Check both buses</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python diagnostics/check_bus.py --motors arm<br>
+                    <span class="log-info"># right arm, IDs 7-12, on /dev/xle_arms</span><br><br>
+                    <span>$</span> python diagnostics/check_bus.py --motors head<br>
+                    <span class="log-info"># head, IDs 1-2, on /dev/xle_head</span>
+                </div>
+            </div>
+
+            <p>To sweep an entire bus for anything that answers — at any ID and any baud rate, which is what you want when a motor is missing:</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Full bus scan</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python -c "from lerobot.motors.feetech import FeetechMotorsBus; \<br>
+                    &nbsp;&nbsp;print(FeetechMotorsBus.scan_port('<span class="text-neon">/dev/xle_arms</span>'))"
+                </div>
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <ul>
+                    <li>A scan of <code>/dev/xle_arms</code> lists <strong>IDs 1–12</strong> with no gaps.</li>
+                    <li>A scan of <code>/dev/xle_head</code> lists <strong>IDs 1–5</strong> with no gaps.</li>
+                    <li>Both <code>check_bus.py</code> runs print positions rather than errors.</li>
+                </ul>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><strong>Whole bus silent, but each motor works alone</strong> → duplicate IDs, essentially every time. Feetech is half-duplex: two motors on one ID transmit together and the collision corrupts <em>every</em> packet on the wire. A right arm still shipped as IDs 1–6 duplicates the entire left arm. Fix in <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</li>
+                    <li><strong>Scan returns fewer IDs than motors attached</strong> → the missing number names the culprit. Halve the chain and re-scan; about four rounds isolates the bad motor or cable.</li>
+                    <li><strong>Motors answer but report load pinned at <code>1024 + Torque_Limit</code> with current 0</strong> → the bus has logic power but no motor power. Check <code>Present_Voltage</code>: ~120–135 means 12&nbsp;V (good), ~50 means the bus is on a 5&nbsp;V rail. A 5&nbsp;V USB bank will not drive these servos.</li>
+                    <li><code>Permission denied: /dev/ttyACM0</code> → you added yourself to <code>dialout</code> but did not log out and back in.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-9">
+            <div class="step-head">
+                <span class="step-num">9</span>
+                <h2>Calibrate</h2>
+            </div>
+            <p class="step-meta">Once per robot, then verified · <strong>20 minutes</strong></p>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>TORQUE IS RELEASED FOR THE WHOLE PROCEDURE.</strong> Both arms go limp and <strong>will fall from a raised pose.</strong> Support them by hand before you start, and clear everything from underneath them.
+            </div>
+
+            <h3 class="mt-4">9a — Run it</h3>
+
+            <div class="alert-box alert-note mt-2">
+                <div class="alert-accent-line"></div>
+                <strong><code>lerobot-calibrate</code> cannot see this robot.</strong> Its <code>--robot.type</code> does not offer <code>xlerobot_new_wiring</code>. The class is registered, but <code>robots/utils.py</code> imports robot types lazily inside its dispatch function, so the config module never loads and the registration decorator never runs. Drive the class directly with the script below instead.
+            </div>
+
+            <p class="mt-4">Save this as <code>calibrate_xlerobot.py</code> in the repo root:</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>calibrate_xlerobot.py</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info">from</span> lerobot.robots.xlerobot.config_xlerobot <span class="log-info">import</span> XLerobotNewWiringConfig<br>
+                    <span class="log-info">from</span> lerobot.robots.xlerobot.xlerobot_new_wiring <span class="log-info">import</span> XLerobotNewWiring<br><br>
+                    config = XLerobotNewWiringConfig(<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;id=<span class="text-neon">"xlerobot"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;port1=<span class="text-neon">"/dev/xle_arms"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;port2=<span class="text-neon">"/dev/xle_head"</span>,<br>
+                    )<br>
+                    robot = XLerobotNewWiring(config)<br>
+                    robot.connect(calibrate=<span class="log-info">False</span>)<br>
+                    <span class="log-info">try</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;robot.calibrate()<br>
+                    <span class="log-info">finally</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;robot.disconnect()
+                </div>
+            </div>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Run it</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python calibrate_xlerobot.py
+                </div>
+            </div>
+
+            <p>The run has four prompts, in this order:</p>
+            <ol class="mt-2">
+                <li>Move <strong>both arms</strong> to the middle of their range and press <kbd>Enter</kbd>.</li>
+                <li>Sweep <strong>every arm joint</strong> through its full travel — all the way to each end stop, both arms.</li>
+                <li>Centre the <strong>head</strong> and press <kbd>Enter</kbd>.</li>
+                <li>The <strong>wheels</strong> are handled automatically as continuous-rotation motors.</li>
+            </ol>
+
+            <p class="mt-2">The result is written to <code>~/.cache/huggingface/lerobot/calibration/robots/xlerobot_new_wiring/xlerobot.json</code>. Reference calibrations from a known-good robot are versioned in the repo's <code>calibration/</code> directory as a sanity check or fallback.</p>
+
+            <h3 class="mt-4">9b — Verify it. Do not skip this.</h3>
+            <p class="mt-2">Calibration can complete successfully and still be wrong, and both failure modes are silent:</p>
+            <ul class="mt-2">
+                <li><strong>Range reads 0–4095 on a limited joint.</strong> The homing offset landed inside the travel range, so the raw count wrapped and min/max pinned to the encoder extremes. This is legitimate only for wrist roll and the wheels — a shoulder or elbow cannot travel 360°. Consequence: IK commands positions that do not exist and the arm drives into its hard stop.</li>
+                <li><strong>Range far narrower than its mirror.</strong> That joint was not swept fully. Consequence: the arm is artificially limited and IK fails to reach valid targets.</li>
+            </ul>
+
+            <p class="mt-2">The strongest check is <strong>left/right symmetry</strong>. Two independently-swept arms landing within a few percent of each other is not something you get by accident. Here is a known-good run:</p>
+
+            <div class="table-container mt-2 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Joint pair</th><th>Left span</th><th>Right span</th><th>Ratio</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>shoulder_pan</td><td>2715</td><td>2732</td><td>0.99</td></tr>
+                        <tr><td>shoulder_lift</td><td>2418</td><td>2433</td><td>0.99</td></tr>
+                        <tr><td>elbow_flex</td><td>2217</td><td>2197</td><td>0.99</td></tr>
+                        <tr><td>wrist_flex</td><td>2358</td><td>2335</td><td>0.99</td></tr>
+                        <tr><td>gripper</td><td>1526</td><td>1448</td><td>0.95</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <ul>
+                    <li>The calibration JSON exists in the cache directory above.</li>
+                    <li>No limited joint shows a 0–4095 range.</li>
+                    <li>Mirrored joints agree within a few percent.</li>
+                </ul>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><strong>Bus drops mid-calibration, always at the same joint</strong> → the cable is being tugged at that joint's travel extreme. Range recording retries only once, so a single dropped packet aborts the run. Add a service loop at that joint. Do <em>not</em> raise the retry count to mask it — the same dropout will recur mid-grasp, under power.</li>
+                    <li><strong>An arm falls when the script ends</strong> → torque was cut rather than bled off. Support the arms; see the gotchas in the repo's <code>diagnostics/README.md</code>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ══════════════════ PHASE D ══════════════════ -->
+        <span class="phase-label">Phase D — Make it move</span>
+
+        <section class="card step-card neon-hover-pink" id="step-10">
+            <div class="step-head">
+                <span class="step-num">10</span>
+                <h2>First Motion — the Wheels</h2>
+            </div>
+            <p class="step-meta">Full robot only · <strong>5 minutes</strong></p>
+
+            <p>The base is the safest thing to move first: it is the only subsystem where a mistake cannot drop an arm on your hand. Start here.</p>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>PUT THE ROBOT SOMEWHERE IT CAN MOVE.</strong> The default run drives forward a few centimetres. Clear a metre of floor and keep a hand near the power switch.
+            </div>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Base drive check</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># slow walk of a few centimetres — start here</span><br>
+                    <span>$</span> python diagnostics/base_drive_check.py --vx 0.05 --seconds 2<br><br>
+                    <span class="log-info"># rotate in place instead</span><br>
+                    <span>$</span> python diagnostics/base_drive_check.py --omega 15 --seconds 2
+                </div>
+            </div>
+
+            <p>This touches the wheels only — the arms are never commanded. It answers three questions: do the wheels turn in the commanded direction, does wheel odometry read back the velocity that was commanded, and <strong>does the base stop reliably on every exit path</strong>. That last one is the one that matters; the wheels are stopped in a <code>finally</code>, on <kbd>Ctrl-C</kbd>, and on <code>SIGTERM</code>, and the stop is verified by reading the speeds back rather than assumed.</p>
+
+            <p class="mt-2">The script <strong>refuses</strong> anything outside its first-motion envelope rather than quietly clamping it — over <strong>0.15&nbsp;m/s</strong>, over <strong>45&nbsp;deg/s</strong> yaw, or longer than <strong>10&nbsp;s</strong> and it prints <code>FATAL</code> and exits without moving. So an over-ambitious command is a message, never a surprise.</p>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <ul>
+                    <li>The base moves in the direction you commanded.</li>
+                    <li>Odometry agrees with the commanded velocity.</li>
+                    <li>The base stops, and stays stopped, when the script exits.</li>
+                </ul>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><strong>A wheel spins the wrong way</strong> → its motor ID does not match the position it is mounted in. IDs 3, 4, 5 map to left, back, right. Recheck against the <a href="build-guide.html#motor-configuration" class="text-neon text-underline">wiring diagram</a>.</li>
+                    <li><strong>A bus vanishes after the base drives</strong> → a cable was tugged loose. Check <code>dmesg</code> for <code>error -110</code> or <code>unable to enumerate</code>, and strain-relieve the leads before any further driving.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-11">
+            <div class="step-head">
+                <span class="step-num">11</span>
+                <h2>First Motion — the Arms</h2>
+            </div>
+            <p class="step-meta">Full robot and benchtop rig · <strong>15 minutes</strong></p>
+
+            <div class="alert-box alert-caution">
+                <div class="alert-accent-line"></div>
+                <strong>THE ARMS MOVE UNDER POWER.</strong> Clear the workspace, keep hands out of the swept volume, and keep a hand near the supply switch. Torque and acceleration are clamped by <code>src/xlerobot_pro/firmware_limits.py</code> — arms 450/40, wheels and neck 650/20 — but a clamped arm still hits hard enough to hurt.
+            </div>
+
+            <h3 class="mt-4">Full robot — whole-platform teleoperation</h3>
+            <p class="mt-2">On the finished 2-bus robot, the entry point that drives both arms, the head, and the base together is the Xbox teleop built on the <code>XLerobotNewWiring</code> class. It is the <code>_new_wiring</code> variant that matches this build — the plain <code>5_xlerobot_teleop_xbox.py</code> is the old three-bus layout and will not connect.</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Whole-robot teleop</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># confirm the controller is seen first</span><br>
+                    <span>$</span> python examples/pygame_test.py<br><br>
+                    <span>$</span> python examples/5_xlerobot_teleop_xbox_new_wiring.py
+                </div>
+            </div>
+
+            <h3 class="mt-4">Single-arm keyboard control</h3>
+            <p class="mt-2">Start with joint control to confirm each motor moves in the direction you expect, then move to end-effector control. <strong>Use the copies under <code>examples/xlerobot_examples/</code></strong> — they prompt for the port at startup, so nothing needs editing.</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Single-arm bring-up</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="log-info"># joint-by-joint, no IK</span><br>
+                    <span>$</span> python examples/xlerobot_examples/0_so100_keyboard_joint_control.py<br><br>
+                    <span class="log-info"># end-effector control</span><br>
+                    <span>$</span> python examples/xlerobot_examples/1_so100_keyboard_ee_control.py<br><br>
+                    <span class="log-info"># both ask for a port. Full robot: /dev/xle_arms</span><br>
+                    <span class="log-info"># Benchtop rig:  /dev/ttyACM0  (or press Enter for that default)</span><br>
+                    <span class="log-info"># then answer "n" to "recalibrate?" — you already did that in step 9</span>
+                </div>
+            </div>
+
+            <div class="alert-box alert-caution mt-2">
+                <div class="alert-accent-line"></div>
+                <strong>THESE SCRIPTS DRIVE ONE ARM AT MOTOR IDs 1–6.</strong> On the full robot, that is the <strong>left</strong> arm. Pointing them at <code>/dev/xle_arms</code> moves the left arm and never the right — the right arm is at IDs 7–12, which needs a different motor map, not just a different port. For two-armed work, use the whole-robot teleop above. A full walkthrough of the end-effector script is on the <a href="tutorial-first-reach.html" class="text-neon text-underline">First Reach tutorial</a>.
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>AVOID THE COPIES DIRECTLY UNDER <code>examples/</code>.</strong> <code>examples/0_so100_keyboard_joint_control.py</code> and <code>examples/2_dual_so100_keyboard_ee_control.py</code> hardcode <code>/dev/xle_right</code> and <code>/dev/xle_left</code> — port names from the older three-bus layout that do not exist on this build. They fail to connect until you edit the port near the bottom of the file. Same filename, different behaviour; check the directory.
+            </div>
+
+            <h3 class="mt-4">Cameras</h3>
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Verify the camera streams</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> v4l2-ctl --list-devices<br>
+                    <span>$</span> python examples/9_dual_wrist_camera.py<br>
+                    <span class="log-info"># RealSense head camera</span><br>
+                    <span>$</span> rs-enumerate-devices
+                </div>
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <ul>
+                    <li>Every arm joint moves, and moves in the direction you expect.</li>
+                    <li>The head tilts and pans.</li>
+                    <li>All three camera streams open.</li>
+                </ul>
+            </div>
+
+            <div class="if-fails">
+                <h4>If it fails</h4>
+                <ul>
+                    <li><strong>Arm jerks or moves wildly</strong> → almost always a motor ID mismatch or a reversed servo horn. Recheck <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</li>
+                    <li><strong>Arm drops when a script ends</strong> → torque was cut rather than bled off. Never call <code>disable_torque</code> on a loaded arm; step <code>Torque_Limit</code> down over several seconds instead.</li>
+                    <li><strong>RealSense frames time out</strong> → replug the USB 3.0 cable and re-run <code>rs-enumerate-devices</code>.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card step-card neon-hover-cyan" id="step-12">
+            <div class="step-head">
+                <span class="step-num">12</span>
+                <h2>Autonomous Cube Grasp</h2>
+            </div>
+            <p class="step-meta">Benchtop rig — read the note before running on the full robot · <strong>20 minutes</strong></p>
+
+            <p>This is the payoff: a RealSense camera detects a coloured cube, the detection is transformed into the arm's base frame, the differential-IK solver plans to it, and the arm reaches, grasps, lifts, and releases. You already validated the whole chain in software back in <a href="#step-6" class="text-neon">step 6</a> — this runs it against real hardware.</p>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>THIS DEMO IS WRITTEN FOR THE SINGLE-BUS BENCHTOP RIG.</strong> <code>grab_cube.py</code> opens <em>one</em> port and expects head tilt/pan at IDs&nbsp;1–2 and the arm at IDs&nbsp;7–12 <strong>on that same chain</strong>. On the finished 2-bus robot, IDs 1–2 of <code>/dev/xle_arms</code> are the <strong>left arm's shoulder joints</strong> — so the demo would connect happily, read shoulder angles as head angles, and aim the grasp confidently at the wrong place.
+                <br><br>
+                Run it on a single-bus rig, or set <code>XLEROBOT_BUS_PORT</code> to a bus that genuinely matches that map. This is a known limitation of the demo, not of your build.
+            </div>
+
+            <div class="terminal-box mt-4 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Autonomous cube grasp</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> cd ~/xlerobot-pro<br>
+                    <span class="log-info"># on a single-bus rig, point it at that adapter</span><br>
+                    <span>$</span> export XLEROBOT_BUS_PORT=<span class="text-neon">/dev/ttyACM0</span><br>
+                    <span>$</span> python examples/vision/grab_cube.py
+                </div>
+            </div>
+
+            <p><strong>Expected sequence:</strong> calibration loads → head angles print → firmware limits applied → RealSense captures → red blob detected → camera coordinates transformed into the base frame → IK solves → the arm reaches, grasps, lifts, releases.</p>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>HEAD GEOMETRY FEEDS THE TRANSFORM.</strong> The demo reads live head tilt and pan to place the camera relative to the arm base. Getting the two swapped produces a transform that looks entirely plausible and sends the arm confidently to the wrong place. Confirm against your hardware that <strong>ID 1 moves up/down</strong> and <strong>ID 2 moves left/right</strong> before trusting a grasp.
+            </div>
+
+            <h3 class="mt-4">No camera? Run the scripted motions</h3>
+            <p class="mt-2">The scripted demos in <code>examples/vision/scripted/</code> exercise the arm and the IK solver without any camera at all — useful for proving the motion half of the pipeline on its own.</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Scripted motions (no camera)</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python examples/vision/scripted/so101_simple.py<br>
+                    <span>$</span> python examples/vision/scripted/so101_reach_forward.py<br>
+                    <span class="log-info"># also: so101_pen_pickup, so101_pen_drop, so101_grab_cube,</span><br>
+                    <span class="log-info">#       so101_grab_apple, so101_hang</span>
+                </div>
+            </div>
+
+            <p class="font-small text-muted">These hardcode <code>/dev/ttyACM0</code> and the default SO-101 IDs 1–6. Edit the port at the top of the file to match your rig.</p>
+
+            <h3 class="mt-4">Debugging a grasp that misses</h3>
+            <p class="mt-2">When the arm moves but lands in the wrong place, these separate perception error from transform error from mechanical error:</p>
+
+            <div class="table-container mt-2">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Tool</th><th>What it tells you</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>diagnostics/check_vision_live.py</code></td><td>Live comparison of camera detection against the transformed base coordinates</td></tr>
+                        <tr><td><code>diagnostics/diagnose_fk_vs_vision.py</code></td><td>Place the gripper on the target by hand, then compare forward kinematics against what vision reports</td></tr>
+                        <tr><td><code>diagnostics/debug_transform_chain.py</code></td><td>Dumps every intermediate matrix in the camera-to-base transform</td></tr>
+                        <tr><td><code>diagnostics/visualize_color_detect.py</code></td><td>Overlays the detection on the last capture — is it even finding the cube?</td></tr>
+                        <tr><td><code>diagnostics/visualize_mujoco.py</code></td><td>Replays the whole transform + IK pipeline in simulation</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="done-when">
+                <h4>Done when</h4>
+                <p>The arm reaches the cube, closes the gripper on it, lifts it, and releases. Accuracy within 1–2&nbsp;cm is normal; better than that depends on how carefully the arm was assembled.</p>
+            </div>
+        </section>
+
+        <section class="card step-card" id="step-13">
+            <div class="step-head">
+                <span class="step-num">13</span>
+                <h2>Safety Limits &amp; Jetson Tuning</h2>
+            </div>
+            <p class="step-meta">Read before changing anything · <strong>10 minutes</strong></p>
+
+            <h3 class="mt-4">Firmware limits live in exactly one file</h3>
+            <p class="mt-2">System-wide maximum torque, acceleration, and speed are all in <code>src/xlerobot_pro/firmware_limits.py</code>. The defaults implement the paper's firmware saturation settings, sized so each power bus stays inside its fuse rating and a motor transient can never brown out the Jetson.</p>
+
+            <div class="table-container mt-4 mb-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Bus</th><th>Torque limit</th><th>Acceleration</th><th>Fuse</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Wheels / neck</td><td>650 <span class="text-muted">(≈1.91 N·m)</span></td><td>20</td><td>10 A</td></tr>
+                        <tr><td>Arms</td><td>450 <span class="text-muted">(≈1.32 N·m)</span></td><td>40</td><td>5 A</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>They are applied automatically when a robot connects and by the vision demos. <strong>Edit that file to change platform maximums — never the demo scripts.</strong> Then confirm what the motors actually stored:</p>
+
+            <div class="terminal-box mt-2 mb-4">
+                <div class="terminal-header">
+                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span>Verify the limits took</span>
+                </div>
+                <div class="terminal-body">
+                    <span>$</span> python diagnostics/verify_motor_limits.py
+                </div>
+            </div>
+
+            <p class="font-small text-muted">The arm limit of 450 is sized so that a <em>dual-arm stall</em> — every joint saturating at once — still fits inside the 5 A arm-bus fuse. Raising it changes that guarantee.</p>
+
+            <h3 class="mt-4">Jetson tuning</h3>
+            <div class="table-container mt-2">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Goal</th><th>Command</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Confirm GPU PyTorch is live</td><td><code>python -c "import torch; print(torch.cuda.is_available())"</code> → <code>True</code></td></tr>
+                        <tr><td>Maximum inference performance</td><td><code>sudo nvpmodel -m 0 &amp;&amp; sudo jetson_clocks</code></td></tr>
+                        <tr><td>Fix <code>open3d</code> OpenMP errors</td><td><code>export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libgomp.so.1</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box alert-note mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>ON BATTERY, PREFER THE DEFAULT POWER MODE.</strong> Max power mode is for bench work with the compute rail on mains. Running it off the Tri-Bus battery pushes the compute rail outside its power envelope.
             </div>
         </section>
 
         <section class="card">
-            <h2>3. Environment & Port Configuration</h2>
-            
-            <h3 class="mt-4">A. USB Serial Permissions</h3>
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Grant Permissions</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> sudo chmod 666 /dev/ttyACM*<br><br>
-                    <span class="log-info"># Verify your connected ports:</span><br>
-                    <span>$</span> lerobot-find-port
-                </div>
-            </div>
-
-            <h3 class="mt-4">B. Camera Verification</h3>
-            <div class="terminal-box mt-2">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>V4L2 Check</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> v4l2-ctl --list-devices
-                </div>
-            </div>
-        </section>
-
-        <section class="card neon-hover-pink">
-            <h2>4. Control & Teleoperation</h2>
-            <p>Test hardware integration using the tested scripts in the <code>examples/</code> directory (run them from there with <code>python3</code>). More — YOLO tracking, Joy-Con, and full keyboard/VR teleop — live in <code>examples/provided_examples/</code> as reference-only examples.</p>
+            <h2>Where Everything Lives</h2>
+            <p>Once the robot works, this is the map for going further.</p>
 
             <div class="table-container mt-4">
                 <table class="tech-table">
                     <thead>
-                        <tr><th>Mode</th><th>Script Name</th><th>Notes</th></tr>
+                        <tr><th>Path</th><th>Contents</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Joint control</strong></td><td><code>0_so100_keyboard_joint_control.py</code></td><td>Single-arm joint movement validation</td></tr>
-                        <tr><td><strong>End-effector (IK)</strong></td><td><code>2_dual_so100_keyboard_ee_control.py</code></td><td>Dual-arm joint + end-effector control</td></tr>
-                        <tr><td><strong>Wrist cameras</strong></td><td><code>9_dual_wrist_camera.py</code></td><td>Dual wrist-camera verification</td></tr>
-                        <tr><td><strong>Xbox teleop</strong></td><td><code>5_xlerobot_teleop_xbox.py</code></td><td>Gamepad control of the full platform</td></tr>
-                        <tr><td><strong>VR teleop</strong></td><td><code>teleop_hand_and_arm.py</code></td><td>VR hand + arm teleoperation</td></tr>
+                        <tr><td><code>src/lerobot/</code></td><td>Vendored LeRobot fork with the XLeRobot-Pro robots, teleoperators, and power tooling</td></tr>
+                        <tr><td><code>src/xlerobot_pro/</code></td><td>Vision + IK library, robot model, and the firmware safety limits</td></tr>
+                        <tr><td><code>examples/</code></td><td>Tested bring-up, teleoperation, and policy examples</td></tr>
+                        <tr><td><code>examples/vision/</code></td><td>Autonomous perception + IK demos</td></tr>
+                        <tr><td><code>examples/xlerobot_examples/</code></td><td>Upstream references — unverified against this build, may need edits</td></tr>
+                        <tr><td><code>diagnostics/</code></td><td>Bus, motor, and frame-transform debugging tools</td></tr>
+                        <tr><td><code>calibration/</code></td><td>Reference motor calibrations from a known-good robot</td></tr>
+                        <tr><td><code>tests/</code></td><td>Hardware-free checks (<code>make smoke</code>)</td></tr>
                     </tbody>
                 </table>
             </div>
-        </section>
 
-        <section class="card">
-            <div class="flex-wrap-center mb-4">
-                <h2 class="card-no-margin">Troubleshooting Quick Reference</h2>
-                <a href="troubleshooting.html" class="btn-neon btn-outline-pink">Full Diagnostic Guide ➔</a>
-            </div>
-            
-            <div class="grid-2 mt-4">
+            <h3 class="mt-4">Going further</h3>
+            <div class="grid-2 mt-2">
                 <div class="diag-grid-card">
-                    <strong>Permission Denied</strong>
-                    <p>Run <code>sudo chmod 666 /dev/ttyACM*</code> to unlock USB ports.</p>
+                    <strong>Record a dataset</strong>
+                    <p>Teleoperate while <code>lerobot-record</code> captures synchronised camera and joint data into a LeRobot dataset.</p>
                 </div>
                 <div class="diag-grid-card">
-                    <strong>Import Error</strong>
-                    <p>Ensure you ran <code>pip install -e .</code> inside the <code>xlerobot-pro</code> folder.</p>
+                    <strong>Train and run a policy</strong>
+                    <p><code>lerobot-train</code>, then <code>examples/policies/</code> for running SmolVLA and diffusion policies on the robot.</p>
+                </div>
+                <div class="diag-grid-card">
+                    <strong>VR teleoperation</strong>
+                    <p><code>examples/teleop_hand_and_arm.py</code>, plus the XLeVR/TeleVuer stack from the upstream XLeRobot VR docs.</p>
+                </div>
+                <div class="diag-grid-card">
+                    <strong>Something is broken</strong>
+                    <p>The <a href="troubleshooting.html" class="text-neon text-underline">Troubleshooting</a> page indexes failures by symptom, including the ones that present as something other than their cause.</p>
                 </div>
             </div>
         </section>
 
         <div class="text-center mt-large">
-            <p class="credits-text cta-lead">Ready to train your robot?</p>
+            <p class="credits-text cta-lead">Robot moving? Learn Cartesian control next.</p>
             <a href="tutorial-first-reach.html" class="btn-neon btn-github btn-cta">Start the First Reach Tutorial ↗</a>
         </div>
 

@@ -30,6 +30,7 @@
                 <a href="components.html" class="nav-link">Components</a>
                 <a href="build-guide.html" class="nav-link">Build Guide</a>
                 <a href="software.html" class="nav-link">Software</a>
+                <a href="troubleshooting.html" class="nav-link active">Troubleshooting</a>
             </div>
             <div class="nav-actions">
                 <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" class="btn-neon btn-github">GitHub ↗</a>
@@ -57,12 +58,17 @@
                             <tr><th>Symptom</th><th>Quick Fix</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>No motors move</strong></td><td>Check 12V DC cable from battery to motor board</td></tr>
-                            <tr><td><strong>Permission denied</strong></td><td><code class="code-pink">sudo chmod 666 /dev/ttyACM0</code></td></tr>
-                            <tr><td><strong>Motor count mismatch</strong></td><td>Run <code class="code-cyan">lerobot-find-port</code> and check IDs</td></tr>
-                            <tr><td><strong>Single unresponsive</strong></td><td>Re-assign its ID with <code class="code-cyan">set_motor_id.py</code></td></tr>
+                            <tr><td><strong>No motors move</strong></td><td>Check 12V DC cable from battery to motor board — 5&nbsp;V USB will not drive them</td></tr>
+                            <tr><td><strong>Permission denied</strong></td><td><code class="code-cyan">sudo usermod -aG dialout $USER</code>, then re-login</td></tr>
+                            <tr><td><strong>Whole bus silent</strong></td><td>Duplicate IDs — scan each motor in isolation</td></tr>
+                            <tr><td><strong>Motor count mismatch</strong></td><td>Scan the bus; the missing ID names the culprit</td></tr>
+                            <tr><td><strong>Single unresponsive</strong></td><td>Re-assign its ID with <code class="code-cyan">set_motor_id.py</code>, one motor on the chain</td></tr>
                             <tr><td><strong>Arm jerks / wrong dir</strong></td><td>Verify IDs match the motor map</td></tr>
                             <tr><td><strong>Grinding noise</strong></td><td>Inspect servo horn alignment; replace if stripped</td></tr>
+                            <tr><td><code class="code-pink">could not open /dev/xle_arms</code></td><td>The bus symlinks do not exist — run <code class="code-cyan">python diagnostics/detect_buses.py --write</code></td></tr>
+                            <tr><td><strong>Answers the bus, never moves</strong></td><td>Logic power without motor power — check <code class="code-cyan">Present_Voltage</code></td></tr>
+                            <tr><td><strong>Arm drops when a script ends</strong></td><td>Torque cut instead of bled off — step <code class="code-cyan">Torque_Limit</code> down over seconds</td></tr>
+                            <tr><td><strong>Bus vanishes after driving</strong></td><td>A cable was tugged loose — check <code class="code-cyan">dmesg</code>, then strain-relieve it</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -92,8 +98,9 @@
                             <tr><th>Symptom</th><th>Quick Fix</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>Import errors</strong></td><td><code class="code-cyan">pip install -e .</code> in repository root</td></tr>
-                            <tr><td><strong>Module not found</strong></td><td>Activate the <code class="code-cyan">lerobot</code> env, then <code class="code-cyan">pip install -e ".[all]"</code></td></tr>
+                            <tr><td><strong>Import errors</strong></td><td><code class="code-cyan">pip install -e ".[all]"</code> from the repo root, inside the venv</td></tr>
+                            <tr><td><strong>CUDA unavailable</strong></td><td>Check for a <code class="code-pink">+cpu</code> torch build; reinstall from the Jetson index</td></tr>
+                            <tr><td><strong>Module not found</strong></td><td>Use the venv interpreter directly: <code class="code-cyan">~/.venvs/xlerobot-pro/bin/python</code></td></tr>
                             <tr><td><strong>Joy-Con not pairing</strong></td><td><code class="code-pink">sudo apt install joycond</code>, enable Bluetooth</td></tr>
                         </tbody>
                     </table>
@@ -116,6 +123,109 @@
                 </div>
             </section>
         </div>
+
+        <hr class="divider-large">
+
+        <section class="card card-accent-purple">
+            <h2>Failure Signatures</h2>
+            <p>Every one of these presents as something other than its cause. That is exactly why they cost people hours — and why they are worth reading once before you need them.</p>
+
+            <div class="table-container mt-4">
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>What you see</th><th>What it actually is</th><th>Fix</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="code-pink">[TxRxResult] There is no status packet!</code><br><span class="font-small text-muted">Whole bus dead, yet each motor works in isolation</span></td>
+                            <td><strong>Duplicate motor IDs.</strong> Feetech is half-duplex — two motors on the same ID transmit together and the collision corrupts every packet on the wire, not just theirs. Reads exactly like a power or cabling fault.</td>
+                            <td>Scan each motor in isolation and correct the duplicates. See <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">device descriptor read/64, error -110</code><br><code class="code-pink">unable to enumerate USB device</code></td>
+                            <td><strong>USB physical layer.</strong> The adapter is powered and looks connected but never enumerates, so its bus is <em>invisible</em> rather than faulty.</td>
+                            <td>New cable first, then plug directly into the Jetson bypassing any hub, then try a different port.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">torch.cuda.is_available() → False</code></td>
+                            <td><strong>Wrong PyTorch wheel or wrong environment.</strong> Either the CPU wheel won the resolve (check for a <code>+cpu</code> suffix) or torch was installed inside conda.</td>
+                            <td>Reinstall from the Jetson index by direct wheel URL, into a venv built on system Python 3.10.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bus drops mid-calibration, always at the same joint</strong></td>
+                            <td><strong>Cable tugged at that joint's travel extreme.</strong> Range recording retries only once, so a single dropped packet aborts the run.</td>
+                            <td>Add a service loop at that joint. <strong>Do not raise the retry count to mask it</strong> — the same dropout will recur mid-grasp, under power.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">Permission denied: /dev/ttyACM0</code></td>
+                            <td><strong>User not in the <code>dialout</code> group</strong> — or the group was added without logging back in.</td>
+                            <td><code class="code-cyan">sudo usermod -aG dialout $USER</code>, then log out and back in.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motors answer every scan but never move</strong><br><span class="font-small text-muted">Load pinned at <code>1024 + Torque_Limit</code>, current 0</span></td>
+                            <td><strong>Logic power without motor power.</strong> The servos have enough to talk and nothing to move with. A lit LED proves nothing here — the STS3215 has no external LED, so any light you see belongs to the adapter board and only means its barrel jack has voltage.</td>
+                            <td>Read <code>Present_Voltage</code>: ~120–135 means 12&nbsp;V and is healthy; ~50 means the bus is on a 5&nbsp;V rail. Take 12&nbsp;V from a battery's car/DC socket, never a USB-to-barrel cable.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">could not open port /dev/xle_arms</code></td>
+                            <td><strong>The udev symlinks were never created</strong>, or a rules file from an older build has different serials in it.</td>
+                            <td>Delete any stale <code>/etc/udev/rules.d/99-xlerobot.rules</code>, then run <code class="code-cyan">python diagnostics/detect_buses.py --write</code> — see <a href="software.html#step-7" class="text-neon text-underline">software step 7</a>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grasp lands confidently in the wrong place</strong><br><span class="font-small text-muted">Motion is smooth, the target is simply not there</span></td>
+                            <td><strong>The camera-to-base transform is wrong, not the IK.</strong> Head tilt and pan feed that transform, so swapping the two axes — or reading the wrong motors as "head" — produces a transform that looks entirely plausible.</td>
+                            <td>Confirm on your hardware that ID&nbsp;1 moves up/down and ID&nbsp;2 left/right. Then work through <code>diagnostics/debug_transform_chain.py</code> and <code>diagnose_fk_vs_vision.py</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>A script connects, but drives the wrong arm</strong></td>
+                            <td><strong>Single-arm scripts address motor IDs 1–6</strong>, which on this build is the left arm. The right arm is at 7–12, so a port change alone will never reach it.</td>
+                            <td>Use the whole-robot teleop for two-armed work — <a href="software.html#step-11" class="text-neon text-underline">software step 11</a>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>An arm falls the moment a script starts or ends</strong></td>
+                            <td><strong>Torque was cut in one write rather than bled off.</strong> Some read-only tools release torque deliberately so you can pose the arm by hand — <code>diagnostics/read_motors.py</code> is one — and <code>bus.disconnect()</code> disables torque by default.</td>
+                            <td>Lower the arms before running anything that releases torque. In your own code, pass <code>disconnect(disable_torque=False)</code> and step <code>Torque_Limit</code> down over several seconds instead of zeroing it.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">UEFI Interactive Shell v2.2 — Shell&gt;</code></td>
+                            <td><strong>No bootable storage.</strong> Run <code>map -r</code>: if the only entries are <code>MemoryMapped</code> and <code>Fv(...)</code>, both are internal (RAM and the QSPI firmware volume) and zero block devices are present.</td>
+                            <td>Seat a flashed microSD, or confirm firmware is 36.x for a JetPack 6 card.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">Error: could not make network connection</code></td>
+                            <td><strong>Not a network fault.</strong> UEFI exhausted its boot order and fell through to PXE as a last resort. It is the tail end of "nothing bootable found."</td>
+                            <td>Ignore it. Disappears once a bootable card is present.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-pink">EXT4-fs (mmcblk0p1): error count since last fsck</code></td>
+                            <td><strong>Filesystem damage on the card</strong>, usually from power loss during a write. Accumulates silently.</td>
+                            <td>Schedule an <code>fsck</code> at next boot. Prefer clean shutdowns — SD cards tolerate abrupt power cuts poorly.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card card-accent-cyan">
+            <h2>Diagnostic Order</h2>
+            <p>When a bus misbehaves, this sequence separates causes fastest. Each step rules out an entire class of problem, so work them in order rather than jumping to the most interesting theory.</p>
+
+            <ol class="mt-4">
+                <li class="mb-4"><strong>Does the adapter enumerate?</strong><br>
+                    <code class="code-cyan">lsusb | grep 1a86</code> and <code class="code-cyan">ls /dev/ttyACM*</code>. No device node means the problem is USB, not motors — stop looking at the robot.</li>
+                <li class="mb-4"><strong>Does any motor answer?</strong><br>
+                    Run <code class="code-cyan">scan_port()</code> across all baud rates. A single reply proves power, wiring, baud rate, and protocol all work.</li>
+                <li class="mb-4"><strong>Does one motor answer but not the chain?</strong><br>
+                    That is duplicate IDs, essentially every time. Go to <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</li>
+                <li class="mb-4"><strong>Does the chain answer but drop under motion?</strong><br>
+                    Cable routing at a rotating joint. Find the joint that reproduces it and add slack there.</li>
+            </ol>
+
+            <div class="alert-box alert-caution mt-4">
+                <div class="alert-accent-line"></div>
+                <strong>RESIST CHANGING TWO THINGS AT ONCE.</strong> Most of the difficulty in bringing one of these robots up comes from a working subsystem being disturbed while chasing a broken one.
+            </div>
+        </section>
 
         <hr class="divider-large">
 
