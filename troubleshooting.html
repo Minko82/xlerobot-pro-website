@@ -58,7 +58,7 @@
                             <tr><th>Symptom</th><th>Quick Fix</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>No motors move</strong></td><td>Check 12V DC cable from battery to motor board — 5&nbsp;V USB will not drive them</td></tr>
+                            <tr><td><strong>No motors move</strong></td><td>Check each board's power input: Bus 1 from the 12&nbsp;V car outlet, Bus 2 through the USB-C PD cable. A plain 5&nbsp;V USB feed will not drive them</td></tr>
                             <tr><td><strong>Permission denied</strong></td><td><code class="code-cyan">sudo usermod -aG dialout $USER</code>, then re-login</td></tr>
                             <tr><td><strong>Whole bus silent</strong></td><td>Duplicate IDs — scan each motor in isolation</td></tr>
                             <tr><td><strong>Motor count mismatch</strong></td><td>Scan the bus; the missing ID names the culprit</td></tr>
@@ -84,7 +84,7 @@
                         <tbody>
                             <tr><td><strong>Camera not detected</strong></td><td><code class="code-cyan">ls /dev/video*</code> to check path</td></tr>
                             <tr><td><strong>Black frame</strong></td><td>Check lens cap; test with <code class="code-cyan">cv2.VideoCapture</code></td></tr>
-                            <tr><td><strong>YOLO not tracking</strong></td><td>Verify camera index in script</td></tr>
+                            <tr><td><strong>Color detector misses the target</strong></td><td>Check the camera and the color thresholds with <code>diagnostics/visualize_color_detect.py</code></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -164,7 +164,7 @@
                         <tr>
                             <td><strong>Motors answer every scan but never move</strong><br><span class="font-small text-muted">Load pinned at <code>1024 + Torque_Limit</code>, current 0</span></td>
                             <td><strong>Logic power without motor power.</strong> The servos have enough to talk and nothing to move with. A lit LED proves nothing here — the STS3215 has no external LED, so any light you see belongs to the adapter board and only means its barrel jack has voltage.</td>
-                            <td>Read <code>Present_Voltage</code>: ~120–135 means 12&nbsp;V and is healthy; ~50 means the bus is on a 5&nbsp;V rail. Take 12&nbsp;V from a battery's car/DC socket, never a USB-to-barrel cable.</td>
+                            <td>Read <code>Present_Voltage</code>: ~120–135 means 12&nbsp;V and is healthy; ~50 means the bus is on a 5&nbsp;V rail. Power Bus 1 from the 12&nbsp;V car outlet and Bus 2 through the USB-C PD cable in the BOM, not a plain 5&nbsp;V USB-to-barrel cable.</td>
                         </tr>
                         <tr>
                             <td><code class="code-pink">could not open port /dev/xle_arms</code></td>
@@ -241,7 +241,7 @@
                     <ul class="font-small">
                         <li><code>ls /dev/video*</code> shows no entries or fewer cameras than expected.</li>
                         <li><code>cv2.VideoCapture()</code> returns <code>False</code> for <code>ret</code>.</li>
-                        <li>YOLO tracking script errors with <em>“no camera found”</em>.</li>
+                        <li>Vision scripts error with <em>“no camera found”</em>.</li>
                         <li>Camera LED is off even though it’s plugged in.</li>
                     </ul>
                 </div>
@@ -249,7 +249,7 @@
                     <h3 class="symptom-title">Likely Causes</h3>
                     <ul class="font-small">
                         <li><strong>USB cable not seated:</strong> Loose connection or damaged cable.</li>
-                        <li><strong>USB hub not powered:</strong> Hub can’t supply enough current for multiple cameras.</li>
+                        <li><strong>Camera behind a hub:</strong> Cameras and bus adapters should plug directly into the Jetson; behind a hub they can fail to enumerate.</li>
                         <li><strong>Wrong device index:</strong> Camera is at a different path than the script expects.</li>
                         <li><strong>Kernel driver issue:</strong> Camera module not loaded (rare on Ubuntu).</li>
                     </ul>
@@ -259,7 +259,7 @@
             <h3 class="mt-4 border-top-light">Diagnostic & Fix Steps</h3>
             
             <p class="mt-4"><strong>1. Check Physical Connection:</strong> Unplug and replug the camera. Try a different USB port. Try without the USB hub (direct to PC) to isolate the issue.</p>
-            <p class="mt-4"><strong>2. Check USB Power:</strong> If using a USB hub, make sure it’s powered. Low-power hubs may not supply enough current for multiple cameras.</p>
+            <p class="mt-4"><strong>2. Check the USB path:</strong> Plug each camera directly into the Jetson rather than through a hub.</p>
             <p class="mt-4"><strong>3. Check Device Detection:</strong> You should see even-numbered entries (<code>/dev/video0</code>, <code>/dev/video2</code>) — one per camera.</p>
             <div class="terminal-box mt-2 mb-2">
                 <div class="terminal-header">
@@ -290,13 +290,13 @@
                     <ul class="status-list status-list-green">
                         <li><code>ls /dev/video*</code> shows the expected number of devices.</li>
                         <li>The Python camera test returns <strong>OK</strong>.</li>
-                        <li>YOLO or teleoperation scripts run without camera errors.</li>
+                        <li>Vision and teleoperation scripts run without camera errors.</li>
                     </ul>
                 </div>
                 <div class="status-card-blue">
                     <h4 class="status-title-blue">Prevention Tips</h4>
                     <ul class="status-list status-list-blue">
-                        <li>Use a <strong>powered USB hub</strong> for multiple cameras.</li>
+                        <li>Plug cameras <strong>directly into the Jetson</strong>, not through a hub.</li>
                         <li>Always use the <strong>same USB ports</strong>—paths change when swapped.</li>
                         <li>Label USB cables to avoid confusion during setup.</li>
                     </ul>

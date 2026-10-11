@@ -54,7 +54,7 @@
 
         <section class="card">
             <h2>1. Build Overview</h2>
-            <p>This guide walks you through building the platform with 2× SO-101 follower arms, a neck/head assembly, an omni-wheel base on an IKEA RÅSKOG cart, and an NVIDIA Jetson compute node mounted near the neck/base region.</p>
+            <p>This guide walks you through building the platform with 2× SO-101 follower arms, a neck/head assembly, an omni-wheel base on an IKEA RÅSKOG cart, and an NVIDIA Jetson Orin Nano Super in a passively ducted printed enclosure at the center of the cart.</p>
 
             <figure class="build-render">
                 <img src="media/images/assembled_robot.png" alt="Fully assembled XLeRobot-Pro — dual SO-101 arms and a neck-mounted camera on a three-tier IKEA RÅSKOG cart with omni-wheels" loading="lazy">
@@ -62,7 +62,7 @@
             </figure>
 
             <h3 class="mt-4">The 2-Bus Separation</h3>
-            <p>All 17 motors run on two independent buses, each carrying two daisy chains. Splitting the buses this way keeps the high-torque wheel and neck motors off the same power budget as the arms, so an arm stall cannot brown out the drive base.</p>
+            <p>All 17 motors run on two buses, each carrying two daisy chains. The 12 arm servos (Bus 1) draw from the power station's 12 V car outlet, while the head and wheels (Bus 2) and the Jetson each draw from their own USB-C outlet. In the paper's stress tests, this layout and the firmware settings gave no brownouts in 5 trials, against 5 of 5 on the original shared supply. The outlets still share one battery.</p>
 
             <div class="table-container mt-4 mb-4">
                 <table class="tech-table">
@@ -274,28 +274,28 @@
             <ul class="mt-2">
                 <li>Keep mass low for stability</li>
                 <li>Keep USB ports accessible</li>
-                <li>Minimize cable length to the <strong>two</strong> motor control boards, two wrist cameras, one head camera, and power distribution</li>
+                <li>Minimize cable length to the <strong>two</strong> motor control boards, the head camera, and the power station (plus the wrist cameras, if you add them)</li>
             </ul>
 
             <div class="alert-box alert-caution mt-4">
                 <div class="alert-accent-line"></div>
-                <strong>PLUG BOTH BUS ADAPTERS DIRECTLY INTO THE JETSON.</strong> Not through a hub. USB-serial adapters behind two hub levels — especially sharing a tree with the RealSense D435 — fail enumeration with <code>error -110</code> and <code>unable to enumerate USB device</code>. The adapter looks physically connected but never creates a <code>/dev/ttyACM*</code> node, so its bus is <em>invisible</em> rather than broken. That is five USB devices on the Jetson: two adapters and three cameras. Plan the port budget around it — which is also why the software guide has you <a href="software.html#step-2" class="text-neon text-underline">work over SSH</a> rather than plugging in a keyboard.
+                <strong>PLUG BOTH BUS ADAPTERS DIRECTLY INTO THE JETSON.</strong> Not through a hub. USB-serial adapters behind two hub levels — especially sharing a tree with the RealSense D435 — fail enumeration with <code>error -110</code> and <code>unable to enumerate USB device</code>. The adapter looks physically connected but never creates a <code>/dev/ttyACM*</code> node, so its bus is <em>invisible</em> rather than broken. With the RealSense that is three USB devices on the Jetson, and optional wrist cameras add two more. Plan the port budget around it — which is also why the software guide has you <a href="software.html#step-2" class="text-neon text-underline">work over SSH</a> rather than plugging in a keyboard.
             </div>
         </section>
 
         <section class="card">
             <h2>5. Wiring (2-Bus)</h2>
-            <p>Seventeen motors, four daisy chains, two bus hubs, five USB cables. The diagram below is the complete reference — chain order per limb, which chain lands on which hub, and how the hubs and cameras reach the Jetson. Motor positions are taken straight from the robot's URDF.</p>
+            <p>Seventeen motors, four daisy chains, two bus hubs, and three USB cables to the Jetson (five with the optional wrist cameras). The diagram below is the complete reference — chain order per limb, which chain lands on which hub, and how the hubs and cameras reach the Jetson. Motor positions are taken straight from the robot's URDF.</p>
 
             <figure class="mt-4 mb-4">
                 <a href="media/images/wiring-guide.png" target="_blank" rel="noopener">
-                    <img src="media/images/wiring-guide.png" alt="Complete XLeRobot-Pro wiring guide: 17 motors in four daisy chains — left arm IDs 1-6, right arm IDs 7-12, head IDs 1-2, wheels IDs 3-5. Arm chains join Bus 1 hub, head and wheel chains join Bus 2 hub, each hub reaching the Jetson through one USB adapter. The three cameras connect directly to the Jetson, and a 12 V battery feeds both hubs and the computer." class="full-width-image" loading="lazy">
+                    <img src="media/images/wiring-guide.png" alt="Complete XLeRobot-Pro wiring guide: 17 motors in four daisy chains — left arm IDs 1-6, right arm IDs 7-12, head IDs 1-2, wheels IDs 3-5. Arm chains join Bus 1 hub, head and wheel chains join Bus 2 hub, each hub reaching the Jetson through one USB adapter. The cameras connect directly to the Jetson." class="full-width-image" loading="lazy">
                 </a>
-                <figcaption class="font-small mt-2 text-muted">Full wiring reference — click to open at full size. Each motor has two identical sockets, so either one can be "in" or "out"; the last motor in every chain leaves one socket empty.</figcaption>
+                <figcaption class="font-small mt-2 text-muted">Full wiring reference — click to open at full size. Each motor has two identical sockets, so either one can be "in" or "out"; the last motor in every chain leaves one socket empty. The power side of this diagram is simplified: the actual build uses three separate outlets on the power station, described under Power Wiring below.</figcaption>
             </figure>
 
             <h3 class="mt-4">A) Motor Wiring</h3>
-            <p class="mt-2">Four daisy chains. One cable carries both power and the control signal, which is why each motor needs only the single wire to its neighbour. The free socket on the last motor of each chain goes to its bus hub.</p>
+            <p class="mt-2">Four daisy chains. One cable carries both power and the control signal, which is why each motor needs only the single wire to its neighbour. The first motor in each chain plugs into its bus hub, and the last motor's spare socket stays empty.</p>
             <ul class="mt-2">
                 <li><strong>Bus 1 — Left arm (1→2→3→4→5→6):</strong> start at the shoulder, end at the gripper; chain head plugs into the Bus 1 hub</li>
                 <li><strong>Bus 1 — Right arm (7→8→9→10→11→12):</strong> exactly the same order on the other arm; also into the Bus 1 hub</li>
@@ -321,7 +321,7 @@
             </div>
 
             <h3 class="mt-4">B) Power Wiring</h3>
-            <p class="mt-2">There are three separate things here and confusing them costs hours: servo power, Jetson power, and USB. USB carries data only.</p>
+            <p class="mt-2">There are three separate things here and confusing them costs hours: servo power, Jetson power, and USB. The USB cables between the Jetson and the bus boards carry data only; all power comes from the power station.</p>
 
             <div class="table-container mt-4 mb-4">
                 <table class="tech-table">
@@ -329,23 +329,23 @@
                         <tr><th>Rail</th><th>Feeds</th><th>Requirement</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Compute</td><td>Jetson carrier</td><td>Barrel jack or USB-C PD, per NVIDIA spec</td></tr>
-                        <tr><td><strong>Servo — arms</strong></td><td>Bus 1, 12 motors</td><td>12 V, several amps — the largest aggregate load on the robot</td></tr>
-                        <tr><td><strong>Servo — head/base</strong></td><td>Bus 2, 5 motors</td><td>12 V</td></tr>
+                        <tr><td>Compute</td><td>Jetson carrier</td><td>Its own USB-C outlet, through the USB-C to DC5525 PD cable into the barrel jack</td></tr>
+                        <tr><td><strong>Servo — arms</strong></td><td>Bus 1, 12 motors</td><td>The 12 V car outlet (rated 10 A), through the car-socket to DC5521 cable. This is the largest load on the robot; the arm bus is budgeted at 5 A</td></tr>
+                        <tr><td><strong>Servo — head/base</strong></td><td>Bus 2, 5 motors</td><td>Its own USB-C outlet, through the USB-C to DC5521 PD cable</td></tr>
                         <tr><td>Adapter boards</td><td>Bus transceivers</td><td>Barrel jack on <strong>each</strong> board</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <ul class="mt-2">
-                <li>12 V battery mounted low and upright in the cart, with strain relief at the battery and distribution points</li>
-                <li>Main power line routed to a distribution point on the middle shelf</li>
-                <li>Separate fused outputs for the Bus 1 hub (arms), the Bus 2 hub (head + wheels), and the Jetson power path — the repo's firmware limits assume <strong>5 A on the arm bus and 10 A on the head/wheel bus</strong>, so keep the fuses and the torque ceilings in <code>firmware_limits.py</code> consistent with each other</li>
+                <li>Mount the Anker SOLIX C300 DC power station (2.8 kg) low in the cart, with strain relief on every cable that leaves it</li>
+                <li>Each load plugs into its own outlet on the power station; there is no shared distribution point</li>
+                <li>The build adds no fuses: each outlet on the power station shuts off on overload. The arm torque setting (450) keeps the estimated arm-bus current under a <strong>5 A budget</strong>, half the car outlet's 10 A rating. If you change the torque settings in <code>firmware_limits.py</code>, re-check them against that budget</li>
             </ul>
 
             <div class="alert-box alert-caution mt-4">
                 <div class="alert-accent-line"></div>
-                <strong>A 5 V USB power bank will not run these servos.</strong> STS3215s want 6–12 V. Off a 5 V USB output they respond intermittently or not at all — while the adapter board's LED glows normally on a few milliamps, so everything <em>looks</em> fine. If you power from a bank, take <strong>12 V from its car/DC socket</strong>, never a USB-to-barrel cable.
+                <strong>Plain 5 V USB will not run these servos.</strong> These are the 12 V STS3215s. Off a 5 V USB output they respond intermittently or not at all, while the adapter board's LED glows normally on a few milliamps, so everything <em>looks</em> fine. Power Bus 1 from the <strong>12 V car outlet</strong> and Bus 2 through the <strong>USB-C PD cable</strong> in the BOM, not a plain 5 V USB-to-barrel cable.
             </div>
 
             <div class="alert-box alert-note mt-4">
@@ -377,7 +377,7 @@
 
             <div class="alert-box alert-caution mt-4">
                 <div class="alert-accent-line"></div>
-                <strong>CAUTION:</strong> Do not push the fully assembled robot like a normal cart — <strong>lift it (~12 kg) to relocate</strong> to protect the motor gears.
+                <strong>CAUTION:</strong> Do not push the fully assembled robot like a normal cart — <strong>lift it to relocate</strong> to protect the motor gears.
             </div>
 
             <h3 class="mt-4">Final Checklist</h3>
@@ -517,7 +517,7 @@
             </div>
 
             <h3 class="mt-4">E) Mechanical IK Accuracy</h3>
-            <p class="font-small">Once the arm takes end-effector commands, check that the gripper actually arrives where it was told. Expect <strong>1–2&nbsp;cm</strong>; worse than that is mechanical, not software — look for loose servo horns, a stripped gear, or a bent bracket. The <a href="tutorial-first-reach.html" class="text-neon text-underline">First Reach tutorial</a> walks through this end to end.</p>
+            <p class="font-small">Once the arm takes end-effector commands, check that the gripper actually arrives where it was told. Reach accuracy has not been measured formally; if the gripper misses by more than a couple of centimeters, the cause is usually mechanical, not software — look for loose servo horns, a stripped gear, or a bent bracket. The <a href="tutorial-first-reach.html" class="text-neon text-underline">First Reach tutorial</a> walks through this end to end.</p>
 
             <div class="terminal-box mt-2 mb-4">
                 <div class="terminal-header">
@@ -560,7 +560,7 @@
                 <div class="status-card-blue">
                     <h4 class="status-title-blue">Then Go To</h4>
                     <ul class="status-list status-list-blue">
-                        <li><a href="software.html#step-12" class="text-neon text-underline">Autonomous cube grasp</a></li>
+                        <li><a href="software.html#step-12" class="text-neon text-underline">Color-target grasp demo</a></li>
                         <li><a href="tutorial-first-reach.html" class="text-neon text-underline">First Reach tutorial</a></li>
                         <li><a href="troubleshooting.html" class="text-neon text-underline">Troubleshooting</a>, if anything above failed</li>
                     </ul>

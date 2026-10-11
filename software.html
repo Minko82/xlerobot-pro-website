@@ -209,7 +209,7 @@
                         <tr><td colspan="3" class="text-muted font-small"><strong>Phase D — Make it move</strong></td></tr>
                         <tr><td><a href="#step-10" class="text-neon">10</a></td><td>First motion — the wheels</td><td>5 min</td></tr>
                         <tr><td><a href="#step-11" class="text-neon">11</a></td><td>First motion — the arms</td><td>15 min</td></tr>
-                        <tr><td><a href="#step-12" class="text-neon">12</a></td><td>Autonomous cube grasp</td><td>20 min</td></tr>
+                        <tr><td><a href="#step-12" class="text-neon">12</a></td><td>Color-target grasp demo</td><td>20 min</td></tr>
                         <tr><td><a href="#step-13" class="text-neon">13</a></td><td>Safety limits and Jetson tuning</td><td>10 min</td></tr>
                     </tbody>
                 </table>
@@ -335,7 +335,7 @@
             </div>
             <p class="step-meta">Work from your laptop instead of a monitor · <strong>10 minutes</strong></p>
 
-            <p>This is the single change that makes the rest of the setup pleasant, and it is not optional in practice. The Jetson has few USB ports, and the two bus adapters plus three cameras need five of them.</p>
+            <p>This is the single change that makes the rest of the setup pleasant, and it is not optional in practice. The Jetson has few USB ports, and the two bus adapters and the RealSense need three of them (five with the optional wrist cameras).</p>
 
             <ul class="mt-2">
                 <li><strong>No hub required.</strong> A keyboard and monitor occupy ports you need for hardware. Working remotely leaves every port free — so you never have to put a motor adapter behind a hub, and you avoid the enumeration failures that come with it.</li>
@@ -958,7 +958,7 @@
         <section class="card step-card neon-hover-cyan" id="step-12">
             <div class="step-head">
                 <span class="step-num">12</span>
-                <h2>Autonomous Cube Grasp</h2>
+                <h2>Color-Target Grasp Demo</h2>
             </div>
             <p class="step-meta">Benchtop rig — read the note before running on the full robot · <strong>20 minutes</strong></p>
 
@@ -974,7 +974,7 @@
             <div class="terminal-box mt-4 mb-4">
                 <div class="terminal-header">
                     <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Autonomous cube grasp</span>
+                    <span>Color-target grasp demo</span>
                 </div>
                 <div class="terminal-body">
                     <span>$</span> cd ~/xlerobot-pro<br>
@@ -1029,7 +1029,7 @@
 
             <div class="done-when">
                 <h4>Done when</h4>
-                <p>The arm reaches the cube, closes the gripper on it, lifts it, and releases. Accuracy within 1–2&nbsp;cm is normal; better than that depends on how carefully the arm was assembled.</p>
+                <p>The arm reaches the cube, closes the gripper on it, lifts it, and releases. Reach accuracy has not been measured formally; if the gripper misses by more than a couple of centimeters, check the assembly first.</p>
             </div>
         </section>
 
@@ -1041,16 +1041,16 @@
             <p class="step-meta">Read before changing anything · <strong>10 minutes</strong></p>
 
             <h3 class="mt-4">Firmware limits live in exactly one file</h3>
-            <p class="mt-2">System-wide maximum torque, acceleration, and speed are all in <code>src/xlerobot_pro/firmware_limits.py</code>. The defaults implement the paper's firmware saturation settings, sized so each power bus stays inside its fuse rating and a motor transient can never brown out the Jetson.</p>
+            <p class="mt-2">System-wide maximum torque, acceleration, and speed are all in <code>src/xlerobot_pro/firmware_limits.py</code>. The defaults are the settings from the paper (Table III). With them and the separate power outlets, the paper saw no brownouts in 5 stress trials and no Jetson reset in 20 startup trials, where the largest drop on the Jetson's 5 V module rail was 72 mV.</p>
 
             <div class="table-container mt-4 mb-4">
                 <table class="tech-table">
                     <thead>
-                        <tr><th>Bus</th><th>Torque limit</th><th>Acceleration</th><th>Fuse</th></tr>
+                        <tr><th>Bus</th><th>Torque limit</th><th>Acceleration</th><th>Supply</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Wheels / neck</td><td>650 <span class="text-muted">(≈1.91 N·m)</span></td><td>20</td><td>10 A</td></tr>
-                        <tr><td>Arms</td><td>450 <span class="text-muted">(≈1.32 N·m)</span></td><td>40</td><td>5 A</td></tr>
+                        <tr><td>Bus 1: arms</td><td>450 <span class="text-muted">(≈1.32 N·m nominal)</span></td><td>40</td><td>12 V car outlet; 5 A design budget</td></tr>
+                        <tr><td>Bus 2: head and wheels</td><td>650 <span class="text-muted">(≈1.91 N·m nominal)</span></td><td>20</td><td>USB-C outlet; current margin not measured</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1067,7 +1067,7 @@
                 </div>
             </div>
 
-            <p class="font-small text-muted">The arm limit of 450 is sized so that a <em>dual-arm stall</em> — every joint saturating at once — still fits inside the 5 A arm-bus fuse. Raising it changes that guarantee.</p>
+            <p class="font-small text-muted">The arm setting of 450 comes from the paper's current estimate: with two arm joints loaded at that setting and the other ten idle, the arm bus draws about 4.4 A, under its 5 A budget (about 5.4 A at 650). It is an estimate, not a stall guarantee. In testing, one arm peaked at 1.41 A over five six-joint moves.</p>
 
             <h3 class="mt-4">Jetson tuning</h3>
             <div class="table-container mt-2">
@@ -1077,7 +1077,8 @@
                     </thead>
                     <tbody>
                         <tr><td>Confirm GPU PyTorch is live</td><td><code>python -c "import torch; print(torch.cuda.is_available())"</code> → <code>True</code></td></tr>
-                        <tr><td>Maximum inference performance</td><td><code>sudo nvpmodel -m 0 &amp;&amp; sudo jetson_clocks</code></td></tr>
+                        <tr><td>Power mode used in the paper (MAXN SUPER)</td><td><code>sudo nvpmodel -m 2</code></td></tr>
+                        <tr><td>Pin the GPU clocks (SmolVLA ran about 6.5% faster)</td><td><code>sudo jetson_clocks</code></td></tr>
                         <tr><td>Fix <code>open3d</code> OpenMP errors</td><td><code>export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libgomp.so.1</code></td></tr>
                     </tbody>
                 </table>
@@ -1085,7 +1086,7 @@
 
             <div class="alert-box alert-note mt-4">
                 <div class="alert-accent-line"></div>
-                <strong>ON BATTERY, PREFER THE DEFAULT POWER MODE.</strong> Max power mode is for bench work with the compute rail on mains. Running it off the Tri-Bus battery pushes the compute rail outside its power envelope.
+                <strong>MAXN SUPER ON BATTERY IS FINE.</strong> The paper's onboard tests ran in MAXN SUPER on battery with dynamic clocks. The 50-trial ACT session averaged 6.28 W of module power, and SmolVLA with a 366 g hold averaged 9.45 W (11.5 W peak), without throttling or a reset. On the Orin Nano Super, mode 0 is 15 W and mode 1 (25 W) is the default.
             </div>
         </section>
 
@@ -1119,11 +1120,11 @@
                 </div>
                 <div class="diag-grid-card">
                     <strong>Train and run a policy</strong>
-                    <p><code>lerobot-train</code>, then <code>examples/policies/</code> for running SmolVLA and diffusion policies on the robot.</p>
+                    <p><code>lerobot-train</code> on the Jetson, then <code>examples/policies/act_policy_control.py</code>, the runner behind the paper's 49-of-50 grasp test. The README lists the exact settings used.</p>
                 </div>
                 <div class="diag-grid-card">
                     <strong>VR teleoperation</strong>
-                    <p><code>examples/teleop_hand_and_arm.py</code>, plus the XLeVR/TeleVuer stack from the upstream XLeRobot VR docs.</p>
+                    <p><code>examples/teleop_hand_and_arm.py --arm SO101</code>, built on Open-TeleVision through Unitree's TeleVuer and teleimager packages. You will need a VR headset, which is not in the BOM.</p>
                 </div>
                 <div class="diag-grid-card">
                     <strong>Something is broken</strong>

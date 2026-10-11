@@ -155,18 +155,18 @@
         
         <header class="hero" id="top">
             <span class="tech-badge">Open-Source Research Platform</span>
-            <h1 class="hero-title">Democratizing Embodied AI.</h1>
-            <p class="hero-desc">XLeRobot-Pro is a highly capable bimanual mobile manipulator built for under $1,300. Designed for researchers and labs to rapidly deploy imitation learning, VLA models, and autonomous robotic agents.</p>
+            <h1 class="hero-title">Two arms, a mobile base, and the computer on board.</h1>
+            <p class="hero-desc">XLeRobot-Pro is a two-arm mobile robot that costs $1,247 in parts. It adds a Jetson Orin Nano Super to XLeRobot, so you can record demonstrations, train a policy, and run it on the robot, on battery, without a separate computer.</p>
         </header>
 
         <div class="hero-image-wrapper">
-            <img src="media/images/full_battery.jpg" alt="XLeRobot-Pro Platform Overview" class="full-width-image mt-4">
+            <img src="media/images/full_battery.jpg" alt="XLeRobot-Pro removing a screw from an electric-vehicle battery pack under teleoperation, next to an industrial arm" class="full-width-image mt-4">
         </div>
 
         <section class="card neon-hover-cyan" id="why">
             <h2>Why XLeRobot-Pro?</h2>
-            <p>Advanced robotics research has long required six-figure hardware. XLeRobot-Pro closes the gap between simulation and the real world with a rugged, easy-to-reproduce platform.</p>
-            <p>It's mostly 3D-printed and built from affordable, off-the-shelf parts on a mobile base — so labs can scale up data collection and run fleet-level reinforcement learning on a modest budget.</p>
+            <p>Two-arm mobile robots that carry their own computer have mostly cost tens of thousands of dollars. XLeRobot brought the hardware down to about $660, but it runs its learned policies on a separate laptop. XLeRobot-Pro moves training and inference onto the robot itself.</p>
+            <p>The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, and mounts are printed in PLA, and everything else is off the shelf. Two changes made the added load work: the arms, the head and wheels, and the computer each draw from their own power outlet, and the printed arm links have thicker walls.</p>
             
             <div class="video-frame">
                 <video controls autoplay loop muted playsinline>
@@ -174,20 +174,21 @@
                     Your browser does not support the video tag.
                 </video>
             </div>
+            <p class="font-small mt-2 text-muted">This overview video comes from an earlier version of the project. Where its on-screen numbers differ from the measurements on this page, the page is current.</p>
 
             <div class="mt-4 flex-wrap-gap">
                 <span class="tech-badge purple">Teleoperation</span>
                 <span class="tech-badge">Imitation Learning</span>
-                <span class="tech-badge purple">Sim-to-Real</span>
-                <span class="tech-badge">Vision-Language-Action (VLA)</span>
+                <span class="tech-badge purple">Onboard Training</span>
+                <span class="tech-badge">VLA Inference</span>
             </div>
         </section>
 
         <section class="card" id="capabilities">
             <h2>System Capabilities</h2>
-            <p>Native integration with the Hugging Face <strong>LeRobot</strong> framework allows for out-of-the-box data collection and policy training. See the system in action below.</p>
+            <p>The Hugging Face <strong>LeRobot</strong> framework records demonstrations, trains policies, and runs them on the Jetson. An ACT policy trained on the robot in under an hour lifted a bottle in 49 of 50 trials on battery (one arm, one fixed bottle position). The ten tasks below were done by VR teleoperation with all computation on board.</p>
             
-            <img src="media/images/grid.png" alt="System Capabilities Long Gallery" class="full-width-image mt-4 mb-4">
+            <img src="media/images/grid.png" alt="Ten two-arm tasks done by VR teleoperation with onboard compute: pencil insertion, drill pickup, container opening, toaster use, screw removal, whiteboard wiping, peg-in-hole insertion, coffee filter removal, block sorting, and drawer opening" class="full-width-image mt-4 mb-4">
 
             <div class="grid-2 mt-4">
                 <div>
@@ -196,8 +197,8 @@
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-caption">
-                        <h4 class="cap-title">Bimanual Teleoperation</h4>
-                        <p class="cap-desc">Smooth leader-follower kinematics using dual SO-101 arms for high-fidelity dataset collection.</p>
+                        <h4 class="cap-title">VR Teleoperation</h4>
+                        <p class="cap-desc">An operator drives both arms from a VR headset, using hand tracking or controllers. The interface builds on Open-TeleVision.</p>
                     </div>
                 </div>
 
@@ -207,8 +208,8 @@
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-caption">
-                        <h4 class="cap-title">Autonomous Execution</h4>
-                        <p class="cap-desc">Built-in SLAM execution capabilities for autonomous mapping.</p>
+                        <h4 class="cap-title">Mapping</h4>
+                        <p class="cap-desc">RTAB-Map builds a visual map from the RealSense, and Nav2 plans paths in it. This part of the stack runs on the robot but has not been evaluated.</p>
                     </div>
                 </div>
             </div>
@@ -216,97 +217,109 @@
 
         <section class="card neon-hover-purple" id="hardware">
             <h2>Hardware Architecture</h2>
-            <h3 class="font-med">Designed for Modularity</h3>
-            <p>Swap compute nodes, upgrade sensor suites, or tune the chassis to fit your specific research needs.</p>
+            <h3 class="font-med">What's on the Robot</h3>
+            <p>Everything is a part you can buy or print. These are the pieces that changed from XLeRobot, or that matter most when you build one.</p>
             
             <div class="grid-2 mt-4">
                 <div class="card card-no-margin">
                     <h3 class="font-med mt-2">SO-101 Arms</h3>
-                    <p class="font-small mt-2">Providing high-fidelity 6-DOF movement for complex bimanual manipulation tasks.</p>
+                    <p class="font-small mt-2">Two SO-101 arms, each with five joints and a gripper. Each arm reaches a little over 40 cm.</p>
                     <img src="media/images/arm.png" alt="SO-101 robotic arm" class="full-width-image mt-4">
                 </div>
                 
                 <div class="card card-no-margin">
                     <h3 class="font-med mt-2">Fin-Ray End-Effectors</h3>
-                    <p class="font-small mt-2">Enabling precision and compliant grasps across a wide variety of unstructured objects.</p>
+                    <p class="font-small mt-2">TPU Fin-Ray fingers bend around what they hold. Under teleoperation they seated and lifted five test objects, including a drill, in 74 of 75 attempts.</p>
                     <img src="media/images/gripper.png" alt="Fin-ray end-effector" class="full-width-image mt-4">
                 </div>
 
                 <div class="card card-no-margin">
-                    <h3 class="font-med mt-2">Functionally Graded Chassis</h3>
-                    <p class="font-small mt-2">Ensuring structural stability and vibration damping during dynamic mobile operations.</p>
-                    <img src="media/images/chassis.png" alt="Functionally graded chassis" class="full-width-image mt-4">
+                    <h3 class="font-med mt-2">Stronger Printed Arm Links</h3>
+                    <p class="font-small mt-2">Load-bearing links are printed with 4 perimeters instead of 2, at the same 15% infill. In cantilever tests the arms failed at 18.5 N instead of 11.1 N (+67%), and the break moved from the printed link to the servo. The cost is 80 g per arm.</p>
+                    <img src="media/images/chassis.png" alt="Mass and failure load for three print profiles" class="full-width-image mt-4">
                 </div>
                 
                 <div class="card card-no-margin">
-                    <h3 class="font-med mt-2">Compute Deck + Sensor Suite</h3>
-                    <p class="font-small mt-2">Centralizing processing power and multi-modal perception for real-time autonomous decision making.</p>
-                    <img src="media/images/schematic.png" alt="Compute deck and sensor suite schematic" class="full-width-image mt-4">
+                    <h3 class="font-med mt-2">Compute and Power</h3>
+                    <p class="font-small mt-2">A Jetson Orin Nano Super sits in a passively ducted enclosure at the center of the chassis, with a RealSense D435 on the neck. The arms, the head and wheels, and the Jetson each draw from their own outlet on one Anker SOLIX C300 DC. On the original shared supply, concurrent motion browned out in 5 of 5 stress trials; with separate outlets, in 0 of 5.</p>
+                    <img src="media/images/schematic.png" alt="Power layout: the 12 V car outlet feeds the arms, one USB-C outlet feeds the head and wheels, and another feeds the Jetson" class="full-width-image mt-4">
                 </div>
             </div>
         </section>
 
         <section class="card neon-hover-pink" id="software">
             <h2>Software Stack & Algorithms</h2>
-            <p>The XLeRobot-Pro utilizes a hybrid approach, merging precise classical robotics control with state-of-the-art end-to-end learning models.</p>
+            <p>The software pairs classical control for scripted reaching with learned policies trained on the robot.</p>
 
             <div class="grid-2 mt-4">
                 <div class="card card-no-margin">
                     <h3 class="font-med">Inverse Kinematics (IK) via Pink</h3>
-                    <p class="font-small mt-2">Leveraging the Pink (Pinocchio-based Inverse Kinematics) library to translate high-level spatial objectives into precise, singularity-robust joint movements in real time.</p>
-                    <img src="media/images/board_close.jpg" alt="IK implementation on peg-in-hole board, close-up" class="full-width-image mt-4">
+                    <p class="font-small mt-2">Pink, an inverse kinematics library built on Pinocchio, turns target positions into joint angles for the color-target reaching demo, solving each step as a quadratic program on a single-arm model.</p>
+                    <img src="media/images/board_close.jpg" alt="Teleoperated peg-in-hole task, close-up" class="full-width-image mt-4">
                 </div>
 
                 <div class="card card-no-margin">
                     <h3 class="font-med">SLAM & Navigation</h3>
-                    <p class="font-small mt-2">Implementing a ROS 2 pipeline using RTAB-Map and a RealSense D435 for visual odometry and localization. Global planning and closed-loop execution are handled by Nav2 utilizing 2D costmaps.</p>
-                    <img src="media/images/nav.png" alt="SLAM Navigation mapped environment" class="full-width-image mt-4">
+                    <p class="font-small mt-2">A ROS 2 pipeline with RTAB-Map and the RealSense D435 handles mapping and localization, and Nav2 plans and follows paths on 2D costmaps. It runs on the robot, but its accuracy has not been evaluated.</p>
+                    <img src="media/images/nav.png" alt="Map of the lab built with RTAB-Map" class="full-width-image mt-4">
                 </div>
 
                 <div class="card card-no-margin">
                     <h3 class="font-med">Visual Perception</h3>
-                    <p class="font-small mt-2">Extracting critical visual features via HSV thresholding and contour detection to isolate target objects, providing real-time geometric priors for upstream algorithms.</p>
+                    <p class="font-small mt-2">A color detector (HSV thresholding and contours) finds the target in a RealSense frame and converts its 3D center into the arm's base frame, so IK can reach it.</p>
                     <img src="media/images/ik.png" alt="Color segmentation vision processing" class="full-width-image mt-4">
                 </div>
 
                 <div class="card card-no-margin">
                     <h3 class="font-med">LeRobot Integration</h3>
-                    <p class="font-small mt-2">Native support for the Hugging Face LeRobot framework, streamlining the pipeline from standardized data collection to end-to-end policy training (e.g., Action Chunking with Transformers).</p>
-                     <img src="media/images/ai.png" alt="Inference benchmarks on Jetson Orin Nano (MAXN Super mode)" class="full-width-image mt-4">
+                    <p class="font-small mt-2">LeRobot handles recording, training, and deployment. These are the policy timings on the Jetson in MAXN SUPER mode, from the paper:</p>
+                    <div class="table-container mt-4">
+                        <table class="tech-table table-small">
+                            <thead>
+                                <tr><th>Policy</th><th>Sampling steps</th><th>Time per pass</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>ACT (100-action chunk)</td><td>&ndash;</td><td>104.5 ms</td></tr>
+                                <tr><td>Diffusion Policy</td><td>10</td><td>540 ms</td></tr>
+                                <tr><td>SmolVLA (450M)</td><td>10</td><td>997 ms</td></tr>
+                                <tr><td>SmolVLA (450M)</td><td>2</td><td>363 ms</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="card" id="specs">
             <h2>Hardware Overview & Specifications</h2>
-            <p>XLeRobot-Pro is a dual-arm mobile robot built from affordable, widely available components. Below covers the physical system requirements and limitations.</p>
+            <p>These are the measured numbers from the paper, with the conditions they hold under.</p>
             
             <div class="mt-4">
                 <h3 class="font-med">System Specifications</h3>
                 <div class="specs-grid">
                     <div class="spec-card">
-                        <div class="spec-label">Total Weight</div>
-                        <div class="spec-value">~12 kg</div>
+                        <div class="spec-label">Parts Cost</div>
+                        <div class="spec-value">$1,247</div>
                     </div>
                     <div class="spec-card">
-                        <div class="spec-label">Workspace Height</div>
-                        <div class="spec-value">0.5–1.25 m</div>
+                        <div class="spec-label">Height</div>
+                        <div class="spec-value">1.20 m</div>
                     </div>
                     <div class="spec-card">
-                        <div class="spec-label">Workspace Reach</div>
-                        <div class="spec-value">~40 cm</div>
+                        <div class="spec-label">Arm Reach</div>
+                        <div class="spec-value">&gt; 40 cm</div>
                     </div>
                     <div class="spec-card">
-                        <div class="spec-label">Payload</div>
-                        <div class="spec-value">600–1000 g</div>
+                        <div class="spec-label">Shoulder Hold</div>
+                        <div class="spec-value">0.7 kg for 30 min</div>
                     </div>
                     <div class="spec-card">
                         <div class="spec-label">Mobility</div>
                         <div class="spec-value">3 Omni Wheels</div>
                     </div>
                     <div class="spec-card">
-                        <div class="spec-label">Battery Life</div>
-                        <div class="spec-value">10+ Hours</div>
+                        <div class="spec-label">Power Station</div>
+                        <div class="spec-value">288 Wh</div>
                     </div>
                 </div>
             </div>
@@ -315,11 +328,12 @@
                 <h3 class="font-med">Known Limitations</h3>
                 <div class="flex-wrap-gap mt-4">
                     <span class="tech-badge">Fixed Height</span>
-                    <span class="tech-badge">Reach ~40cm</span>
+                    <span class="tech-badge">Reach just over 40 cm</span>
                     <span class="tech-badge">No In-Hand Dexterity</span>
-                    <span class="tech-badge">Payload max 1000g</span>
+                    <span class="tech-badge">Holds Are Time-Limited</span>
+                    <span class="tech-badge">Navigation Not Evaluated</span>
                 </div>
-                <p class="font-small mt-4 text-muted">See the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a> for more details.</p>
+                <p class="font-small mt-4 text-muted">How long a shoulder can hold a load depends on the load. With the load 18.6 cm from the joint, 0.7 kg held for the full 30 minutes, 0.8 kg reached the 65&nbsp;&deg;C stop after 27.8 minutes, 0.9 kg after 22.1 minutes, and 1 kg slipped. Battery runtime was not measured.</p>
             </div>
         </section>
 
