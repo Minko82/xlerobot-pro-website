@@ -242,10 +242,12 @@
             </div>
 
             <h3 class="mt-4">Print Files</h3>
-            <p class="font-small">The full XLeRobot-Pro print set, laid out and ready to slice. Download the PrusaSlicer 3MF project or a single STL of the whole model. The 3MF is set to the default profile (2 perimeters, 15% infill), so set the load-bearing arm links to 4 perimeters before you slice.</p>
+            <p class="font-small">The full XLeRobot-Pro print set, laid out and ready to slice. Download the PrusaSlicer 3MF project or a single STL of the whole model. The 3MF already applies the tested settings: the 18 parts of the two arms carry 4 perimeters (High-Shell) and are labeled as such in the object list, and everything else uses the default profile. The Jetson enclosure is included; the Jetson mounting frame and an editable STEP file of the arm base are separate downloads.</p>
             <div class="mt-4 mb-4">
                 <a href="hardware/XLeRobot-Pro.3mf" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (3MF) ↓</a>
                 <a href="hardware/XLeRobot-Pro.stl" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (STL) ↓</a>
+                <a href="hardware/nvidia-jetson-mounting-frame.stl" download class="btn-neon btn-github btn-cta">Jetson Mounting Frame (STL) ↓</a>
+                <a href="hardware/XLeRobot040_armbase.step" download class="btn-neon btn-github btn-cta">Arm Base (STEP) ↓</a>
             </div>
             <p>You will need:</p>
             <ul class="mt-2">
@@ -277,7 +279,7 @@
 
             <div class="grid-2 mt-4">
                 <div class="card print-card">
-                    <h3>Load-Bearing Arm Links (High-Shell)</h3>
+                    <h3>Every Arm Part (High-Shell)</h3>
                     <p>The setting tested in the paper.</p>
                     <ul class="mt-2">
                         <li><strong>Perimeters:</strong> 4</li>
@@ -289,7 +291,7 @@
 
                 <div class="card print-card">
                     <h3>Everything Else</h3>
-                    <p>Parts meant to flex must stay on the default profile.</p>
+                    <p>The default profile.</p>
                     <ul class="mt-2">
                         <li><strong>Perimeters:</strong> 2 (default)</li>
                         <li><strong>Infill:</strong> 15%</li>
