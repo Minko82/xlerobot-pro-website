@@ -425,7 +425,7 @@
             <div class="terminal-box mt-4">
                 <div class="terminal-header">
                     <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>calibrate_xlerobot.py</span>
+                    <span>scripts/calibrate_xlerobot.py (in the repo)</span>
                 </div>
                 <div class="terminal-body">
                     <span class="log-info">from</span> lerobot.robots.xlerobot.config_xlerobot <span class="log-info">import</span> XLerobotNewWiringConfig<br>
@@ -447,7 +447,7 @@
                 <strong>TORQUE IS RELEASED FOR THE WHOLE PROCEDURE.</strong> Both arms go limp and <strong>will fall from a raised pose.</strong> Support them by hand before you start, and clear anything underneath them.
             </div>
 
-            <p class="mt-2">The run has four prompts: centre both arms, sweep every arm joint through its full range, centre the head, and then the wheels are handled automatically as full-turn motors.</p>
+            <p class="mt-2">Run it from the repo root with <code>python scripts/calibrate_xlerobot.py</code>. The run has four prompts: centre both arms, sweep every arm joint through its full range, centre the head, and then the wheels are handled automatically as full-turn motors.</p>
 
             <h3 class="mt-4">B) Verify the Calibration — Do Not Skip This</h3>
             <p class="mt-2">Calibration can complete successfully and still be wrong. There are two failure modes and both are silent:</p>

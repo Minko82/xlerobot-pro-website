@@ -728,12 +728,12 @@
                 <strong><code>lerobot-calibrate</code> cannot see this robot.</strong> Its <code>--robot.type</code> does not offer <code>xlerobot_new_wiring</code>. The class is registered, but <code>robots/utils.py</code> imports robot types lazily inside its dispatch function, so the config module never loads and the registration decorator never runs. Drive the class directly with the script below instead.
             </div>
 
-            <p class="mt-4">Save this as <code>calibrate_xlerobot.py</code> in the repo root:</p>
+            <p class="mt-4">The script ships in the repo as <code>scripts/calibrate_xlerobot.py</code>:</p>
 
             <div class="terminal-box mt-2 mb-4">
                 <div class="terminal-header">
                     <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>calibrate_xlerobot.py</span>
+                    <span>scripts/calibrate_xlerobot.py</span>
                 </div>
                 <div class="terminal-body">
                     <span class="log-info">from</span> lerobot.robots.xlerobot.config_xlerobot <span class="log-info">import</span> XLerobotNewWiringConfig<br>
@@ -758,7 +758,7 @@
                     <span>Run it</span>
                 </div>
                 <div class="terminal-body">
-                    <span>$</span> python calibrate_xlerobot.py
+                    <span>$</span> python scripts/calibrate_xlerobot.py
                 </div>
             </div>
 
