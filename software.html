@@ -1041,7 +1041,7 @@
             <p class="step-meta">Read before changing anything · <strong>10 minutes</strong></p>
 
             <h3 class="mt-4">Firmware limits live in exactly one file</h3>
-            <p class="mt-2">System-wide maximum torque, acceleration, and speed are all in <code>src/xlerobot_pro/firmware_limits.py</code>. The defaults are the settings from the paper (Table III). With them and the separate power outlets, the paper saw no brownouts in 5 stress trials and no Jetson reset in 20 startup trials, where the largest drop on the Jetson's 5 V module rail was 72 mV.</p>
+            <p class="mt-2">System-wide maximum torque, acceleration, and speed are all in <code>src/xlerobot_pro/firmware_limits.py</code>. The defaults are the settings from the paper (Table III). With them and the separate power outlets, the paper saw no supply collapse in 5 stress trials and no Jetson reset in 20 startup trials, where the largest drop on the Jetson's 5 V module rail was 72 mV.</p>
 
             <div class="table-container mt-4 mb-4">
                 <table class="tech-table">
@@ -1086,7 +1086,7 @@
 
             <div class="alert-box alert-note mt-4">
                 <div class="alert-accent-line"></div>
-                <strong>MAXN SUPER ON BATTERY IS FINE.</strong> The paper's onboard tests ran in MAXN SUPER on battery with dynamic clocks. The 50-trial ACT session averaged 6.28 W of module power, and SmolVLA with a 366 g hold averaged 9.45 W (11.5 W peak), without throttling or a reset. On the Orin Nano Super, mode 0 is 15 W and mode 1 (25 W) is the default.
+                <strong>MAXN SUPER ON BATTERY IS FINE.</strong> The paper's onboard tests ran in MAXN SUPER on battery with dynamic clocks. The 50-trial ACT session averaged 6.28 W of module power, and SmolVLA with a 366 g hold averaged 10.0 W (11.5 W peak), with no reset and no rise in latency. On the Orin Nano Super, mode 0 is 15 W and mode 1 (25 W) is the default.
             </div>
         </section>
 
