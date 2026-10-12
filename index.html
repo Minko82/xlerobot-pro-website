@@ -165,8 +165,8 @@
 
         <section class="card neon-hover-cyan" id="why">
             <h2>Why XLeRobot-Pro?</h2>
-            <p>Two-arm mobile robots that carry their own computer have mostly cost tens of thousands of dollars. XLeRobot brought the hardware down to about $660, but it runs its learned policies on a separate laptop. XLeRobot-Pro moves training and inference onto the robot itself.</p>
-            <p>The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, and mounts are printed in PLA, and everything else is off the shelf. Two changes made the added load work: the arms, the head and wheels, and the computer each draw from their own power outlet, and the printed arm links have thicker walls.</p>
+            <p>Two-arm mobile robots that carry their own computer have mostly cost tens of thousands of dollars. XLeRobot brought the hardware down to about $660, but at that price it runs its learned policies on a separate laptop. XLeRobot-Pro moves training and inference onto the robot itself.</p>
+            <p>The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, and mounts are printed in PLA, and everything else is off the shelf. Two changes made the added load work: the arms moved to their own power outlet instead of sharing servo buses with the head and wheels, and the printed arm links have thicker walls.</p>
             
             <div class="video-frame">
                 <video controls autoplay loop muted playsinline>
@@ -229,7 +229,7 @@
                 
                 <div class="card card-no-margin">
                     <h3 class="font-med mt-2">Fin-Ray End-Effectors</h3>
-                    <p class="font-small mt-2">TPU Fin-Ray fingers bend around what they hold. Under teleoperation they seated and lifted five test objects, including a drill, in 74 of 75 attempts.</p>
+                    <p class="font-small mt-2">TPU Fin-Ray fingers bend around what they hold. Under teleoperation they seated and lifted five test objects (a plastic apple, a cube, a drill, a water bottle, and a screwdriver) in 74 of 75 attempts; the one miss was the 17 g apple.</p>
                     <img src="media/images/gripper.png" alt="Fin-ray end-effector" class="full-width-image mt-4">
                 </div>
 
@@ -241,7 +241,7 @@
                 
                 <div class="card card-no-margin">
                     <h3 class="font-med mt-2">Compute and Power</h3>
-                    <p class="font-small mt-2">A Jetson Orin Nano Super sits in a passively ducted enclosure at the center of the chassis, with a RealSense D435 on the neck. The arms, the head and wheels, and the Jetson each draw from their own outlet on one Anker SOLIX C300 DC. On the original shared supply, concurrent motion browned out in 5 of 5 stress trials; with separate outlets, in 0 of 5.</p>
+                    <p class="font-small mt-2">A Jetson Orin Nano Super sits in a passively ducted enclosure at the center of the chassis, with a RealSense D435 on the neck. The arms, the head and wheels, and the Jetson each draw from their own outlet on one Anker SOLIX C300 DC. In XLeRobot's wiring, each arm shares a servo bus with the head or the wheels, and moving an arm and the head together browned out that bus in 5 of 5 stress trials. With the arms on their own outlet and the firmware limits, it happened in 0 of 5.</p>
                     <img src="media/images/schematic.png" alt="Power layout: the 12 V car outlet feeds the arms, one USB-C outlet feeds the head and wheels, and another feeds the Jetson" class="full-width-image mt-4">
                 </div>
             </div>
@@ -276,7 +276,7 @@
                     <div class="table-container mt-4">
                         <table class="tech-table table-small">
                             <thead>
-                                <tr><th>Policy</th><th>Sampling steps</th><th>Time per pass</th></tr>
+                                <tr><th>Policy</th><th>Denoising steps</th><th>Time per pass</th></tr>
                             </thead>
                             <tbody>
                                 <tr><td>ACT (100-action chunk)</td><td>&ndash;</td><td>104.5 ms</td></tr>
@@ -286,6 +286,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <p class="font-small mt-2 text-muted">Two steps is faster but not free: over a 30-minute run it drew 3.2 W more module power than ten, and the GPU clock sagged about 9% late in the run. Task success at two steps was not tested.</p>
                 </div>
             </div>
         </section>
@@ -328,12 +329,13 @@
                 <h3 class="font-med">Known Limitations</h3>
                 <div class="flex-wrap-gap mt-4">
                     <span class="tech-badge">Fixed Height</span>
-                    <span class="tech-badge">Reach just over 40 cm</span>
-                    <span class="tech-badge">No In-Hand Dexterity</span>
                     <span class="tech-badge">Holds Are Time-Limited</span>
+                    <span class="tech-badge">Holding Measured on One Servo</span>
+                    <span class="tech-badge">Policy Tested at One Object Pose</span>
+                    <span class="tech-badge">Bimanual Coordination Not Quantified</span>
                     <span class="tech-badge">Navigation Not Evaluated</span>
                 </div>
-                <p class="font-small mt-4 text-muted">How long a shoulder can hold a load depends on the load. With the load 18.6 cm from the joint, 0.7 kg held for the full 30 minutes, 0.8 kg reached the 65&nbsp;&deg;C stop after 27.8 minutes, 0.9 kg after 22.1 minutes, and 1 kg slipped. Battery runtime was not measured.</p>
+                <p class="font-small mt-4 text-muted">How long a shoulder can hold a load depends on the load. With the load 18.6 cm from the joint, 0.7 kg held for the full 30 minutes (probably with the power station on pass-through charging), 0.8 kg reached the 65&nbsp;&deg;C stop after 27.8 minutes, 0.9 kg after 22.1 minutes, and 1 kg slipped. These holds come from one servo, started warm, in a 24.4&nbsp;&deg;C room. Projected from whole-percent charge readings, the battery would last about 13&ndash;16 hours under continuous SmolVLA inference and about 17 hours holding loads.</p>
             </div>
         </section>
 
