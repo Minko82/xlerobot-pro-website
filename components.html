@@ -237,24 +237,25 @@
             <div class="bom-header-flex">
                 <div>
                     <h2>3D-Printed Structure</h2>
-                    <p class="font-small">The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, head, wheel-base mounts, and Jetson enclosure are printed. The BOM above covers the PLA; download the print files below and apply the settings further down this page.</p>
+                    <p class="font-small">The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, head, wheel-base mounts, and Jetson open frame are printed. The BOM above covers the PLA; download the print files below and apply the settings further down this page.</p>
                 </div>
             </div>
 
             <h3 class="mt-4">Print Files</h3>
-            <p class="font-small">The full XLeRobot-Pro print set, laid out and ready to slice. Download the PrusaSlicer 3MF project or a single STL of the whole model. The 3MF already applies the tested settings: the 18 parts of the two arms carry 4 perimeters (High-Shell) and are labeled as such in the object list, and everything else uses the default profile. The Jetson enclosure is included; the Jetson mounting frame and an editable STEP file of the arm base are separate downloads.</p>
+            <p class="font-small">The full XLeRobot-Pro print set, laid out and ready to slice. Download the PrusaSlicer 3MF project or a single STL of the whole model. The 3MF already applies the tested settings: the 18 parts of the two arms carry 4 perimeters (High-Shell) and are labeled as such in the object list, and everything else uses the default profile. The Jetson open frame is not in the 3MF; it and an editable STEP file of the arm base are separate downloads. The optional wrist-camera mount is not in these files: it is the SO-101 Hex-Nut wrist-camera mount from TheRobotStudio's SO-ARM100 repository, the same one XLeRobot uses.</p>
             <div class="mt-4 mb-4">
                 <a href="hardware/XLeRobot-Pro.3mf" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (3MF) ↓</a>
                 <a href="hardware/XLeRobot-Pro.stl" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (STL) ↓</a>
-                <a href="hardware/nvidia-jetson-mounting-frame.stl" download class="btn-neon btn-github btn-cta">Jetson Mounting Frame (STL) ↓</a>
+                <a href="hardware/nvidia-jetson-mounting-frame.stl" download class="btn-neon btn-github btn-cta">Jetson Open Frame (STL) ↓</a>
                 <a href="hardware/XLeRobot040_armbase.step" download class="btn-neon btn-github btn-cta">Arm Base (STEP) ↓</a>
+                <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">Wrist Camera Mount ↗</a>
             </div>
             <p>You will need:</p>
             <ul class="mt-2">
                 <li>two SO-101 follower arms</li>
                 <li>the neck/head assembly</li>
                 <li>the omni-wheel base</li>
-                <li>a wrist-camera mount per arm (optional; wrist cameras are not in the BOM)</li>
+                <li>a <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">wrist-camera mount</a> per arm (optional; wrist cameras are not in the BOM). Each one takes a 32×32 mm USB camera module, two M3×8 screws, and two M3 hex nuts.</li>
             </ul>
             <p class="mt-2">Print the soft finray gripper fingers in TPU95A.</p>
 
