@@ -2,432 +2,183 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XLeRobot-Pro | Platform Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XLeRobot-Pro · Two-arm mobile robot with the computer on board</title>
+    <meta name="description" content="XLeRobot-Pro is an open-source two-arm mobile robot that costs $1,247 in parts. A Jetson Orin Nano Super on board records demonstrations, trains policies, and runs them on battery.">
+    <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-    /* ---- Homepage-specific styling ---- */
-
-    /* Hero image: smaller + tighter to the intro */
-    .hero { margin-bottom: 0.5rem; }
-    .hero-image-wrapper { margin-top: 0; margin-bottom: 2.5rem; }
-    .hero-image-wrapper img.full-width-image {
-        max-width: 560px;
-        margin: 0.5rem auto 0;
-        display: block;
-    }
-
-    /* Why: center the capability badges under the video */
-    #why .flex-wrap-gap { justify-content: center; }
-
-    /* System Capabilities: bold, centered caption title above its description */
-    .video-caption { text-align: center; margin-top: 1rem; }
-    .video-caption .cap-title {
-        font-weight: 700;
-        color: var(--text-main);
-        margin: 0 0 0.35rem;
-        font-size: 1.1rem;
-    }
-    .video-caption .cap-desc { color: var(--text-body); font-size: 0.92rem; margin: 0; }
-
-    /* White cards with a distinct colored border per section for separation */
-    #why          { border: 2px solid #06b6d4; }   /* cyan   */
-    #capabilities { border: 2px solid #8b5cf6; }   /* violet */
-    #hardware     { border: 2px solid #ec4899; }   /* pink   */
-    #software     { border: 2px solid #10b981; }   /* green  */
-    #specs        { border: 2px solid #3b82f6; }   /* blue   */
-    #credits      { border: 2px solid #f59e0b; }   /* amber  */
-
-    /* Credits: nav-style underline that flows in on hover */
-    .card-credits .credits-text a,
-    .card-credits .credits-list a {
-        text-decoration: none;
-        position: relative;
-    }
-    .card-credits .credits-text a::after,
-    .card-credits .credits-list a::after {
-        content: '';
-        position: absolute;
-        left: 0; bottom: -2px;
-        width: 0; height: 2px;
-        background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
-        transition: width 0.3s ease;
-    }
-    .card-credits .credits-text a:hover::after,
-    .card-credits .credits-list a:hover::after { width: 100%; }
-
-    /* ---- Side scroll-progress "map" ---- */
-    #top, #why, #capabilities, #hardware, #software, #specs, #credits { scroll-margin-top: 96px; }
-
-    .page-progress {
-        position: fixed;
-        right: 22px;
-        top: 50%;
-        transform: translateY(-50%);
-        display: none;                 /* shown on wide screens only */
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-        z-index: 60;
-    }
-    .page-progress::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 6px; bottom: 6px;
-        width: 2px;
-        transform: translateX(-50%);
-        background: var(--border-light);
-        z-index: -1;
-    }
-    .pp-dot {
-        width: 11px; height: 11px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid #cbd5e1;
-        display: block;
-        position: relative;
-        transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
-    }
-    .pp-dot:hover { border-color: var(--neon-cyan); cursor: pointer; }
-    .pp-dot.active {
-        background: var(--neon-cyan);
-        border-color: var(--neon-cyan);
-        transform: scale(1.4);
-        box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.18);
-    }
-    .pp-dot::after {
-        content: attr(data-label);
-        position: absolute;
-        right: 20px; top: 50%;
-        transform: translateY(-50%);
-        white-space: nowrap;
-        font-size: 0.72rem; font-weight: 600;
-        color: var(--text-main);
-        background: #fff;
-        border: 1px solid var(--border-light);
-        padding: 2px 9px; border-radius: 999px;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-        opacity: 0; pointer-events: none;
-        transition: opacity .2s ease;
-    }
-    .pp-dot:hover::after, .pp-dot.active::after { opacity: 1; }
-
-    @media (min-width: 1180px) {
-        .page-progress { display: flex; }
-    }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=28">
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="site.js?v=21" defer></script>
 </head>
 <body>
-    <div class="ambient-blob blob-cyan"></div>
-    <div class="ambient-blob blob-purple"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="top-nav">
-        <div class="nav-content">
-            <a href="index.html" class="brand">
-                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
-                XLeRobot-Pro
-            </a>
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
-            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
-                <span></span><span></span><span></span>
-            </label>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link active">Overview</a>
-                <a href="components.html" class="nav-link">Components</a>
-                <a href="build-guide.html" class="nav-link">Build Guide</a>
-                <a href="software.html" class="nav-link">Software</a>
-                <a href="troubleshooting.html" class="nav-link">Troubleshooting</a>
-            </div>
-            <div class="nav-actions">
-                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" class="btn-neon btn-github">GitHub ↗</a>
-                <a href="https://arxiv.org/abs/2603.09051" target="_blank" class="btn-neon btn-arxiv">arXiv ↗</a>
-            </div>
+    <header class="site-header" id="top">
+        <div class="header-inner">
+            <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="bar bar-1" d="M4 6h16"/><path class="bar bar-2" d="M4 12h16"/><path class="bar bar-3" d="M4 18h16"/></svg>
+                Menu
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul class="nav-list">
+                    <li><a href="index.html" aria-current="page">Overview</a></li>
+                    <li><a href="components.html">Components</a></li>
+                    <li><a href="build-guide.html">Build Guide</a></li>
+                    <li><a href="software.html">Software</a></li>
+                    <li><a href="tutorial-first-reach.html">Tutorial</a></li>
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                </ul>
+                <div class="nav-ext">
+                    <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                </div>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <main class="page-container">
-        
-        <header class="hero" id="top">
-            <span class="tech-badge">Open-Source Research Platform</span>
-            <h1 class="hero-title">Two arms, a mobile base, and the computer on board.</h1>
-            <p class="hero-desc">XLeRobot-Pro is a two-arm mobile robot that costs $1,247 in parts. It adds a Jetson Orin Nano Super to XLeRobot, so you can record demonstrations, train a policy, and run it on the robot, on battery, without a separate computer.</p>
-        </header>
+    <main id="main">
 
-        <div class="hero-image-wrapper">
-            <img src="media/images/full_battery.jpg" alt="XLeRobot-Pro removing a screw from an electric-vehicle battery pack under teleoperation, next to an industrial arm" class="full-width-image mt-4">
-        </div>
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <span class="eyebrow">Open-source research platform</span>
+                        <h1 id="hero-title">Two arms, a mobile base, and the computer on board.</h1>
+                        <p class="lede">An open-source, two-arm robot you can build for $1,247 in parts. Its Jetson computer rides on board, so it learns tasks and runs them on battery, with no laptop attached.</p>
+                        <div class="btn-row">
+                            <a class="btn btn-primary" href="components.html">Start building</a>
+                            <a class="btn btn-secondary" href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Read the paper<span class="sr-only"> (opens in a new tab)</span></a>
+                        </div>
+                    </div>
+                    <figure class="hero-media">
+                        <img src="media/web/full_battery.jpg" width="1800" height="1012" fetchpriority="high" alt="XLeRobot-Pro removing a screw from an electric-vehicle battery pack under teleoperation, next to an industrial arm">
+                        <figcaption>Removing a screw from an electric-vehicle battery pack under teleoperation.</figcaption>
+                    </figure>
+                </div>
 
-        <section class="card neon-hover-cyan" id="why">
-            <h2>Why XLeRobot-Pro?</h2>
-            <p>Two-arm mobile robots that carry their own computer have mostly cost tens of thousands of dollars. XLeRobot brought the hardware down to about $660, but at that price it runs its learned policies on a separate laptop. XLeRobot-Pro moves training and inference onto the robot itself.</p>
-            <p>The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, and mounts are printed in PLA, and everything else is off the shelf. Two changes made the added load work: the arms moved to their own power outlet instead of sharing servo buses with the head and wheels, and the printed arm links have thicker walls.</p>
-            
-            <div class="video-frame">
-                <video controls autoplay loop muted playsinline>
-                    <source src="media/video/IROS_Video.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            <p class="font-small mt-2 text-muted">This overview video comes from an earlier version of the project. Where its on-screen numbers differ from the measurements on this page, the page is current.</p>
-
-            <div class="mt-4 flex-wrap-gap">
-                <span class="tech-badge purple">Teleoperation</span>
-                <span class="tech-badge">Imitation Learning</span>
-                <span class="tech-badge purple">Onboard Training</span>
-                <span class="tech-badge">VLA Inference</span>
+                <ul class="stats" aria-label="Key numbers">
+                    <li class="stat"><span class="stat-value">$1,247</span><span class="stat-label">in parts, computer included</span></li>
+                    <li class="stat"><span class="stat-value">49 / 50</span><span class="stat-label">bottle lifts by an ACT policy trained on the robot</span></li>
+                    <li class="stat"><span class="stat-value">&gt; 40 cm</span><span class="stat-label">reach on each of two SO-101 arms</span></li>
+                    <li class="stat"><span class="stat-value">288 Wh</span><span class="stat-label">power station on board</span></li>
+                </ul>
             </div>
         </section>
 
-        <section class="card" id="capabilities">
-            <h2>System Capabilities</h2>
-            <p>The Hugging Face <strong>LeRobot</strong> framework records demonstrations, trains policies, and runs them on the Jetson. An ACT policy trained on the robot in under an hour lifted a bottle in 49 of 50 trials on battery (one arm, one fixed bottle position). The ten tasks below were done by VR teleoperation with all computation on board.</p>
-            
-            <img src="media/images/grid.png" alt="Ten two-arm tasks done by VR teleoperation with onboard compute: pencil insertion, drill pickup, container opening, toaster use, screw removal, whiteboard wiping, peg-in-hole insertion, coffee filter removal, block sorting, and drawer opening" class="full-width-image mt-4 mb-4">
+        <section class="section section--alt" id="capabilities" aria-labelledby="cap-title">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">What it can do</span>
+                    <h2 id="cap-title">Two arms, driven by you or by a learned policy</h2>
+                    <p class="section-lede">Drive both arms from a VR headset, record what you do, and train the robot to repeat it. Recording, training, and running all happen on the robot.</p>
+                </div>
 
-            <div class="grid-2 mt-4">
-                <div>
-                    <video class="full-width-image" controls autoplay loop muted playsinline>
-                        <source src="media/video/chen.mov" type="video/mp4">
-                        Your browser does not support the video tag.
+                <figure class="figure">
+                    <div class="frame"><img src="media/web/grid.jpg" width="2000" height="805" loading="lazy" alt="Ten two-arm tasks done by VR teleoperation with onboard compute: pencil insertion, drill pickup, container opening, toaster use, screw removal, whiteboard wiping, peg-in-hole insertion, coffee filter removal, block sorting, and drawer opening"></div>
+                    <figcaption>Ten tasks done by VR teleoperation, with all computation on board.</figcaption>
+                </figure>
+
+                <div class="video">
+                    <video controls preload="none" playsinline poster="media/web/poster-supplemental.jpg" width="1280" height="720" aria-label="Supplementary video: Cutting the Cord">
+                        <source src="media/video/supplemental_vid_v2.mp4" type="video/mp4">
+                        <a href="media/video/supplemental_vid_v2.mp4">Download the supplementary video (MP4, 35 MB)</a>
                     </video>
-                    <div class="video-caption">
-                        <h4 class="cap-title">VR Teleoperation</h4>
-                        <p class="cap-desc">An operator drives both arms from a VR headset, using hand tracking or controllers. The interface builds on Open-TeleVision.</p>
-                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="why" aria-labelledby="why-title">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">What's new</span>
+                    <h2 id="why-title">What changed from XLeRobot</h2>
+                    <p class="section-lede">XLeRobot runs its learned policies on a separate laptop. XLeRobot-Pro puts the computer on board, and the full robot runs on its own, without brownouts.</p>
                 </div>
 
+                <ul class="points">
+                    <li><strong>Computer on board</strong>A Jetson Orin Nano Super records, trains, and runs policies on the robot.</li>
+                    <li><strong>Runs on its own, without brownouts</strong>The arms have their own power outlet and no longer share servo buses with the head and wheels.</li>
+                    <li><strong>Thicker printed links</strong>Load-bearing arm links have thicker walls, so they carry the added load.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section section--alt" id="build" aria-labelledby="build-title">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Build your own</span>
+                    <h2 id="build-title">Four steps from parts to a first reach</h2>
+                    <p class="section-lede">No robotics experience needed. Follow the four pages in order.</p>
+                </div>
+
+                <nav class="journey journey--cards" aria-label="Build path">
+                    <ol>
+                        <li><a href="components.html"><span class="num">1</span><span><span class="j-title">Components</span><span class="j-desc">What to buy, what to check before you buy, and the print files.</span><span class="j-time">$1,247.27 · 7 print plates</span></span></a></li>
+                        <li><a href="build-guide.html"><span class="num">2</span><span><span class="j-title">Build Guide</span><span class="j-desc">Assemble the cart, arms, neck, and wheels, then set the motor IDs and wire them.</span><span class="j-time">17 motors · video walkthrough</span></span></a></li>
+                        <li><a href="software.html"><span class="num">3</span><span><span class="j-title">Software Setup</span><span class="j-desc">Set up the Jetson, calibrate, and make the robot move.</span><span class="j-time">13 steps · about 3–4 hours</span></span></a></li>
+                        <li><a href="tutorial-first-reach.html"><span class="num">4</span><span><span class="j-title">First Reach Tutorial</span><span class="j-desc">Move the gripper to an object on your desk.</span><span class="j-time">10–15 minutes</span></span></a></li>
+                    </ol>
+                </nav>
+                <p class="help-line">Stuck? <a href="troubleshooting.html">Troubleshooting</a> lists fixes by symptom.</p>
+            </div>
+        </section>
+
+        <section class="section credits" id="credits" aria-labelledby="credits-title">
+            <div class="container credits-inner">
+                <h2 id="credits-title" class="credits-title">Credits</h2>
                 <div>
-                    <video class="full-width-image" controls autoplay loop muted playsinline>
-                        <source src="media/video/SLAM.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="video-caption">
-                        <h4 class="cap-title">Mapping</h4>
-                        <p class="cap-desc">RTAB-Map builds a visual map from the RealSense, and Nav2 plans paths in it. This part of the stack runs on the robot but has not been evaluated.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="card neon-hover-purple" id="hardware">
-            <h2>Hardware Architecture</h2>
-            <h3 class="font-med">What's on the Robot</h3>
-            <p>Everything is a part you can buy or print. These are the pieces that changed from XLeRobot, or that matter most when you build one.</p>
-            
-            <div class="grid-2 mt-4">
-                <div class="card card-no-margin">
-                    <h3 class="font-med mt-2">SO-101 Arms</h3>
-                    <p class="font-small mt-2">Two SO-101 arms, each with five joints and a gripper. Each arm reaches a little over 40 cm.</p>
-                    <img src="media/images/arm.png" alt="SO-101 robotic arm" class="full-width-image mt-4">
-                </div>
-                
-                <div class="card card-no-margin">
-                    <h3 class="font-med mt-2">Fin-Ray End-Effectors</h3>
-                    <p class="font-small mt-2">TPU Fin-Ray fingers bend around what they hold. Under teleoperation they seated and lifted five test objects (a plastic apple, a cube, a drill, a water bottle, and a screwdriver) in 74 of 75 attempts; the one miss was the 17 g apple.</p>
-                    <img src="media/images/gripper.png" alt="Fin-ray end-effector" class="full-width-image mt-4">
-                </div>
-
-                <div class="card card-no-margin">
-                    <h3 class="font-med mt-2">Stronger Printed Arm Links</h3>
-                    <p class="font-small mt-2">Load-bearing links are printed with 4 perimeters instead of 2, at the same 15% infill. In cantilever tests the arms failed at 18.5 N instead of 11.1 N (+67%), and the break moved from the printed link to the servo. The cost is 80 g per arm.</p>
-                    <img src="media/images/chassis.png" alt="Mass and failure load for three print profiles" class="full-width-image mt-4">
-                </div>
-                
-                <div class="card card-no-margin">
-                    <h3 class="font-med mt-2">Compute and Power</h3>
-                    <p class="font-small mt-2">A Jetson Orin Nano Super sits on an open frame at the center of the chassis, with a RealSense D435 on the neck. The arms, the head and wheels, and the Jetson each draw from their own outlet on one Anker SOLIX C300 DC. In XLeRobot's wiring, each arm shares a servo bus with the head or the wheels, and moving an arm and the head together collapsed that bus supply in 5 of 5 stress trials. With the arms on their own outlet and the firmware limits, the supply held in all 5.</p>
-                    <img src="media/images/schematic.png" alt="Power layout: the 12 V car outlet feeds the arms, one USB-C outlet feeds the head and wheels, and another feeds the Jetson" class="full-width-image mt-4">
-                </div>
-            </div>
-        </section>
-
-        <section class="card neon-hover-pink" id="software">
-            <h2>Software Stack & Algorithms</h2>
-            <p>The software pairs classical control for scripted reaching with learned policies trained on the robot.</p>
-
-            <div class="grid-2 mt-4">
-                <div class="card card-no-margin">
-                    <h3 class="font-med">Inverse Kinematics (IK) via Pink</h3>
-                    <p class="font-small mt-2">Pink, an inverse kinematics library built on Pinocchio, turns target positions into joint angles for the color-target reaching demo, solving each step as a quadratic program on a single-arm model.</p>
-                    <img src="media/images/board_close.jpg" alt="Teleoperated peg-in-hole task, close-up" class="full-width-image mt-4">
-                </div>
-
-                <div class="card card-no-margin">
-                    <h3 class="font-med">SLAM & Navigation</h3>
-                    <p class="font-small mt-2">A ROS 2 pipeline with RTAB-Map and the RealSense D435 handles mapping and localization, and Nav2 plans and follows paths on 2D costmaps. It runs on the robot, but its accuracy has not been evaluated.</p>
-                    <img src="media/images/nav.png" alt="Map of the lab built with RTAB-Map" class="full-width-image mt-4">
-                </div>
-
-                <div class="card card-no-margin">
-                    <h3 class="font-med">Visual Perception</h3>
-                    <p class="font-small mt-2">A color detector (HSV thresholding and contours) finds the target in a RealSense frame and converts its 3D center into the arm's base frame, so IK can reach it.</p>
-                    <img src="media/images/ik.png" alt="Color segmentation vision processing" class="full-width-image mt-4">
-                </div>
-
-                <div class="card card-no-margin">
-                    <h3 class="font-med">LeRobot Integration</h3>
-                    <p class="font-small mt-2">LeRobot handles recording, training, and deployment. These are the policy timings on the Jetson in MAXN SUPER mode, from the paper:</p>
-                    <div class="table-container mt-4">
-                        <table class="tech-table table-small">
-                            <thead>
-                                <tr><th>Policy</th><th>Denoising steps</th><th>Time per pass</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>ACT (100-action chunk)</td><td>&ndash;</td><td>104.5 ms</td></tr>
-                                <tr><td>Diffusion Policy</td><td>10</td><td>540 ms</td></tr>
-                                <tr><td>SmolVLA (450M)</td><td>10</td><td>997 ms</td></tr>
-                                <tr><td>SmolVLA (450M)</td><td>2</td><td>363 ms</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <p class="font-small mt-2 text-muted">Two steps is faster but not free: over a 30-minute run it drew 3.2 W more module power than ten, and the GPU clock sagged about 9% late in the run. Task success at two steps was not tested.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="card" id="specs">
-            <h2>Hardware Overview & Specifications</h2>
-            <p>These are the measured numbers from the paper, with the conditions they hold under.</p>
-            
-            <div class="mt-4">
-                <h3 class="font-med">System Specifications</h3>
-                <div class="specs-grid">
-                    <div class="spec-card">
-                        <div class="spec-label">Parts Cost</div>
-                        <div class="spec-value">$1,247</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Height</div>
-                        <div class="spec-value">1.20 m</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Arm Reach</div>
-                        <div class="spec-value">&gt; 40 cm</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Shoulder Hold</div>
-                        <div class="spec-value">0.7 kg for 30 min</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Mobility</div>
-                        <div class="spec-value">3 Omni Wheels</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Power Station</div>
-                        <div class="spec-value">288 Wh</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-large" style="margin-top: 3rem;">
-                <h3 class="font-med">Known Limitations</h3>
-                <div class="flex-wrap-gap mt-4">
-                    <span class="tech-badge">Fixed Height</span>
-                    <span class="tech-badge">Holds Are Time-Limited</span>
-                    <span class="tech-badge">Holding Measured on One Servo</span>
-                    <span class="tech-badge">Policy Tested at One Object Pose</span>
-                    <span class="tech-badge">Bimanual Coordination Not Quantified</span>
-                    <span class="tech-badge">Navigation Not Evaluated</span>
-                </div>
-                <p class="font-small mt-4 text-muted">How long a shoulder can hold a load depends on the load. With the load 18.6 cm from the joint, 0.7 kg held for the full 30 minutes, 0.8 kg reached the 65&nbsp;&deg;C stop after 27.8 minutes, 0.9 kg after 22.1 minutes, and 1 kg slipped. These holds come from one servo on battery, started warm, in a 24.4&nbsp;&deg;C room. Projected from whole-percent charge readings, the battery would last about 13&ndash;16 hours under continuous SmolVLA inference and about 17 hours holding loads.</p>
-            </div>
-        </section>
-
-        <section class="card card-credits" id="credits">
-            <h2>Credits & Acknowledgements</h2>
-            
-            <div class="credits-grid">
-                <div class="credits-col">
-                    <h3>Project Creators</h3>
-                    <p class="credits-text">
-                        <a href="https://artemisrobotics.org/" target="_blank" rel="noopener noreferrer" class="text-neon purple text-underline">Artemis Shaw</a>,
-                        <a href="https://github.com/robonana" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">Chen Liu</a>,
-                        <a href="https://github.com/JustinCosta10" target="_blank" rel="noopener noreferrer" class="text-neon purple text-underline">Justin Costa</a>,
-                        <a href="https://github.com/ranegray" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">Rane Gray</a>,
-                        <a href="https://github.com/AlinaSkowronek" target="_blank" rel="noopener noreferrer" class="text-neon purple text-underline">Alina Skowronek</a>,
-                        <span class="text-neon static-name">Kevin Diaz</span>,
-                        <span class="text-neon static-name">Nam Bui</span>,
-                        <a href="https://www.colorado.edu/lab/correll" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">Nikolaus Correll</a>.
+                    <p class="credits-names">
+                        <a href="https://artemisrobotics.org/" target="_blank" rel="noopener noreferrer">Artemis Shaw</a>,
+                        <a href="https://github.com/robonana" target="_blank" rel="noopener noreferrer">Chen Liu</a>,
+                        <a href="https://github.com/JustinCosta10" target="_blank" rel="noopener noreferrer">Justin Costa</a>,
+                        <a href="https://github.com/ranegray" target="_blank" rel="noopener noreferrer">Rane Gray</a>,
+                        <a href="https://github.com/AlinaSkowronek" target="_blank" rel="noopener noreferrer">Alina Skowronek</a>,
+                        Kevin Diaz,
+                        <a href="https://inscylab.org/nambui/" target="_blank" rel="noopener noreferrer">Nam Bui</a>,
+                        <a href="https://www.colorado.edu/lab/correll" target="_blank" rel="noopener noreferrer">Nikolaus Correll</a>.
                     </p>
-                </div>
-                <div class="credits-col">
-                    <h3>Core Frameworks</h3>
-                    <ul class="credits-list">
-                        <li>
-                            <strong>LeRobot:</strong> Built upon the foundational work of the 
-                            <a href="https://github.com/huggingface/lerobot" target="_blank" class="text-neon text-underline">Hugging Face LeRobot team</a>.
-                        </li>
-                        <li>
-                            <strong>XLeRobot:</strong> Referencing the architectural design and initial implementation by 
-                            <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" class="text-neon text-underline">Vector-Wangel</a>.
-                        </li>
-                    </ul>
+                    <p class="muted">Built on <a href="https://github.com/huggingface/lerobot" target="_blank" rel="noopener noreferrer">LeRobot</a> by Hugging Face and <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" rel="noopener noreferrer">XLeRobot</a> by Vector-Wangel.</p>
                 </div>
             </div>
         </section>
-
-        <div class="text-center mt-large">
-            <p class="credits-text cta-lead">Ready to start?</p>
-            <a href="build-guide.html" class="btn-neon btn-github btn-cta">Start Building ↗</a>
-        </div>
 
     </main>
 
-    <nav class="page-progress" aria-label="Page sections">
-        <a href="#top" class="pp-dot" data-label="Overview"></a>
-        <a href="#why" class="pp-dot" data-label="Why XLeRobot-Pro?"></a>
-        <a href="#capabilities" class="pp-dot" data-label="System Capabilities"></a>
-        <a href="#hardware" class="pp-dot" data-label="Hardware Architecture"></a>
-        <a href="#software" class="pp-dot" data-label="Software Stack"></a>
-        <a href="#specs" class="pp-dot" data-label="Specifications"></a>
-        <a href="#credits" class="pp-dot" data-label="Credits"></a>
-    </nav>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+                <p>An open-source two-arm mobile robot with the computer on board. Built on <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" rel="noopener noreferrer">XLeRobot</a> and <a href="https://github.com/huggingface/lerobot" target="_blank" rel="noopener noreferrer">LeRobot</a>.</p>
+            </div>
+            <nav aria-label="Build path (footer)">
+                <h2 class="footer-title">Build path</h2>
+                <ol class="footer-links">
+                    <li><a href="components.html">1. Components</a></li>
+                    <li><a href="build-guide.html">2. Build Guide</a></li>
+                    <li><a href="software.html">3. Software Setup</a></li>
+                    <li><a href="tutorial-first-reach.html">4. First Reach Tutorial</a></li>
+                </ol>
+            </nav>
+            <div>
+                <h2 class="footer-title">Project</h2>
+                <ul class="footer-links">
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-    <script>
-    (function () {
-        var dots = Array.prototype.slice.call(document.querySelectorAll('.page-progress .pp-dot'));
-        var sections = dots.map(function (d) { return document.querySelector(d.getAttribute('href')); });
-
-        function setActive(id) {
-            dots.forEach(function (d) { d.classList.toggle('active', d.getAttribute('href') === id); });
-        }
-
-        var ticking = false;
-        function update() {
-            ticking = false;
-            var line = 130; // "you are here" line, just below the fixed nav
-            var current = null;
-            var atBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 4);
-            if (atBottom) {
-                for (var j = sections.length - 1; j >= 0; j--) { if (sections[j]) { current = sections[j]; break; } }
-            } else {
-                for (var i = 0; i < sections.length; i++) {
-                    if (sections[i] && sections[i].getBoundingClientRect().top <= line) current = sections[i];
-                }
-                if (!current) { for (var k = 0; k < sections.length; k++) { if (sections[k]) { current = sections[k]; break; } } }
-            }
-            if (current) setActive('#' + current.id);
-        }
-        function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
-
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
-        update();
-
-        dots.forEach(function (d) {
-            d.addEventListener('click', function (e) {
-                var target = document.querySelector(d.getAttribute('href'));
-                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
-            });
-        });
-    })();
-    </script>
-
+    <a class="to-top" href="#top">Back to top</a>
 </body>
 </html>

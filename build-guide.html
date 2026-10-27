@@ -2,601 +2,456 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XLeRobot-Pro | Build Guide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Build Guide · XLeRobot-Pro</title>
+    <meta name="description" content="Assemble, wire, and validate the dual-arm XLeRobot-Pro: cart, SO-101 arms, neck, omni-wheel base, motor IDs, 2-bus wiring, and calibration checks.">
+    <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=28">
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="site.js?v=21" defer></script>
 </head>
 <body>
-    <div class="ambient-blob blob-cyan"></div>
-    <div class="ambient-blob blob-purple"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="top-nav">
-        <div class="nav-content">
-            <a href="index.html" class="brand">
-                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
-                XLeRobot-Pro
-            </a>
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
-            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
-                <span></span><span></span><span></span>
-            </label>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Overview</a>
-                <a href="components.html" class="nav-link">Components</a>
-                <a href="build-guide.html" class="nav-link active">Build Guide</a>
-                <a href="software.html" class="nav-link">Software</a>
-                <a href="troubleshooting.html" class="nav-link">Troubleshooting</a>
+    <header class="site-header" id="top">
+        <div class="header-inner">
+            <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="bar bar-1" d="M4 6h16"/><path class="bar bar-2" d="M4 12h16"/><path class="bar bar-3" d="M4 18h16"/></svg>
+                Menu
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul class="nav-list">
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="components.html">Components</a></li>
+                    <li><a href="build-guide.html" aria-current="page">Build Guide</a></li>
+                    <li><a href="software.html">Software</a></li>
+                    <li><a href="tutorial-first-reach.html">Tutorial</a></li>
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                </ul>
+                <div class="nav-ext">
+                    <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="container doc">
+            <div class="doc-head">
+                <nav class="journey" aria-label="Build path">
+                    <ol>
+                        <li><a href="components.html" class="is-past"><span class="num">1</span><span class="journey-label">Components</span></a></li>
+                        <li><a href="build-guide.html" aria-current="step"><span class="num">2</span><span class="journey-label">Build Guide</span></a></li>
+                        <li><a href="software.html"><span class="num">3</span><span class="journey-label">Software</span></a></li>
+                        <li><a href="tutorial-first-reach.html"><span class="num">4</span><span class="journey-label">Tutorial</span></a></li>
+                    </ol>
+                </nav>
+                <h1>Build Guide</h1>
+                <p class="lede">Put the robot together, wire its 17 motors, and check each one answers.</p>
             </div>
-            <div class="nav-actions">
-                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
-                <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer" class="btn-neon btn-arxiv">arXiv ↗</a>
+
+            <nav class="toc" aria-label="On this page" data-toc></nav>
+
+            <div class="doc-content">
+
+                <section class="doc-section flow" id="overview">
+                    <h2>1. Build overview</h2>
+                    <p class="section-lede">You'll build two SO-101 arms, a neck and head, and an omni-wheel base.</p>
+                    <p>They mount on an IKEA RÅSKOG cart, with an NVIDIA Jetson Orin Nano Super on a <a href="components.html#printing">printed open frame</a> at its center.</p>
+
+                    <figure class="figure render">
+                        <img src="media/images/assembled_robot.png" width="436" height="862" loading="lazy" alt="Fully assembled XLeRobot-Pro: dual SO-101 arms and a neck-mounted camera on a three-tier IKEA RÅSKOG cart with omni-wheels">
+                        <figcaption>The finished robot.</figcaption>
+                    </figure>
+
+                    <p>All 17 motors run on two buses: <strong>Bus 1</strong> for both arms (<code>/dev/xle_arms</code>, 12 motors) and <strong>Bus 2</strong> for the head and wheel base (<code>/dev/xle_head</code>, 5 motors). Older guides describe a 3-bus layout; it is superseded, so follow this page.</p>
+
+                    <h3>Build order</h3>
+                    <ol class="numbered">
+                        <li>Print all parts (<a href="components.html#printing">files and print settings on Components</a>)</li>
+                        <li>Assemble both SO-101 arms</li>
+                        <li>Install wrist camera mounts and grippers</li>
+                        <li>Assemble cart and wheel base</li>
+                        <li>Assemble neck / top base / head</li>
+                        <li>Configure motor IDs, one motor at a time, before final assembly</li>
+                        <li>Mount Jetson and route wiring</li>
+                        <li>Final mechanical assembly and cable management</li>
+                        <li>Bus verification and calibration</li>
+                        <li><a href="software.html">Software setup</a>: install the stack and run the robot</li>
+                    </ol>
+                    <p>Do step 6 before you close up the arms. Setting IDs afterwards means taking the robot back apart.</p>
+                </section>
+
+                <section class="doc-section flow" id="assembly">
+                    <h2>2. Assembly</h2>
+                    <p class="section-lede">Follow the walkthrough video. The notes below cover the steps where order matters.</p>
+
+                    <figure class="figure">
+                        <div class="video">
+                            <iframe id="assembly-video" data-embed="https://www.youtube-nocookie.com/embed/upB1CEFeOlk" src="https://www.youtube-nocookie.com/embed/upB1CEFeOlk" title="XLeRobot-Pro overall assembly walkthrough" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                        <figcaption>Jump to a chapter:
+                            <a href="#assembly-video" data-video="assembly-video" data-video-start="0">Neck, 0:00–18:51</a> ·
+                            <a href="#assembly-video" data-video="assembly-video" data-video-start="1132">Wheels, 18:52–32:30</a> ·
+                            <a href="#assembly-video" data-video="assembly-video" data-video-start="1955">Cart integration, 32:35–39:52</a>
+                        </figcaption>
+                    </figure>
+
+                    <h3>A) Cart</h3>
+                    <p><a href="https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart__AA-573329-8_pub.pdf" target="_blank" rel="noopener noreferrer">Assemble the IKEA RÅSKOG cart</a> first. Do <strong>not</strong> finalize cable routing yet: leave access for motor extensions, USB data, power, and camera cables.</p>
+
+                    <h3>B) Arms (joints 1–5)</h3>
+                    <p>Assemble both SO-101 follower arms using this video.</p>
+                    <div class="video">
+                        <iframe src="https://www.youtube-nocookie.com/embed/70GuJf2jbYk" title="SO-101 follower arm assembly" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <p><strong>Wrist and gripper order matters:</strong></p>
+                    <ol class="numbered">
+                        <li>Before attaching the gripper to joint 5, install the <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer">wrist-camera mount</a> on the gripper.</li>
+                        <li>Install the gripper claw/fingers.</li>
+                        <li>Use the follower gripper approach on both arms.</li>
+                    </ol>
+
+                    <h3>C) Neck (top base and head)</h3>
+                    <p>Assemble the Top Base and Head. The hollow neck doubles as a cable channel.</p>
+
+                    <h3>D) Wheels and wheel base</h3>
+                    <ul>
+                        <li>Keep omni-wheel orientation and order exactly as documented.</li>
+                        <li><strong>Use two nuts per wheel bolt.</strong> Tighten the first nut, then tighten a second nut against it. A single nut works loose from the vibration of driving.</li>
+                        <li>Use motor cable extensions; do not rely on short direct runs.</li>
+                        <li>Leave slack, and mount the top plate and connectors only after you have checked the cable routes.</li>
+                    </ul>
+
+                    <h3>E) Put it together on the cart</h3>
+                    <p>Bring the arms, neck, and wheel base together on the cart. <strong>Secure each main shoulder with a screw and two nuts:</strong> pass the screw down through the arm base and the cart shelf, thread two nuts on from underneath, and tighten the second against the first.</p>
+                </section>
+
+                <section class="doc-section flow" id="motor-configuration">
+                    <h2>3. Motor configuration and IDs</h2>
+                    <p class="section-lede">Set every motor's ID <strong>before</strong> final cable management and hard mounting. Many servos ship with default ID 1, so each ID must be unique per bus.</p>
+
+                    <div class="callout callout--danger">
+                        <strong class="callout-title">Duplicate IDs disable the entire bus.</strong>
+                        <p>If two motors share an ID, the whole chain stops answering, even though each motor works on its own. A right arm shipped as IDs 1–6 duplicates the entire left arm.</p>
+                    </div>
+
+                    <h3>Before you start</h3>
+                    <ul class="checklist">
+                        <li><strong>Install the base software.</strong> <a href="software.html#step-3">Software setup steps 3–5</a> are enough to run these tools.</li>
+                        <li><strong>Grant serial access</strong>, or every command below fails with <code>Permission denied</code>.</li>
+                        <li><strong>Use raw port names here</strong>: <code>/dev/ttyACM0</code>, not <code>/dev/xle_arms</code> (macOS: <code>/dev/tty.usbmodem*</code>). The friendly names are created later, in <a href="software.html#step-7">software step 7</a>.</li>
+                    </ul>
+
+                    <div class="code">
+                        <div class="code-head"><span>Serial permissions (Linux, once)</span></div>
+<pre><code>$ sudo usermod -aG dialout $USER
+# log out and back in for this to take effect
+
+# just for this boot, if you cannot log out right now:
+$ sudo chmod 666 /dev/ttyACM0</code></pre>
+                    </div>
+
+                    <h3>ID plan</h3>
+                    <div class="table-wrap">
+                        <table class="data data--stack">
+                            <thead>
+                                <tr><th scope="col">Bus</th><th scope="col">IDs</th><th scope="col">Mapping</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Bus 1 (both arms)</td><td class="nowrap">1–12</td><td>1–6 left arm, 7–12 right arm, shoulder to gripper</td></tr>
+                                <tr><td>Bus 2 (head and wheels)</td><td class="nowrap">1–5</td><td>ID 1 = tilt (up/down), ID 2 = pan (left/right), 3–5 wheels</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Step 1: Scan what is on the bus</h3>
+                    <p>This finds every motor on a port, at any baud rate and any ID. Model <code>777</code> is the STS3215.</p>
+                    <div class="code">
+                        <div class="code-head"><span>Scan a bus</span></div>
+<pre><code># Which serial ports exist right now?
+$ ls /dev/ttyACM*
+
+# List every motor answering on a bus, at any baud rate
+$ python -c "from lerobot.motors.feetech import FeetechMotorsBus; \
+  print(FeetechMotorsBus.scan_port('<span class="v">/dev/ttyACM0</span>'))"</code></pre>
+                    </div>
+
+                    <h3>Step 2: Write one ID at a time</h3>
+                    <div class="callout callout--danger">
+                        <strong class="callout-title">One motor on the chain, no exceptions.</strong>
+                        <p><code>set_motor_id.py</code> reprograms whatever answers. With other motors attached, it can rewrite a working joint.</p>
+                    </div>
+                    <div class="code">
+                        <div class="code-head"><span>Assign motor IDs</span></div>
+<pre><code># Identify active serial ports
+$ lerobot-find-port
+
+# ONE motor connected. Assign its ID from the table above.
+$ python set_motor_id.py --port <span class="v">/dev/ttyACM0</span> --id <span class="v">7</span>
+
+# Non-STS3215 motor? name the model explicitly:
+$ python set_motor_id.py --port /dev/ttyACM0 --id 7 --model scs0009</code></pre>
+                    </div>
+                    <p><code>--model</code> defaults to <code>sts3215</code>, which this build uses throughout.</p>
+                    <ol class="numbered">
+                        <li>Isolate one motor. Start with the highest ID and work down (12, 11, 10 …), so a stray reconnection cannot create a duplicate.</li>
+                        <li>Confirm its current ID with a scan.</li>
+                        <li>Write the correct ID.</li>
+                        <li>Add motors back and re-scan as you go. A complete chain lists every ID with no gaps; a missing number tells you which motor or cable to check.</li>
+                        <li>Label every motor and both ends of every cable: <code>L-1</code>…<code>L-6</code>, <code>R-7</code>…<code>R-12</code>, <code>H-1</code>…<code>H-2</code>, <code>W-3</code>…<code>W-5</code>.</li>
+                    </ol>
+                </section>
+
+                <section class="doc-section flow" id="jetson">
+                    <h2>4. NVIDIA Jetson placement</h2>
+                    <p class="section-lede">Mount the Jetson in the <strong>center rack</strong>, between the base and the top plate.</p>
+                    <ul class="checklist">
+                        <li>Keep mass low for stability.</li>
+                        <li>Keep USB ports accessible.</li>
+                        <li>Keep cables short to the <strong>two</strong> motor control boards, the head camera, and the power station (plus the wrist cameras, if you add them).</li>
+                    </ul>
+
+                    <div class="callout callout--warn">
+                        <strong class="callout-title">Plug both bus adapters directly into the Jetson, not through a hub.</strong>
+                        <p>Behind a hub, the adapter looks connected but its bus does not show up.</p>
+                    </div>
+                </section>
+
+                <section class="doc-section flow" id="wiring">
+                    <h2>5. Wiring (2-bus)</h2>
+                    <p class="section-lede">Seventeen motors, four daisy chains, two bus hubs, and three USB cables to the Jetson (five with the optional wrist cameras).</p>
+
+                    <figure class="figure">
+                        <a class="zoom-link" href="media/images/wiring-guide.png" target="_blank" rel="noopener">
+                            <span class="frame"><img src="media/web/wiring-guide.png" width="1200" height="3175" loading="lazy" alt="Complete XLeRobot-Pro wiring guide: 17 motors in four daisy chains. Left arm IDs 1-6, right arm IDs 7-12, head IDs 1-2, wheels IDs 3-5. Arm chains join the Bus 1 hub, head and wheel chains join the Bus 2 hub, each hub reaching the Jetson through one USB adapter. The cameras connect directly to the Jetson."></span>
+                        </a>
+                        <figcaption>Chain order for each limb, which hub each chain plugs into, and how the hubs and cameras reach the Jetson. <a href="media/images/wiring-guide.png" target="_blank" rel="noopener">Open full size</a>. Power is simplified here; see Power wiring below.</figcaption>
+                    </figure>
+
+                    <h3>A) Motor wiring</h3>
+                    <p>One cable carries both power and signal, so each motor connects only to its neighbor. The first motor in each chain plugs into its bus hub. Either socket on a motor works; the last motor's spare socket stays empty.</p>
+                    <div class="table-wrap">
+                        <table class="data data--stack">
+                            <thead>
+                                <tr><th scope="col">Chain</th><th scope="col">Order</th><th scope="col">Notes</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Bus 1: Left arm</td><td class="nowrap">1, 2, 3, 4, 5, 6</td><td>Shoulder to gripper; into the Bus 1 hub</td></tr>
+                                <tr><td>Bus 1: Right arm</td><td class="nowrap">7, 8, 9, 10, 11, 12</td><td>Same order; into the Bus 1 hub</td></tr>
+                                <tr><td>Bus 2: Head</td><td class="nowrap">1, 2</td><td>ID 1 is <strong>tilt</strong> (up/down), ID 2 is <strong>pan</strong> (left/right)</td></tr>
+                                <tr><td>Bus 2: Wheels</td><td class="nowrap">3, 4, 5</td><td>Around the rim of the wheel plate; use extensions up to the middle shelf</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout--warn">
+                        <strong class="callout-title">Confirm the head axes on your hardware.</strong>
+                        <p>Power the head and check that <strong>ID 1 moves up/down</strong> and <strong>ID 2 moves left/right</strong>. If they are swapped, the arm reaches for the wrong place.</p>
+                    </div>
+
+                    <h3>Cable routing</h3>
+                    <ul class="checklist">
+                        <li><strong>Leave a service loop at every rotating joint.</strong> Without slack, the cable pulls on its connector when the joint moves and the bus drops.</li>
+                        <li><strong>Re-seat the first link first.</strong> When a bus misbehaves, check the cable from the adapter to the first motor.</li>
+                        <li>Avoid tight bends near connectors, keep cables away from pinch points, and make them slightly longer than you think you need. US builders will likely crimp their own (see the <a href="components.html#specs">sourcing note on Components</a>).</li>
+                    </ul>
+
+                    <h3>B) Power wiring</h3>
+                    <p>Servo power, Jetson power, and USB are three separate things. The USB cables between the Jetson and the bus boards carry data only; all power comes from the power station.</p>
+                    <div class="table-wrap">
+                        <table class="data data--stack">
+                            <thead>
+                                <tr><th scope="col">Rail</th><th scope="col">Feeds</th><th scope="col">Requirement</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Compute</td><td>Jetson carrier</td><td>Its own USB-C outlet, through the USB-C to DC5525 PD cable into the barrel jack</td></tr>
+                                <tr><td>Servo: arms</td><td>Bus 1, 12 motors</td><td>The 12 V car outlet, through the car-socket to DC5521 cable</td></tr>
+                                <tr><td>Servo: head/base</td><td>Bus 2, 5 motors</td><td>Its own USB-C outlet, through the USB-C to DC5521 PD cable</td></tr>
+                                <tr><td>Adapter boards</td><td>Bus transceivers</td><td>Barrel jack on <strong>each</strong> board</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul>
+                        <li>Mount the Anker SOLIX C300 DC power station (2.8 kg) low in the cart, with strain relief on every cable that leaves it.</li>
+                        <li>The build adds no fuses: each outlet shuts off on overload. If you change the torque settings in <code>firmware_limits.py</code>, re-check the arm bus against its <strong>5 A budget</strong>.</li>
+                    </ul>
+
+                    <div class="callout callout--danger">
+                        <strong class="callout-title">Plain 5 V USB will not run these servos.</strong>
+                        <p>These are the 12 V STS3215s. Power Bus 1 from the <strong>12 V car outlet</strong> and Bus 2 through the <strong>USB-C PD cable</strong> in the BOM, not a plain 5 V USB-to-barrel cable. A lit LED on the adapter board does not mean the servos have power.</p>
+                    </div>
+
+                    <h3>C) Camera wiring</h3>
+                    <p>Each camera plugs into its own USB port on the Jetson, never into a bus hub.</p>
+                    <ul>
+                        <li><strong>Wrist cameras (×2):</strong> route each cable along its arm with full-motion slack; secure at intervals; keep compute-end connectors accessible.</li>
+                        <li><strong>Head camera (RealSense):</strong> route through the hollow neck into a USB 3.0 port; leave pan/tilt slack at the head joint.</li>
+                    </ul>
+                </section>
+
+                <section class="doc-section flow" id="final-assembly">
+                    <h2>6. Final assembly</h2>
+                    <ul>
+                        <li>Complete wiring and cable management before clamping the top base into the cart.</li>
+                        <li>Clamp the arms onto the cart corners after route verification.</li>
+                    </ul>
+
+                    <div class="callout callout--warn">
+                        <strong class="callout-title">Lift the robot to move it.</strong>
+                        <p>Do not push the fully assembled robot like a normal cart; lifting it protects the motor gears.</p>
+                    </div>
+
+                    <h3>Final checklist</h3>
+                    <div class="grid grid--2">
+                        <div class="card">
+                            <h4>Mechanical and power</h4>
+                            <ul class="checklist">
+                                <li>Jetson mounted securely</li>
+                                <li>Battery secured and upright</li>
+                                <li>No cable pinch points</li>
+                                <li>Full arm range without cable snagging</li>
+                                <li>Wheel base rotates freely</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>Electrical and sensing</h4>
+                            <ul class="checklist">
+                                <li>Both buses configured and tested independently</li>
+                                <li>Motor IDs verified: 1–12 on Bus 1, 1–5 on Bus 2</li>
+                                <li>Motor directions verified</li>
+                                <li>Head axes confirmed: ID 1 up/down, ID 2 left/right</li>
+                                <li>Both wrist cameras detected</li>
+                                <li>Head camera detected</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="doc-section flow" id="calibration">
+                    <h2>7. Calibrate and validate</h2>
+                    <p class="section-lede">Calibrate once for the whole robot, then check that it moves as expected.</p>
+
+                    <div class="callout callout--warn">
+                        <strong class="callout-title">Three things must be true before you calibrate.</strong>
+                        <ul class="checklist">
+                            <li>The software stack is installed (<a href="software.html#step-3">software steps 3–6</a>).</li>
+                            <li>The bus symlinks <code>/dev/xle_arms</code> and <code>/dev/xle_head</code> exist (<a href="software.html#step-7">step 7</a>).</li>
+                            <li>Every motor answers a bus scan (<a href="software.html#step-8">step 8</a>).</li>
+                        </ul>
+                    </div>
+
+                    <h3>A) Run the calibration</h3>
+                    <p>Run <code>python scripts/calibrate_xlerobot.py</code> from the repo root and follow its four prompts. <a href="software.html#step-9">Software step 9</a> has the full procedure and the check table.</p>
+                    <div class="callout callout--danger">
+                        <strong class="callout-title">Torque is released for the whole procedure.</strong>
+                        <p>Both arms go limp and <strong>will fall from a raised pose.</strong> Support them by hand before you start, and clear anything underneath them.</p>
+                    </div>
+
+                    <h3>B) Read back the positions</h3>
+                    <p>These print the calibrated positions. Nothing is commanded to move.</p>
+                    <div class="callout callout--danger">
+                        <strong class="callout-title"><code>read_motors.py</code> releases arm torque on purpose.</strong>
+                        <p><strong>A raised arm will fall the moment it runs.</strong> Lower both arms, or hold them, before starting it.</p>
+                    </div>
+                    <div class="code">
+                        <div class="code-head"><span>Read calibrated positions</span></div>
+<pre><code>$ python diagnostics/read_motors.py
+# arm joint angles, from /dev/xle_arms
+
+$ python diagnostics/read_head.py
+# head tilt and pan, from /dev/xle_head</code></pre>
+                    </div>
+
+                    <h3>C) First commanded motion</h3>
+                    <p>Start with the wheels, then move the arms.</p>
+                    <div class="code">
+                        <div class="code-head"><span>Wheels first, then arms</span></div>
+<pre><code># wheels only. Arms are never touched. A slow few centimetres.
+$ python diagnostics/base_drive_check.py --vx 0.05 --seconds 2
+
+# whole robot: both arms, head and base, on a gamepad
+$ python examples/5_xlerobot_teleop_xbox_new_wiring.py</code></pre>
+                    </div>
+                    <div class="callout callout--warn">
+                        <strong class="callout-title">Use the <code>_new_wiring</code> variant.</strong>
+                        <p>The plain <code>5_xlerobot_teleop_xbox.py</code> opens <code>/dev/xle_right</code> and <code>/dev/xle_left</code>, ports that do not exist on this build. Details in <a href="software.html#step-11">software setup step 11</a>.</p>
+                    </div>
+
+                    <h3>D) Check reach accuracy</h3>
+                    <p>If the gripper misses a known point by more than a couple of centimeters, look for loose servo horns, a stripped gear, or a bent bracket. The <a href="tutorial-first-reach.html">First Reach Tutorial</a> walks through this check.</p>
+                    <div class="code">
+                        <div class="code-head"><span>Compare commanded vs. actual</span></div>
+<pre><code># pose the gripper by hand on a known point;
+# prints joint angles and the model's EE position for them
+$ python diagnostics/measure_ee.py</code></pre>
+                    </div>
+                    <p class="small muted"><code>measure_ee.py</code> hardcodes <code>PORT = "/dev/ttyACM0"</code> near the top of the file. Change it to <code>/dev/xle_arms</code> for this build.</p>
+
+                    <h3>E) Camera bring-up</h3>
+                    <div class="code">
+                        <div class="code-head"><span>All three cameras</span></div>
+<pre><code>$ v4l2-ctl --list-devices
+$ python examples/9_dual_wrist_camera.py
+$ rs-enumerate-devices</code></pre>
+                    </div>
+
+                    <div class="check">
+                        <span class="check-title">Hardware is validated when</span>
+                        <ul>
+                            <li>Every arm joint moves in the expected direction.</li>
+                            <li>Head tilt and pan move on the expected axes.</li>
+                            <li>Wheels drive and stop reliably.</li>
+                            <li>All three camera streams open.</li>
+                            <li>Mirrored joints agree within a few percent.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <nav class="pager" aria-label="Previous and next page">
+                    <a class="pager-prev" href="components.html"><span class="pager-label">Previous: step 1</span><span class="pager-title">Components</span></a>
+                    <a class="pager-next" href="software.html"><span class="pager-label">Next: step 3 of 4</span><span class="pager-title">Software Setup</span></a>
+                </nav>
             </div>
         </div>
-    </nav>
-
-    <main class="page-container">
-
-        <header class="page-header">
-            <span class="tech-badge">2-Bus Architecture</span>
-            <h1>Build &amp; Calibration Guide</h1>
-            <p>Consolidated instructions for assembly, wiring, and physical validation of the dual-arm XLeRobot-Pro platform. 3D-printing files and print settings live on the <a href="components.html#printing" class="text-neon text-underline">Components</a> page.</p>
-        </header>
-
-        <div class="alert-box alert-caution">
-            <div class="alert-accent-line"></div>
-            <strong>CAUTION:</strong> This page documents the current <strong>2-bus architecture</strong> (Bus 1 = both arms, IDs 1–12; Bus 2 = head + wheels, IDs 1–5). Older references describe a 3-bus layout with a separate neck/wheel bus — that wiring is superseded. For this build, follow this page.
-        </div>
-
-        <section class="card">
-            <h2>1. Build Overview</h2>
-            <p>This guide walks you through building the platform with 2× SO-101 follower arms, a neck/head assembly, an omni-wheel base on an IKEA RÅSKOG cart, and an NVIDIA Jetson Orin Nano Super on a <a href="components.html#printing" class="text-neon text-underline">printed open frame</a> at the center of the cart.</p>
-
-            <figure class="build-render">
-                <img src="media/images/assembled_robot.png" alt="Fully assembled XLeRobot-Pro — dual SO-101 arms and a neck-mounted camera on a three-tier IKEA RÅSKOG cart with omni-wheels" loading="lazy">
-                <figcaption>The finished platform you're building toward — rendered from the robot's URDF.</figcaption>
-            </figure>
-
-            <h3 class="mt-4">The 2-Bus Separation</h3>
-            <p>All 17 motors run on two buses, each carrying two daisy chains. The 12 arm servos (Bus 1) draw from the power station's 12 V car outlet, while the head and wheels (Bus 2) and the Jetson each draw from their own USB-C outlet. In the paper's stress tests, this layout and the firmware settings held the supply in all 5 trials, against a collapse in 5 of 5 on XLeRobot's original wiring, where each arm shares a bus with the head or the wheels. The outlets still share one battery.</p>
-
-            <div class="table-container mt-4 mb-4">
-                <table class="tech-table">
-                    <thead>
-                        <tr><th>Bus</th><th>Subsystem</th><th>Motors</th><th>Serial Port</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>Bus 1</strong></td><td>Left arm + right arm</td><td>12</td><td><code>/dev/xle_arms</code></td></tr>
-                        <tr><td><strong>Bus 2</strong></td><td>Head + wheel base</td><td>5</td><td><code>/dev/xle_head</code></td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3 class="mt-4">Recommended Build Order</h3>
-            <ol class="mt-2">
-                <li>Print all parts (<a href="components.html#printing" class="text-neon text-underline">files &amp; print settings on Components</a>)</li>
-                <li>Assemble both SO-101 arms</li>
-                <li>Install wrist camera mounts and grippers</li>
-                <li>Assemble cart and wheel base</li>
-                <li>Assemble neck / top base / head</li>
-                <li><strong>Configure motor IDs</strong> — one motor at a time, before final assembly</li>
-                <li>Mount Jetson and route wiring</li>
-                <li>Final mechanical assembly and cable management</li>
-                <li>Bus verification and calibration</li>
-                <li><a href="software.html" class="text-neon text-underline">Software setup</a> — install the stack and run the robot</li>
-            </ol>
-
-            <div class="alert-box alert-tip mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>STEP 6 IS THE ONE PEOPLE REGRET SKIPPING.</strong> Assigning motor IDs requires connecting exactly one motor at a time. Doing it before the arms are closed up and the cable runs are dressed takes minutes; doing it afterwards means taking the robot back apart.
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>2. Assembly</h2>
-
-            <h3 class="mt-4">Overall Assembly</h3>
-            <p>A complete walkthrough of the build process. Use the chapter links in the sections below to jump this video straight to that step.</p>
-            <div class="video-frame">
-                <iframe id="assembly-video" data-embed="https://www.youtube-nocookie.com/embed/upB1CEFeOlk" src="https://www.youtube-nocookie.com/embed/upB1CEFeOlk" title="XLeRobot-Pro — overall assembly walkthrough" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-
-            <h3 class="mt-4">A) Cart</h3>
-            <p><a href="https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart__AA-573329-8_pub.pdf" target="_blank" rel="noopener noreferrer" class="text-neon">Assemble the IKEA RÅSKOG cart</a> first to establish the rolling structure.</p>
-            <ul class="mt-2">
-                <li>Do <strong>not</strong> finalize cable routing through the cart yet</li>
-                <li>Leave access for motor extensions, USB data, power, and camera cable routes</li>
-            </ul>
-
-            <h3 class="mt-4">B) Arms (Joints 1–5)</h3>
-            <p>Assemble both SO-101 follower arms using the step-by-step build video below.</p>
-            <div class="video-frame">
-                <iframe src="https://www.youtube-nocookie.com/embed/70GuJf2jbYk" title="SO-101 follower arm assembly" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-            <p><strong>Crucial wrist/gripper order:</strong></p>
-            <ol class="mt-2">
-                <li>Before attaching the gripper to joint 5, install the <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">wrist-camera mount</a> on the gripper</li>
-                <li>Install the gripper claw/fingers</li>
-                <li>Use the follower gripper approach on both arms</li>
-            </ol>
-            <p class="font-small mt-2 text-muted">This order avoids reopening the wrist stack later.</p>
-
-            <h3 class="mt-4">C) Neck (Top Base &amp; Head)</h3>
-            <ul class="mt-2">
-                <li>Assemble the Top Base and Head.</li>
-                <li>The head follows the same motor style and is derived from early SO-101 link patterns.</li>
-                <li>The hollow neck doubles as a cable channel.</li>
-            </ul>
-            <p><a href="#assembly-video" class="text-neon jump-to" data-t="0">Jump to the neck assembly</a> in the video above (<strong>0:00–18:51</strong>).</p>
-
-            <h3 class="mt-4">D) Wheels &amp; Wheel Base</h3>
-            <p>Assemble the wheels and wheel base.</p>
-            <p><a href="#assembly-video" class="text-neon jump-to" data-t="1132">Jump to the wheel assembly</a> in the video above (<strong>18:52–32:30</strong>).</p>
-            <ul class="mt-2">
-                <li>Keep omni-wheel orientation/order exactly as documented</li>
-                <li><strong>Use two nuts per wheel bolt.</strong> Thread the first nut on and tighten it, then run a second nut down against it. The two jam together and cannot back off — a single nut works loose from the constant vibration of driving and the wheel eventually comes off.</li>
-                <li>Use motor cable extensions — do not rely on short direct runs</li>
-                <li>Leave slack until top-plate routing is finalized</li>
-                <li>Mount the top plate and connectors only after route checks</li>
-            </ul>
-
-            <div class="alert-box alert-tip mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>DOUBLE-NUT ANYTHING THAT ROTATES OR CARRIES LOAD.</strong> It costs one extra nut and a few seconds, and it is much easier than diagnosing a wheel that fell off mid-run.
-            </div>
-
-            <h3 class="mt-4">E) Integrating Components onto the Cart</h3>
-            <p>Bring the arms, neck, and wheel base together on the cart for the full platform.</p>
-            <ul class="mt-2">
-                <li><strong>Secure each main shoulder to the cart with a screw and two nuts:</strong> pass a screw down through the arm base and the cart shelf, then thread <strong>two nuts</strong> onto it from the underside — sandwich the cart shelf between the arm base and the nuts, tighten the first, then jam the second down against it. The shoulder carries the whole arm's leverage every time it sweeps, and a single nut will not stay put under that load.</li>
-            </ul>
-            <p><a href="#assembly-video" class="text-neon jump-to" data-t="1955">Jump to the full cart integration</a> in the video above (<strong>32:35–39:52</strong>).</p>
-        </section>
-
-        <section class="card" id="motor-configuration">
-            <h2>3. Motor Configuration &amp; IDs</h2>
-            <p>Configure motors <strong>before</strong> final cable management and hard mounting — verifying IDs on an assembled chain is far slower. Many servos ship with default ID 1, so each ID must be unique per bus and the baudrate must match the board and motors.</p>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>DUPLICATE IDs DISABLE THE ENTIRE BUS.</strong> Feetech is a <strong>half-duplex</strong> bus — one shared data wire. Two motors answering to the same ID transmit at the same instant, and the collision corrupts <em>every</em> packet on the wire, not just theirs. One duplicate makes all seventeen motors scan as absent.
-                <br><br>
-                The signature is unmistakable once you know it: <strong>each motor responds fine in isolation, and the assembled chain responds to nothing.</strong> This reads exactly like a power fault, a dead adapter, or bad cabling — and it is none of those. A right arm shipped as IDs 1–6 duplicates the entire left arm.
-            </div>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>Physical labels are not the programmed ID.</strong> Number stickers on the servos record intent, not state. Verify every motor electrically before you trust the chain.
-            </div>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>USE RAW PORT NAMES HERE — <code>/dev/ttyACM0</code>, NOT <code>/dev/xle_arms</code>.</strong> The friendly bus names are created later, in <a href="software.html#step-7" class="text-neon text-underline">software setup step 7</a>, by a script that identifies each adapter from the motor IDs that answer on it. Those IDs are what you are assigning right now, so the names cannot exist yet. Everything in this section uses <code>/dev/ttyACM0</code> (macOS: <code>/dev/tty.usbmodem*</code>).
-            </div>
-
-            <h3 class="mt-4">Before you start</h3>
-            <p class="mt-2">You need the software stack installed to run these tools, but nothing beyond the base install — <a href="software.html#step-3" class="text-neon text-underline">steps 3–5 of software setup</a> is enough. Grant serial access first, or every command below fails with <code>Permission denied</code>:</p>
-
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Serial permissions (Linux, once)</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> sudo usermod -aG dialout $USER<br>
-                    <span class="log-info"># log out and back in for this to take effect</span><br><br>
-                    <span class="log-info"># just for this boot, if you cannot log out right now:</span><br>
-                    <span>$</span> sudo chmod 666 /dev/ttyACM0
-                </div>
-            </div>
-
-            <h3 class="mt-4">ID Planning</h3>
-            <div class="table-container mt-2">
-                <table class="tech-table">
-                    <thead>
-                        <tr><th>Bus</th><th>Recommended IDs</th><th>Mapping Notes</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>Bus 1 (Both Arms)</strong></td><td>1–12</td><td>1–6 left arm, 7–12 right arm — SO-101 follower mapping, shoulder to gripper</td></tr>
-                        <tr><td><strong>Bus 2 (Head &amp; Wheels)</strong></td><td>1–5</td><td>ID 1 = tilt (up/down), ID 2 = pan (left/right), 3–5 wheels</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3 class="mt-4">Step 1 — Scan what is actually on the bus</h3>
-            <p class="mt-2">This sweeps every supported baud rate and pings every address, so it finds motors even at the wrong baud or the wrong ID. Model <code>777</code> is the STS3215.</p>
-
-            <div class="terminal-box mt-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Scan a Bus</span>
-                </div>
-                <div class="terminal-body">
-                    <span class="log-info"># Which serial ports exist right now?</span><br>
-                    <span>$</span> ls /dev/ttyACM*<br><br>
-                    <span class="log-info"># List every motor answering on a bus, at any baud rate</span><br>
-                    <span>$</span> python -c "from lerobot.motors.feetech import FeetechMotorsBus; \<br>
-                    &nbsp;&nbsp;print(FeetechMotorsBus.scan_port('<span class="text-neon">/dev/ttyACM0</span>'))"
-                </div>
-            </div>
-
-            <p class="mt-2">A brand-new motor answers as <strong>ID 1</strong>. That is why they must be configured one at a time — a bag of factory servos is seventeen motors all claiming the same address.</p>
-
-            <h3 class="mt-4">Step 2 — Write one ID at a time</h3>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>ONE MOTOR ON THE CHAIN, NO EXCEPTIONS.</strong> <code>set_motor_id.py</code> reprograms whatever answers. With other motors attached it will either collide or silently rewrite a working joint — turning one problem into two.
-            </div>
-
-            <div class="terminal-box mt-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Assign Motor IDs</span>
-                </div>
-                <div class="terminal-body">
-                    <span class="log-info"># Identify active serial ports</span><br>
-                    <span>$</span> lerobot-find-port<br><br>
-                    <span class="log-info"># ONE motor connected. Assign its ID from the table above.</span><br>
-                    <span>$</span> python set_motor_id.py --port <span class="text-neon">/dev/ttyACM0</span> --id 7<br><br>
-                    <span class="log-info"># Non-STS3215 motor? name the model explicitly:</span><br>
-                    <span>$</span> python set_motor_id.py --port /dev/ttyACM0 --id 7 --model scs0009
-                </div>
-            </div>
-
-            <p class="mt-2">The tool scans every baudrate to find the motor, so it works even on a servo that is at an unexpected ID or baud. It reprograms it to your chosen ID at the default 1&nbsp;Mbps. <code>--model</code> defaults to <code>sts3215</code>, which is what this build uses throughout.</p>
-
-            <p class="mt-2">Isolate each motor, confirm its current ID with a scan, then write the correct one. Add motors back and re-scan as you go — a complete chain should list every ID with no gaps.</p>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>ASSIGN THE HIGH IDs FIRST.</strong> Every unconfigured motor answers as ID 1. If you rebuild the chain as you go, working <em>downward</em> (12, 11, 10 …) means no configured motor is sitting at ID 1 while unconfigured ones are still to come — so a stray reconnection cannot create a duplicate. Assigning upward guarantees a period where it can.
-            </div>
-
-            <div class="alert-box alert-tip mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>TIP:</strong> Physically label every motor and both ends of every cable after configuration — <code>L-1</code>…<code>L-6</code>, <code>R-7</code>…<code>R-12</code>, <code>H-1</code>…<code>H-2</code>, <code>W-3</code>…<code>W-5</code>.
-            </div>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>Bisecting a bad chain.</strong> If an assembled chain scans empty, halve it: connect the first half and scan, then the other half. Roughly four rounds isolates the offending motor or cable. A scan that returns <em>fewer</em> IDs than motors attached names the culprit outright — it's the missing number.
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>4. NVIDIA Jetson Placement</h2>
-            <p>Mount the Jetson in the <strong>center rack</strong> of the cart, between the wheel base and the top plate.</p>
-            <ul class="mt-2">
-                <li>Keep mass low for stability</li>
-                <li>Keep USB ports accessible</li>
-                <li>Minimize cable length to the <strong>two</strong> motor control boards, the head camera, and the power station (plus the wrist cameras, if you add them)</li>
-            </ul>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>PLUG BOTH BUS ADAPTERS DIRECTLY INTO THE JETSON.</strong> Not through a hub. USB-serial adapters behind two hub levels — especially sharing a tree with the RealSense D435 — fail enumeration with <code>error -110</code> and <code>unable to enumerate USB device</code>. The adapter looks physically connected but never creates a <code>/dev/ttyACM*</code> node, so its bus is <em>invisible</em> rather than broken. With the RealSense that is three USB devices on the Jetson, and optional wrist cameras add two more. Plan the port budget around it — which is also why the software guide has you <a href="software.html#step-2" class="text-neon text-underline">work over SSH</a> rather than plugging in a keyboard.
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>5. Wiring (2-Bus)</h2>
-            <p>Seventeen motors, four daisy chains, two bus hubs, and three USB cables to the Jetson (five with the optional wrist cameras). The diagram below is the complete reference — chain order per limb, which chain lands on which hub, and how the hubs and cameras reach the Jetson. Motor positions are taken straight from the robot's URDF.</p>
-
-            <figure class="mt-4 mb-4">
-                <a href="media/images/wiring-guide.png" target="_blank" rel="noopener">
-                    <img src="media/images/wiring-guide.png" alt="Complete XLeRobot-Pro wiring guide: 17 motors in four daisy chains — left arm IDs 1-6, right arm IDs 7-12, head IDs 1-2, wheels IDs 3-5. Arm chains join Bus 1 hub, head and wheel chains join Bus 2 hub, each hub reaching the Jetson through one USB adapter. The cameras connect directly to the Jetson." class="full-width-image" loading="lazy">
-                </a>
-                <figcaption class="font-small mt-2 text-muted">Full wiring reference — click to open at full size. Each motor has two identical sockets, so either one can be "in" or "out"; the last motor in every chain leaves one socket empty. The power side of this diagram is simplified: the actual build uses three separate outlets on the power station, described under Power Wiring below.</figcaption>
-            </figure>
-
-            <h3 class="mt-4">A) Motor Wiring</h3>
-            <p class="mt-2">Four daisy chains. One cable carries both power and the control signal, which is why each motor needs only the single wire to its neighbour. The first motor in each chain plugs into its bus hub, and the last motor's spare socket stays empty.</p>
-            <ul class="mt-2">
-                <li><strong>Bus 1 — Left arm (1→2→3→4→5→6):</strong> start at the shoulder, end at the gripper; chain head plugs into the Bus 1 hub</li>
-                <li><strong>Bus 1 — Right arm (7→8→9→10→11→12):</strong> exactly the same order on the other arm; also into the Bus 1 hub</li>
-                <li><strong>Bus 2 — Head (1→2):</strong> ID 1 is <strong>tilt</strong> (up/down), ID 2 is <strong>pan</strong> (left/right)</li>
-                <li><strong>Bus 2 — Wheels (3→4→5):</strong> run the cable around the rim of the wheel plate; use extensions for clean routing up to the middle shelf</li>
-            </ul>
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>CONFIRM THE HEAD AXES ON YOUR HARDWARE:</strong> power the head and check that <strong>ID 1 moves up/down</strong> and <strong>ID 2 moves left/right</strong>. The vision demo reads live head tilt and pan to place the camera relative to the arm base — swapping them produces a coordinate transform that looks entirely plausible and sends the arm confidently to the wrong place. Verify before trusting a grasp.
-            </div>
-
-            <h3 class="mt-4">Cable Routing</h3>
-            <p class="mt-2">A daisy chain breaks at any point and everything downstream goes silent. Two rules prevent most of the grief:</p>
-            <ul class="mt-2">
-                <li><strong>Service loop at every rotating joint.</strong> Shoulder pan sweeps the whole arm; without slack the cable pulls its own connector at the travel extremes and drops the bus mid-motion. This surfaces during calibration, where a single dropped packet aborts the run.</li>
-                <li><strong>The first link carries every transaction.</strong> The adapter-to-first-motor cable is the highest-value thing to re-seat when a bus misbehaves.</li>
-            </ul>
-            <p class="font-small mt-2 text-muted">Also: avoid tight bends near connectors, keep motion cables away from pinch points, and label both ends of every extension.</p>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>SOURCING LONG SERVO CABLES IN THE US.</strong> The long 3-pin daisy-chain cables are hard to buy domestically — most US listings stock only the short lengths that ship with the servos, and the long runs the wheel base and neck need are typically import-only. Plan on cutting and crimping your own from bulk 3-conductor servo wire, which is why the <a href="components.html" class="text-neon text-underline">BOM</a> lists wire rather than finished cables. Make them slightly longer than you think you need — the service loops above eat more length than expected.
-            </div>
-
-            <h3 class="mt-4">B) Power Wiring</h3>
-            <p class="mt-2">There are three separate things here and confusing them costs hours: servo power, Jetson power, and USB. The USB cables between the Jetson and the bus boards carry data only; all power comes from the power station.</p>
-
-            <div class="table-container mt-4 mb-4">
-                <table class="tech-table">
-                    <thead>
-                        <tr><th>Rail</th><th>Feeds</th><th>Requirement</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Compute</td><td>Jetson carrier</td><td>Its own USB-C outlet, through the USB-C to DC5525 PD cable into the barrel jack</td></tr>
-                        <tr><td><strong>Servo — arms</strong></td><td>Bus 1, 12 motors</td><td>The 12 V car outlet (rated 10 A), through the car-socket to DC5521 cable. This is the largest load on the robot; the arm bus is budgeted at 5 A</td></tr>
-                        <tr><td><strong>Servo — head/base</strong></td><td>Bus 2, 5 motors</td><td>Its own USB-C outlet, through the USB-C to DC5521 PD cable</td></tr>
-                        <tr><td>Adapter boards</td><td>Bus transceivers</td><td>Barrel jack on <strong>each</strong> board</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <ul class="mt-2">
-                <li>Mount the Anker SOLIX C300 DC power station (2.8 kg) low in the cart, with strain relief on every cable that leaves it</li>
-                <li>Each load plugs into its own outlet on the power station; there is no shared distribution point</li>
-                <li>The build adds no fuses: each outlet on the power station shuts off on overload. The arm torque setting (450) keeps the estimated arm-bus current under a <strong>5 A budget</strong>, half the car outlet's 10 A rating. If you change the torque settings in <code>firmware_limits.py</code>, re-check them against that budget</li>
-            </ul>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>Plain 5 V USB will not run these servos.</strong> These are the 12 V STS3215s. Off a 5 V USB output they respond intermittently or not at all, while the adapter board's LED glows normally on a few milliamps, so everything <em>looks</em> fine. Power Bus 1 from the <strong>12 V car outlet</strong> and Bus 2 through the <strong>USB-C PD cable</strong> in the BOM, not a plain 5 V USB-to-barrel cable.
-            </div>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>A lit LED proves less than you think.</strong> The STS3215 has <strong>no external LED</strong>. Any light you see belongs to the adapter board, and it proves only that the board's barrel jack has voltage — not that the servos are powered, and not that the board is actually joined to the motor chain. The reliable test is a bus scan or a multimeter across the servo rail.
-            </div>
-
-            <h4 class="mt-4">Grounding</h4>
-            <p class="mt-2">If the adapter board and the motor chain are fed from different supplies, they must still share a <strong>common ground</strong> — otherwise the data line has no valid voltage reference. The symptom is distinctive: every motor powered and drawing current, and zero communication.</p>
-
-            <p class="font-small mt-2 text-muted">Watch for load asymmetry when diagnosing. A marginal supply often carries three wheels fine and cannot carry twelve arm joints, which presents as "the arm bus is broken."</p>
-
-            <h3 class="mt-4">C) Camera Wiring</h3>
-            <p class="mt-2">The cameras do not touch the motor buses at all — each one runs its own cable into its own USB port on the Jetson, never through a bus hub.</p>
-            <ul class="mt-2">
-                <li><strong>Wrist cameras (×2):</strong> route each cable along its arm with full-motion slack; secure at intervals; keep compute-end connectors accessible</li>
-                <li><strong>Head camera (RealSense):</strong> route through the hollow neck into a USB 3.0 port; leave pan/tilt slack at the head joint</li>
-            </ul>
-            <p class="font-small mt-2 text-muted">That accounts for all five USB cables: two bus adapters and three cameras.</p>
-        </section>
-
-        <section class="card">
-            <h2>6. Final Assembly</h2>
-            <p>Complete final assembly, substituting the Jetson where older instructions reference a Raspberry Pi.</p>
-            <ul class="mt-2">
-                <li>Complete wiring and cable management before clamping the top base into the cart</li>
-                <li>Clamp arms onto the cart corners after route verification</li>
-            </ul>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>CAUTION:</strong> Do not push the fully assembled robot like a normal cart — <strong>lift it to relocate</strong> to protect the motor gears.
-            </div>
-
-            <h3 class="mt-4">Final Checklist</h3>
-            <div class="grid-2 mt-2">
-                <div class="status-card-green">
-                    <h4 class="status-title-green">Mechanical &amp; Power</h4>
-                    <ul class="status-list status-list-green">
-                        <li>Jetson mounted securely</li>
-                        <li>Battery secured and upright</li>
-                        <li>No cable pinch points</li>
-                        <li>Full arm range without cable snagging</li>
-                        <li>Wheel base rotates freely</li>
-                    </ul>
-                </div>
-                <div class="status-card-blue">
-                    <h4 class="status-title-blue">Electrical &amp; Sensing</h4>
-                    <ul class="status-list status-list-blue">
-                        <li>Both buses configured and tested independently</li>
-                        <li>Motor IDs verified — 1–12 on Bus 1, 1–5 on Bus 2</li>
-                        <li>Motor directions verified</li>
-                        <li>Head axes confirmed: ID 1 up/down, ID 2 left/right</li>
-                        <li>Both wrist cameras detected</li>
-                        <li>Head camera detected</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>7. Hardware Calibration &amp; Validation</h2>
-            <p>One whole-robot calibration serves both the robot class and the vision stack. Run it first, verify it, then work through the sanity checks below.</p>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>THREE THINGS MUST BE TRUE BEFORE YOU CALIBRATE.</strong> The software stack is installed (<a href="software.html#step-3" class="text-neon text-underline">software steps 3–6</a>), the bus symlinks <code>/dev/xle_arms</code> and <code>/dev/xle_head</code> exist (<a href="software.html#step-7" class="text-neon text-underline">step 7</a>), and every motor answers a bus scan (<a href="software.html#step-8" class="text-neon text-underline">step 8</a>). Calibrating a chain with a missing or duplicated motor produces a file that looks fine and is wrong.
-            </div>
-
-            <h3 class="mt-4">A) Run the Calibration</h3>
-
-            <div class="alert-box alert-note mt-2">
-                <div class="alert-accent-line"></div>
-                <strong><code>lerobot-calibrate</code> cannot see this robot.</strong> Its <code>--robot.type</code> does not offer <code>xlerobot_new_wiring</code>. The robot classes are registered, but <code>robots/utils.py</code> imports them lazily inside its dispatch function, so the config module never loads and the registration decorator never runs. Drive the class directly with the script below instead.
-            </div>
-
-            <div class="terminal-box mt-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>scripts/calibrate_xlerobot.py (in the repo)</span>
-                </div>
-                <div class="terminal-body">
-                    <span class="log-info">from</span> lerobot.robots.xlerobot.config_xlerobot <span class="log-info">import</span> XLerobotNewWiringConfig<br>
-                    <span class="log-info">from</span> lerobot.robots.xlerobot.xlerobot_new_wiring <span class="log-info">import</span> XLerobotNewWiring<br><br>
-                    config = XLerobotNewWiringConfig(<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;id=<span class="text-neon">"xlerobot"</span>, port1=<span class="text-neon">"/dev/xle_arms"</span>, port2=<span class="text-neon">"/dev/xle_head"</span><br>
-                    )<br>
-                    robot = XLerobotNewWiring(config)<br>
-                    robot.connect(calibrate=<span class="log-info">False</span>)<br>
-                    <span class="log-info">try</span>:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;robot.calibrate()<br>
-                    <span class="log-info">finally</span>:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;robot.disconnect()
-                </div>
-            </div>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>TORQUE IS RELEASED FOR THE WHOLE PROCEDURE.</strong> Both arms go limp and <strong>will fall from a raised pose.</strong> Support them by hand before you start, and clear anything underneath them.
-            </div>
-
-            <p class="mt-2">Run it from the repo root with <code>python scripts/calibrate_xlerobot.py</code>. The run has four prompts: centre both arms, sweep every arm joint through its full range, centre the head, and then the wheels are handled automatically as full-turn motors.</p>
-
-            <h3 class="mt-4">B) Verify the Calibration — Do Not Skip This</h3>
-            <p class="mt-2">Calibration can complete successfully and still be wrong. There are two failure modes and both are silent:</p>
-            <ul class="mt-2">
-                <li><strong>Range reads 0–4095 on a limited joint.</strong> The homing offset landed inside the travel range, so the raw count wrapped and min/max pinned to the encoder extremes. This is legitimate only for wrist roll and the wheels — a shoulder or elbow cannot travel 360°. Consequence: IK commands positions that do not exist and the arm drives into its hard stop.</li>
-                <li><strong>Range far narrower than its mirror.</strong> That joint was not swept fully. Consequence: the arm is artificially limited and IK fails to reach valid targets.</li>
-            </ul>
-
-            <p class="mt-2">The strongest check is <strong>left/right symmetry</strong>. Mirrored joints should agree within a few percent — here is a known-good run:</p>
-
-            <div class="table-container mt-2 mb-4">
-                <table class="tech-table">
-                    <thead>
-                        <tr><th>Joint Pair</th><th>Left Span</th><th>Right Span</th><th>Ratio</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>shoulder_pan</td><td>2715</td><td>2732</td><td>0.99</td></tr>
-                        <tr><td>shoulder_lift</td><td>2418</td><td>2433</td><td>0.99</td></tr>
-                        <tr><td>elbow_flex</td><td>2217</td><td>2197</td><td>0.99</td></tr>
-                        <tr><td>wrist_flex</td><td>2358</td><td>2335</td><td>0.99</td></tr>
-                        <tr><td>gripper</td><td>1526</td><td>1448</td><td>0.95</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p class="font-small mt-2 text-muted">Two independently-swept arms landing within a few percent of each other is not something you get by accident — it is the best available evidence the calibration is sound.</p>
-
-            <h3 class="mt-4">C) Read Back What the Robot Thinks It Is</h3>
-            <p class="font-small">These print calibrated positions, so a joint reporting a wild angle at a pose you can see means the calibration did not take. Nothing is <em>commanded</em> to move — but read the warning first.</p>
-
-            <div class="alert-box alert-caution mt-2">
-                <div class="alert-accent-line"></div>
-                <strong><code>read_motors.py</code> RELEASES ARM TORQUE ON PURPOSE</strong> — it is designed so you can pose the arm by hand — and then waits at a prompt. <strong>A raised arm will fall the moment it runs.</strong> Lower both arms, or hold them, before starting it.
-            </div>
-
-            <div class="terminal-box mt-4 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Read calibrated positions</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> python diagnostics/read_motors.py<br>
-                    <span class="log-info"># arm joint angles, from /dev/xle_arms</span><br><br>
-                    <span>$</span> python diagnostics/read_head.py<br>
-                    <span class="log-info"># head tilt and pan, from /dev/xle_head</span>
-                </div>
-            </div>
-
-            <h3 class="mt-4">D) First Commanded Motion</h3>
-            <p class="font-small">Start with the base — it is the only subsystem where a mistake cannot drop an arm on your hand. Then move the arms.</p>
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Wheels first, then arms</span>
-                </div>
-                <div class="terminal-body">
-                    <span class="log-info"># wheels only — arms are never touched. A slow few centimetres.</span><br>
-                    <span>$</span> python diagnostics/base_drive_check.py --vx 0.05 --seconds 2<br><br>
-                    <span class="log-info"># whole robot: both arms, head and base, on a gamepad</span><br>
-                    <span>$</span> python examples/5_xlerobot_teleop_xbox_new_wiring.py
-                </div>
-            </div>
-
-            <div class="alert-box alert-caution mt-2">
-                <div class="alert-accent-line"></div>
-                <strong>USE THE <code>_new_wiring</code> VARIANT.</strong> The plain <code>5_xlerobot_teleop_xbox.py</code> targets the older three-bus layout and opens <code>/dev/xle_right</code> and <code>/dev/xle_left</code> — ports that do not exist on this build. For single-arm keyboard control, prefer the copies under <code>examples/xlerobot_examples/</code>, which prompt for a port, over the same-named files directly under <code>examples/</code>, which hardcode the old names. Full detail in <a href="software.html#step-11" class="text-neon text-underline">software setup step 11</a>.
-            </div>
-
-            <h3 class="mt-4">E) Mechanical IK Accuracy</h3>
-            <p class="font-small">Once the arm takes end-effector commands, check that the gripper actually arrives where it was told. Reach accuracy has not been measured formally; if the gripper misses by more than a couple of centimeters, the cause is usually mechanical, not software — look for loose servo horns, a stripped gear, or a bent bracket. The <a href="tutorial-first-reach.html" class="text-neon text-underline">First Reach tutorial</a> walks through this end to end.</p>
-
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Compare commanded vs. actual</span>
-                </div>
-                <div class="terminal-body">
-                    <span class="log-info"># pose the gripper by hand on a known point;</span><br>
-                    <span class="log-info"># prints joint angles and the model's EE position for them</span><br>
-                    <span>$</span> python diagnostics/measure_ee.py
-                </div>
-            </div>
-
-            <p class="font-small text-muted"><code>measure_ee.py</code> hardcodes <code>PORT = "/dev/ttyACM0"</code> near the top of the file — change it to <code>/dev/xle_arms</code> for this build.</p>
-
-            <h3 class="mt-4">F) Camera Bring-up</h3>
-            <div class="terminal-box mt-2 mb-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>All three cameras</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> v4l2-ctl --list-devices<br>
-                    <span>$</span> python examples/9_dual_wrist_camera.py<br>
-                    <span>$</span> rs-enumerate-devices
-                </div>
-            </div>
-
-            <div class="grid-2 mt-4">
-                <div class="status-card-green">
-                    <h4 class="status-title-green">Hardware Is Validated When</h4>
-                    <ul class="status-list status-list-green">
-                        <li>Every arm joint moves in the expected direction</li>
-                        <li>Head tilt and pan move on the expected axes</li>
-                        <li>Wheels drive and stop reliably</li>
-                        <li>All three camera streams open</li>
-                        <li>Mirrored joints agree within a few percent</li>
-                    </ul>
-                </div>
-                <div class="status-card-blue">
-                    <h4 class="status-title-blue">Then Go To</h4>
-                    <ul class="status-list status-list-blue">
-                        <li><a href="software.html#step-12" class="text-neon text-underline">Color-target grasp demo</a></li>
-                        <li><a href="tutorial-first-reach.html" class="text-neon text-underline">First Reach tutorial</a></li>
-                        <li><a href="troubleshooting.html" class="text-neon text-underline">Troubleshooting</a>, if anything above failed</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="card footer-cta">
-            <div class="flex-wrap-center">
-                <div class="card-no-margin">
-                    <h2>Having Assembly Issues?</h2>
-                    <p class="font-small">If gear noises persist or play is detected, check our diagnostics.</p>
-                </div>
-                <a href="troubleshooting.html" class="btn-neon btn-outline-cyan">Assembly Troubleshooting ➔</a>
-            </div>
-        </section>
-
-        <div class="text-center mt-large">
-            <p class="credits-text cta-lead">Hardware validated? Move on to software configuration.</p>
-            <a href="software.html" class="btn-neon btn-github btn-cta">Next Step: Software Setup ↗</a>
-        </div>
-
     </main>
 
-    <script>
-        document.querySelectorAll('a.jump-to').forEach(function (link) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                var frame = document.getElementById('assembly-video');
-                if (!frame) return;
-                var start = link.getAttribute('data-t') || '0';
-                frame.src = frame.getAttribute('data-embed') + '?start=' + start + '&autoplay=1';
-                frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            });
-        });
-    </script>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+                <p>An open-source two-arm mobile robot with the computer on board. Built on <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" rel="noopener noreferrer">XLeRobot</a> and <a href="https://github.com/huggingface/lerobot" target="_blank" rel="noopener noreferrer">LeRobot</a>.</p>
+            </div>
+            <nav aria-label="Build path (footer)">
+                <h2 class="footer-title">Build path</h2>
+                <ol class="footer-links">
+                    <li><a href="components.html">1. Components</a></li>
+                    <li><a href="build-guide.html">2. Build Guide</a></li>
+                    <li><a href="software.html">3. Software Setup</a></li>
+                    <li><a href="tutorial-first-reach.html">4. First Reach Tutorial</a></li>
+                </ol>
+            </nav>
+            <div>
+                <h2 class="footer-title">Project</h2>
+                <ul class="footer-links">
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
+    <a class="to-top" href="#top">Back to top</a>
 </body>
 </html>

@@ -6,11 +6,15 @@ The XLeRobot-Pro project website. A plain static HTML/CSS site (no build step).
 
 ## Pages
 - `index.html` — Overview
-- `components.html` — Components & Bill of Materials
-- `build-guide.html` — Build & Calibration Guide
-- `software.html` — Software setup
-- `tutorial-first-reach.html` — First Reach tutorial
+- `components.html` — Components: parts list and print files
+- `build-guide.html` — Build Guide
+- `software.html` — Software Setup
+- `tutorial-first-reach.html` — First Reach Tutorial
 - `troubleshooting.html` — Troubleshooting
+- `404.html` — Page not found (GitHub Pages serves it for any missing path)
+
+Every page shares `styles.css` and `site.js`. After editing either one, bump the
+`?v=` number on its link in every page, or returning visitors keep the old copy.
 
 ## Run locally
 Open `index.html` directly, or serve the folder:

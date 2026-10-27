@@ -2,349 +2,236 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XLeRobot-Pro | Components</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Components · XLeRobot-Pro</title>
+    <meta name="description" content="Bill of materials ($1,247.27), the specifications to check before you buy, and the XLeRobot-Pro print files with tested print settings.">
+    <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        .bom-link {
-            color: inherit;
-            text-decoration: underline;
-            text-decoration-color: rgba(255, 255, 255, 0.3);
-            text-underline-offset: 3px;
-            transition: all 0.2s ease;
-        }
-        .bom-link:hover {
-            color: #00f0ff;
-            text-decoration-color: #00f0ff;
-        }
-        .plate-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 14px;
-            margin-top: 1.25rem;
-        }
-        .plate-card {
-            margin: 0;
-            border: 1px solid var(--border-light);
-            border-radius: 14px;
-            overflow: hidden;
-            background: var(--bg-card);
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-            transition: var(--smooth);
-        }
-        .plate-bed {
-            aspect-ratio: 1 / 1;
-            display: grid;
-            place-items: center;
-            padding: 10px;
-            background-color: #f1f5f9;
-            background-image:
-                linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .plate-bed img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.2));
-        }
-        .plate-card figcaption {
-            padding: 9px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-main);
-            border-top: 1px solid var(--border-light);
-        }
-        .plate-card figcaption span {
-            color: var(--text-body);
-            font-weight: 400;
-        }
-        .layout-img {
-            display: block;
-            width: 100%;
-            max-width: 920px;
-            margin: 1rem auto 0;
-            padding: 16px;
-            border: 1px solid var(--border-light);
-            border-radius: 14px;
-            background-color: #f1f5f9;
-            background-image:
-                linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=28">
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="site.js?v=21" defer></script>
 </head>
 <body>
-    <div class="ambient-blob blob-cyan"></div>
-    <div class="ambient-blob blob-purple"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="top-nav">
-        <div class="nav-content">
-            <a href="index.html" class="brand">
-                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
-                XLeRobot-Pro
-            </a>
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
-            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
-                <span></span><span></span><span></span>
-            </label>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Overview</a>
-                <a href="components.html" class="nav-link active">Components</a>
-                <a href="build-guide.html" class="nav-link">Build Guide</a>
-                <a href="software.html" class="nav-link">Software</a>
-                <a href="troubleshooting.html" class="nav-link">Troubleshooting</a>
+    <header class="site-header" id="top">
+        <div class="header-inner">
+            <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="bar bar-1" d="M4 6h16"/><path class="bar bar-2" d="M4 12h16"/><path class="bar bar-3" d="M4 18h16"/></svg>
+                Menu
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul class="nav-list">
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="components.html" aria-current="page">Components</a></li>
+                    <li><a href="build-guide.html">Build Guide</a></li>
+                    <li><a href="software.html">Software</a></li>
+                    <li><a href="tutorial-first-reach.html">Tutorial</a></li>
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                </ul>
+                <div class="nav-ext">
+                    <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="container doc">
+            <div class="doc-head">
+                <nav class="journey" aria-label="Build path">
+                    <ol>
+                        <li><a href="components.html" aria-current="step"><span class="num">1</span><span class="journey-label">Components</span></a></li>
+                        <li><a href="build-guide.html"><span class="num">2</span><span class="journey-label">Build Guide</span></a></li>
+                        <li><a href="software.html"><span class="num">3</span><span class="journey-label">Software</span></a></li>
+                        <li><a href="tutorial-first-reach.html"><span class="num">4</span><span class="journey-label">Tutorial</span></a></li>
+                    </ol>
+                </nav>
+                <h1>Components</h1>
+                <p class="lede">Everything to buy and print: $1,247.27 in parts and 7 print plates.</p>
             </div>
-            <div class="nav-actions">
-                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github">GitHub ↗</a>
-                <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer" class="btn-neon btn-arxiv">arXiv ↗</a>
+
+            <nav class="toc" aria-label="On this page" data-toc></nav>
+
+            <div class="doc-content">
+
+                <section class="doc-section flow" id="bom">
+                    <h2>Bill of materials</h2>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr><th scope="col">Component</th><th scope="col" class="center">Qty</th><th scope="col" class="num">Cost (USD)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><a href="https://www.amazon.com/NVIDIA-Jetson-Orin-Nano-Developer/dp/B0BZJTQ5YP?tag=ustxtaddt-20&amp;th=1" target="_blank" rel="noopener noreferrer">NVIDIA Jetson Orin Nano Super</a></td><td class="center">1</td><td class="num mono">$249.00</td></tr>
+                                <tr><td><a href="https://www.amazon.com/SanDisk-Extreme-microSDXC-Memory-Adapter/dp/B09X7C7LL1/?th=1" target="_blank" rel="noopener noreferrer">microSD Card</a></td><td class="center">1</td><td class="num mono">$11.23</td></tr>
+                                <tr><td><a href="https://www.amazon.com/dp/B00XMD7KPU" target="_blank" rel="noopener noreferrer">Anker 4-in-1 USB-C Hub</a></td><td class="center">1</td><td class="num mono">$14.99</td></tr>
+                                <tr><td><a href="https://shop.wowrobo.com/products/feetech-sts3215-servo-12v-30kg-high-torque-servo-for-so-arm100" target="_blank" rel="noopener noreferrer">Feetech STS3215 Servos (12 V, ST-3215-C018)</a></td><td class="center">17</td><td class="num mono">$271.83</td></tr>
+                                <tr><td><a href="https://www.horizonhobby.com/product/servo-wire-50-3-color/HRC57417.html" target="_blank" rel="noopener noreferrer">Servo Wire: 50’ 3-Color</a></td><td class="center">1</td><td class="num mono">$15.97</td></tr>
+                                <tr><td><a href="https://www.amazon.com/Waveshare-Integrates-Control-Circuit-Supports/dp/B0CTMM4LWK/?th=1" target="_blank" rel="noopener noreferrer">Waveshare Serial Bus Servo Driver Board</a></td><td class="center">2</td><td class="num mono">$21.10</td></tr>
+                                <tr><td><a href="https://www.ankersolix.com/products/c300-dc?variant=49702163972426&amp;ref=naviMenu_pps" target="_blank" rel="noopener noreferrer">Anker SOLIX C300 DC Power Station</a></td><td class="center">1</td><td class="num mono">$159.99</td></tr>
+                                <tr><td><a href="https://www.amazon.com/dp/B07PGY2JP1" target="_blank" rel="noopener noreferrer">PLA Filament (3kg)</a></td><td class="center">1</td><td class="num mono">$45.00</td></tr>
+                                <tr><td><a href="https://www.amazon.com/dp/B0BRWCFD6Q?_encoding=UTF8&amp;ref=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;ref_=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;social_share=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;previewDoh=1&amp;th=1" target="_blank" rel="noopener noreferrer">M3 Screws and Nuts Set</a></td><td class="center">1</td><td class="num mono">$14.99</td></tr>
+                                <tr><td><a href="https://www.ikea.com/us/en/p/raskog-utility-cart-black-40582181/#content" target="_blank" rel="noopener noreferrer">IKEA RÅSKOG Utility Cart</a></td><td class="center">1</td><td class="num mono">$39.99</td></tr>
+                                <tr><td><a href="https://www.vexrobotics.com/omni-wheels.html" target="_blank" rel="noopener noreferrer">4” Omni Wheels</a></td><td class="center">3</td><td class="num mono">$29.97</td></tr>
+                                <tr><td>Intel RealSense D435</td><td class="center">1</td><td class="num mono">$333.75</td></tr>
+                                <tr><td><a href="https://www.amazon.com/dp/B0CDBWHXDZ?th=1" target="_blank" rel="noopener noreferrer">USB-C to DC5521 Cable</a></td><td class="center">1</td><td class="num mono">$8.99</td></tr>
+                                <tr><td>USB-C to DC5525 PD 140W Cable</td><td class="center">1</td><td class="num mono">$11.99</td></tr>
+                                <tr><td>DC5521 Car Cigarette Lighter Cable</td><td class="center">1</td><td class="num mono">$9.49</td></tr>
+                                <tr><td><a href="https://www.amazon.com/dp/B09N94MZG9" target="_blank" rel="noopener noreferrer">USB-C to USB-C Cable (2 pcs)</a></td><td class="center">1</td><td class="num mono">$8.99</td></tr>
+                            </tbody>
+                            <tfoot>
+                                <tr><td colspan="2">Total, untethered XLeRobot-Pro</td><td class="num mono">$1,247.27</td></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <p class="muted">Prices we paid; yours may vary. Not included: a 3D printer, TPU filament for the fingers, a VR headset, and a DisplayPort monitor and keyboard for the first boot.</p>
+                </section>
+
+                <section class="doc-section flow" id="specs" data-toc-label="Check before you buy">
+                    <h2>Check these before you buy</h2>
+                    <p class="section-lede">Close substitutes can fail. Match these exactly.</p>
+
+                    <div class="table-wrap">
+                        <table class="data data--stack">
+                            <thead>
+                                <tr><th scope="col">Part</th><th scope="col">Get exactly this</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Jetson Orin Nano Super Devkit</td><td>8 GB, carrier P3768</td></tr>
+                                <tr><td>microSD card</td><td>64 GB minimum, 128 GB advised, UHS-I, A2</td></tr>
+                                <tr><td>USB-serial adapters ×2</td><td>CH343 / CH9102 class (<code>1a86:55d3</code>), one per bus</td></tr>
+                                <tr><td>Feetech STS3215 ×17</td><td>12 V model (ST-3215-C018): 12 arm, 2 neck, 3 wheel</td></tr>
+                                <tr><td>Intel RealSense D435</td><td>USB 3.0</td></tr>
+                                <tr><td>Monitor cable</td><td>DisplayPort, not HDMI, for the first boot</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout--warn">
+                        <strong class="callout-title">Plug both USB-serial adapters directly into the Jetson.</strong>
+                        <p>Behind a hub they often fail to show up. Use the hub for the keyboard only.</p>
+                    </div>
+
+                    <div class="callout callout--note">
+                        <strong class="callout-title">In the US, plan to make your own servo cables.</strong>
+                        <p>Long 3-pin cables are hard to find, so order 3-pin connectors and a crimping tool with the servo wire.</p>
+                    </div>
+                </section>
+
+                <section class="doc-section flow" id="printing" data-toc-label="3D-printed parts">
+                    <h2>3D-printed parts</h2>
+                    <p class="section-lede">Print every part in PLA, except the gripper fingers, which are TPU.</p>
+
+                    <h3>1. Download the print file</h3>
+                    <a class="download download--main" href="hardware/XLeRobot-Pro.3mf" download>
+                        <span class="download-type">3MF</span>
+                        <span class="download-text"><span class="download-name">XLeRobot-Pro print project</span><span class="download-meta">Every printed part on 7 plates, print settings applied · 10.8 MB</span></span>
+                        <span class="download-action" aria-hidden="true">Download</span>
+                    </a>
+                    <p class="small muted">Opens in PrusaSlicer, set up for a Prusa CORE One.</p>
+                    <p class="list-label">Optional extras</p>
+                    <ul>
+                        <li><a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer">Wrist-camera mount<span class="sr-only"> (opens in a new tab)</span></a> from TheRobotStudio</li>
+                        <li><a href="hardware/XLeRobot040_armbase.step" download>Arm base STEP</a> (12.9 MB), only if you want to change the design</li>
+                    </ul>
+
+                    <h3>2. Print settings</h3>
+                    <p>The 3MF already applies these. You only need them if you slice the parts some other way.</p>
+
+                    <div class="grid grid--2">
+                        <article class="card">
+                            <h4>Every arm part <span class="tag tag--ok">High-Shell</span></h4>
+                            <dl class="kv">
+                                <dt>Perimeters</dt><dd>4</dd>
+                                <dt>Infill</dt><dd>15%</dd>
+                                <dt>Layer height</dt><dd>0.20 mm</dd>
+                            </dl>
+                        </article>
+                        <article class="card">
+                            <h4>Everything else <span class="tag">Default</span></h4>
+                            <dl class="kv">
+                                <dt>Perimeters</dt><dd>2</dd>
+                                <dt>Infill</dt><dd>15%</dd>
+                                <dt>Layer height</dt><dd>0.20 mm</dd>
+                            </dl>
+                        </article>
+                    </div>
+
+                    <h3>3. Printing rules</h3>
+                    <ul class="checklist">
+                        <li>Print structural parts <strong>upright</strong> where you can.</li>
+                        <li>In a humid room, <strong>dry the PLA</strong> at about 45&nbsp;°C for 8 hours first.</li>
+                        <li>If the wheels don't sit level, <strong>scale the wheel-base connector in Z only</strong>.</li>
+                        <li>Use <strong>PLA and TPU only</strong>; other filaments were not tested.</li>
+                    </ul>
+
+                    <h3>4. Check you have everything</h3>
+                    <ul class="checklist">
+                        <li>Two SO-101 <strong>follower</strong> arms (leader arms are only for leader-follower teleop)</li>
+                        <li>The neck and head</li>
+                        <li>The omni-wheel base</li>
+                        <li>The Jetson open frame</li>
+                        <li>Fin-Ray gripper fingers, in <strong>TPU95A</strong></li>
+                        <li>Optional: one wrist-camera mount per arm, with a 32×32 mm USB camera, two M3×8 screws, and two M3 hex nuts</li>
+                    </ul>
+
+                    <h3>5. The seven build plates</h3>
+                    <div class="plates">
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_1.png" width="909" height="909" alt="Print plate 1"></div><figcaption>Plate 1 <span>· 9 parts</span></figcaption></figure>
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_2.png" width="924" height="924" alt="Print plate 2"></div><figcaption>Plate 2 <span>· 8 parts</span></figcaption></figure>
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_3.png" width="853" height="853" alt="Print plate 3"></div><figcaption>Plate 3 <span>· 15 parts</span></figcaption></figure>
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_4.png" width="964" height="964" alt="Print plate 4"></div><figcaption>Plate 4 <span>· 10 parts</span></figcaption></figure>
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_5.png" width="1090" height="1090" alt="Print plate 5"></div><figcaption>Plate 5 <span>· 14 parts</span></figcaption></figure>
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_6.png" width="872" height="872" alt="Print plate 6"></div><figcaption>Plate 6 <span>· 4 parts</span></figcaption></figure>
+                        <figure class="plate"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_7.png" width="900" height="900" alt="Print plate 7: the Jetson open frame"></div><figcaption>Plate 7 <span>· 1 part</span></figcaption></figure>
+                    </div>
+                </section>
+
+                <nav class="pager" aria-label="Previous and next page">
+                    <a class="pager-next" href="build-guide.html"><span class="pager-label">Next: step 2 of 4</span><span class="pager-title">Build Guide</span></a>
+                </nav>
             </div>
         </div>
-    </nav>
-
-    <main class="page-container">
-        
-        <div class="page-header">
-            <h1>Hardware Components</h1>
-            <p>The complete Bill of Materials (BOM), print files, and print settings.</p>
-        </div>
-
-        <section class="card">
-            <div class="bom-header-flex">
-                <div>
-                    <h2>Bill of Materials (BOM)</h2>
-                    <p class="font-small">Full hardware requirements for the standalone configuration.</p>
-                </div>
-                <div class="price-tag-container">
-                    <span class="tech-badge purple">Untethered Config</span>
-                    <div class="price-amount">$1,247.27</div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <table class="tech-table bom-table">
-                    <thead>
-                        <tr>
-                            <th>Component</th>
-                            <th class="text-center">Qty</th>
-                            <th class="text-right">Cost (USD)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><a href="https://www.amazon.com/NVIDIA-Jetson-Orin-Nano-Developer/dp/B0BZJTQ5YP?tag=ustxtaddt-20&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">NVIDIA Jetson Orin Nano Super</a></td><td class="text-center">1</td><td class="text-right font-mono">$249.00</td></tr>
-                        <tr><td><a href="https://www.amazon.com/SanDisk-Extreme-microSDXC-Memory-Adapter/dp/B09X7C7LL1/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">microSD Card</a></td><td class="text-center">1</td><td class="text-right font-mono">$11.23</td></tr>
-                        <tr><td><a href="https://www.amazon.com/dp/B00XMD7KPU" target="_blank" rel="noopener noreferrer" class="bom-link">Anker 4-in-1 USB-C Hub</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
-                        <tr><td><a href="https://shop.wowrobo.com/products/feetech-sts3215-servo-12v-30kg-high-torque-servo-for-so-arm100" target="_blank" rel="noopener noreferrer" class="bom-link">Feetech STS3215 Servos (12 V, ST-3215-C018)</a></td><td class="text-center">17</td><td class="text-right font-mono">$271.83</td></tr>
-                        <tr><td><a href="https://www.horizonhobby.com/product/servo-wire-50-3-color/HRC57417.html" target="_blank" rel="noopener noreferrer" class="bom-link">Servo Wire: 50’ 3-Color</a></td><td class="text-center">1</td><td class="text-right font-mono">$15.97</td></tr>
-                        <tr><td><a href="https://www.amazon.com/Waveshare-Integrates-Control-Circuit-Supports/dp/B0CTMM4LWK/?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">Waveshare Serial Bus Servo Driver Board</a></td><td class="text-center">2</td><td class="text-right font-mono">$21.10</td></tr>
-                        <tr><td><a href="https://www.ankersolix.com/products/c300-dc?variant=49702163972426&amp;ref=naviMenu_pps" target="_blank" rel="noopener noreferrer" class="bom-link">Anker SOLIX C300 DC Power Station</a></td><td class="text-center">1</td><td class="text-right font-mono">$159.99</td></tr>
-                        <tr><td><a href="https://www.amazon.com/dp/B07PGY2JP1" target="_blank" rel="noopener noreferrer" class="bom-link">PLA Filament (3kg)</a></td><td class="text-center">1</td><td class="text-right font-mono">$45.00</td></tr>
-                        <tr><td><a href="https://www.amazon.com/dp/B0BRWCFD6Q?_encoding=UTF8&amp;ref=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;ref_=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;social_share=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;previewDoh=1&amp;th=1" target="_blank" rel="noopener noreferrer" class="bom-link">M3 Screws and Nuts Set</a></td><td class="text-center">1</td><td class="text-right font-mono">$14.99</td></tr>
-                        <tr><td><a href="https://www.ikea.com/us/en/p/raskog-utility-cart-black-40582181/#content" target="_blank" rel="noopener noreferrer" class="bom-link">IKEA RÅSKOG Utility Cart</a></td><td class="text-center">1</td><td class="text-right font-mono">$39.99</td></tr>
-                        <tr><td><a href="https://www.vexrobotics.com/omni-wheels.html" target="_blank" rel="noopener noreferrer" class="bom-link">4” Omni Wheels</a></td><td class="text-center">3</td><td class="text-right font-mono">$29.97</td></tr>
-                        <tr><td>Intel RealSense D435</td><td class="text-center">1</td><td class="text-right font-mono">$333.75</td></tr>
-                        <tr><td><a href="https://www.amazon.com/dp/B0CDBWHXDZ?th=1" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to DC5521 Cable</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
-                        <tr><td>USB-C to DC5525 PD 140W Cable</td><td class="text-center">1</td><td class="text-right font-mono">$11.99</td></tr>
-                        <tr><td>DC5521 Car Cigarette Lighter Cable</td><td class="text-center">1</td><td class="text-right font-mono">$9.49</td></tr>
-                        <tr><td><a href="https://www.amazon.com/dp/B09N94MZG9" target="_blank" rel="noopener noreferrer" class="bom-link">USB-C to USB-C Cable (2 pcs)</a></td><td class="text-center">1</td><td class="text-right font-mono">$8.99</td></tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2" class="text-right font-bold" style="padding-top: 15px;">TOTAL Untethered XLeRobot-Pro</td>
-                            <td class="text-right font-mono font-bold" style="padding-top: 15px;">$1247.27</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            <p class="mt-4 font-small">These are the prices we paid, and they match the bill of materials in the paper. The total includes 3 kg of PLA ($45.00). It does not include the 3D printer, a VR headset for teleoperation, TPU filament for the Fin-Ray fingers, or a DisplayPort monitor and keyboard for the first boot. Prices vary by retailer and region.</p>
-        </section>
-
-        <section class="card neon-hover-cyan">
-            <h2>Specifications That Matter</h2>
-            <p class="font-small">The list above tells you what to buy. This one tells you what to check before you buy it — every row here is load-bearing, and substitutions have specific failure modes.</p>
-
-            <div class="table-container mt-4">
-                <table class="tech-table">
-                    <thead>
-                        <tr><th>Item</th><th>Requirement</th><th>Why it matters</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Jetson Orin Nano Super Devkit</strong></td>
-                            <td>8 GB, carrier P3768</td>
-                            <td>67 INT8 TOPS. The 8 GB module ran ACT, Diffusion Policy, and SmolVLA in the paper's timing tests.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>microSD card</strong></td>
-                            <td>64 GB minimum, <strong>128 GB advised</strong>, UHS-I, <strong>A2</strong></td>
-                            <td>The A2 random-IO rating is what keeps pip installs and model loads bearable. A full install lands near 50 GB, so 64 GB runs tight.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>USB-serial adapters ×2</strong></td>
-                            <td>CH343 / CH9102 class (<code>1a86:55d3</code>)</td>
-                            <td>One per bus. Each needs <strong>its own barrel-jack power</strong> — they drive the bus transceiver off the servo rail, not off USB.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Feetech STS3215 ×17</strong></td>
-                            <td>12 V model (ST-3215-C018): 12 arm, 2 neck, 3 wheel</td>
-                            <td>Run them from the power station's 12 V outputs. On a 5 V feed they respond erratically or not at all, and give no visible sign of it.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Intel RealSense D435</strong></td>
-                            <td>USB 3.0</td>
-                            <td>Bandwidth-hungry. Give it a port that is not shared with the motor adapters.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Power outlets</strong></td>
-                            <td>Arms on the 12 V car outlet (rated 10 A); head and wheels on one USB-C outlet; Jetson on another</td>
-                            <td>The twelve arm servos are the largest load on the robot. Their torque setting keeps the estimated arm-bus current under a 5 A budget, half the car outlet's rating, and one arm peaked at 1.41 A in testing.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>DisplayPort cable + USB keyboard</strong></td>
-                            <td>—</td>
-                            <td>The carrier has <strong>DisplayPort, not HDMI</strong>. Needed for first boot only, but you cannot flash without it.</td>
-                        </tr>
-                        <tr>
-                            <td>NVMe SSD <em>(optional)</em></td>
-                            <td>M.2 2280, M-key, PCIe Gen3</td>
-                            <td>Not in the paper's bill of materials. The demonstrations and the onboard training run in the paper fit on the microSD card.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>THE USB HUB IS NOT FOR THE MOTOR ADAPTERS.</strong> Both USB-serial adapters must plug <strong>directly into the Jetson</strong>. Behind a hub — especially one shared with the RealSense — they frequently fail to enumerate, which looks like a dead bus rather than a USB problem. Use the hub for keyboard and other low-bandwidth peripherals only.
-            </div>
-
-            <div class="alert-box alert-note mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>BUILDING IN THE US? PLAN ON MAKING YOUR OWN SERVO CABLES.</strong> The long 3-pin servo cables that daisy-chain the motors together are hard to source domestically — most US listings only carry the short lengths that ship with the servos, and the long runs you need for the wheel base and the neck are usually import-only with slow shipping.
-                <br><br>
-                That is why the BOM includes <strong>bulk 3-conductor servo wire</strong> rather than a set of finished cables: expect to cut and crimp your own to length. Budget the extra time, and pick up spare 3-pin connectors and a crimping tool while you are ordering — making them is straightforward, but not something you want to discover mid-assembly.
-            </div>
-        </section>
-
-        <section class="card neon-hover-purple" id="printing">
-            <div class="bom-header-flex">
-                <div>
-                    <h2>3D-Printed Structure</h2>
-                    <p class="font-small">The frame is an IKEA R&Aring;SKOG steel cart. The arms, neck, head, wheel-base mounts, and Jetson open frame are printed. The BOM above covers the PLA; download the print files below and apply the settings further down this page.</p>
-                </div>
-            </div>
-
-            <h3 class="mt-4">Print Files</h3>
-            <p class="font-small">The full XLeRobot-Pro print set, laid out and ready to slice. Download the PrusaSlicer 3MF project or a single STL of the whole model. The 3MF already applies the tested settings: the 18 parts of the two arms carry 4 perimeters (High-Shell) and are labeled as such in the object list, and everything else uses the default profile. The Jetson open frame is not in the 3MF; it and an editable STEP file of the arm base are separate downloads. The optional wrist-camera mount is not in these files: it is the SO-101 Hex-Nut wrist-camera mount from TheRobotStudio's SO-ARM100 repository, the same one XLeRobot uses.</p>
-            <div class="mt-4 mb-4">
-                <a href="hardware/XLeRobot-Pro.3mf" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (3MF) ↓</a>
-                <a href="hardware/XLeRobot-Pro.stl" download class="btn-neon btn-github btn-cta">XLeRobot-Pro (STL) ↓</a>
-                <a href="hardware/nvidia-jetson-mounting-frame.stl" download class="btn-neon btn-github btn-cta">Jetson Open Frame (STL) ↓</a>
-                <a href="hardware/XLeRobot040_armbase.step" download class="btn-neon btn-github btn-cta">Arm Base (STEP) ↓</a>
-                <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer" class="btn-neon btn-github btn-cta">Wrist Camera Mount ↗</a>
-            </div>
-            <p>You will need:</p>
-            <ul class="mt-2">
-                <li>two SO-101 follower arms</li>
-                <li>the neck/head assembly</li>
-                <li>the omni-wheel base</li>
-                <li>a <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module" target="_blank" rel="noopener noreferrer" class="text-neon text-underline">wrist-camera mount</a> per arm (optional; wrist cameras are not in the BOM). Each one takes a 32×32 mm USB camera module, two M3×8 screws, and two M3 hex nuts.</li>
-            </ul>
-            <p class="mt-2">Print the soft finray gripper fingers in TPU95A.</p>
-
-            <div class="alert-box alert-tip mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>TIP:</strong> Pre-dry PLA at ~45°C for 8 hours in humid environments. Wet filament causes stringing, weak layer adhesion, and poor thread/fit quality on structural parts.
-            </div>
-
-            <h3 class="mt-4">Print Plates</h3>
-            <p class="font-small">The XLeRobot-Pro print set laid out across six build plates.</p>
-            <div class="plate-grid">
-                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_1.png" alt="Print plate 1"></div><figcaption>Plate 1 <span>· 9 parts</span></figcaption></figure>
-                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_2.png" alt="Print plate 2"></div><figcaption>Plate 2 <span>· 8 parts</span></figcaption></figure>
-                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_3.png" alt="Print plate 3"></div><figcaption>Plate 3 <span>· 15 parts</span></figcaption></figure>
-                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_4.png" alt="Print plate 4"></div><figcaption>Plate 4 <span>· 10 parts</span></figcaption></figure>
-                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_5.png" alt="Print plate 5"></div><figcaption>Plate 5 <span>· 14 parts</span></figcaption></figure>
-                <figure class="plate-card"><div class="plate-bed"><img loading="lazy" src="media/images/prints/plate_6.png" alt="Print plate 6"></div><figcaption>Plate 6 <span>· 4 parts</span></figcaption></figure>
-            </div>
-
-            <h3 class="mt-4">Print Settings</h3>
-            <p>All parts in the paper were printed in PLA at 0.2 mm layers. The setting that matters most is the wall count on the arm links: adding perimeters made them much stronger, while adding infill did not.</p>
-
-            <div class="grid-2 mt-4">
-                <div class="card print-card">
-                    <h3>Every Arm Part (High-Shell)</h3>
-                    <p>The setting tested in the paper.</p>
-                    <ul class="mt-2">
-                        <li><strong>Perimeters:</strong> 4</li>
-                        <li><strong>Infill:</strong> 15%</li>
-                        <li><strong>Layer Height:</strong> 0.20 mm</li>
-                    </ul>
-                    <p class="font-small mt-2">In five cantilever tests per profile, arms printed this way failed at 18.5 &plusmn; 2.2 N, against 11.1 &plusmn; 0.6 N on the default profile, and every failure was at the servo rather than the printed link. Adding infill instead (2 perimeters, 50%) gave a heavier, weaker arm: 12.0 N at 996 g, against 838 g for High-Shell.</p>
-                </div>
-
-                <div class="card print-card">
-                    <h3>Everything Else</h3>
-                    <p>The default profile.</p>
-                    <ul class="mt-2">
-                        <li><strong>Perimeters:</strong> 2 (default)</li>
-                        <li><strong>Infill:</strong> 15%</li>
-                        <li><strong>Layer Height:</strong> 0.20 mm</li>
-                    </ul>
-                    <p class="font-small mt-2">For stiff neck and wheel-base parts we use 4 perimeters with 25&ndash;35% gyroid infill. That works well for us, but the paper did not test it.</p>
-                </div>
-            </div>
-
-            <ul class="mt-4">
-                <li>All results in the paper use PLA</li>
-                <li>Prioritize part orientation for structural parts over cosmetic finish</li>
-                <li>Dry filament in high humidity for cleaner fit-up and thread quality</li>
-                <li>For soft finray-style fingers, use <strong>TPU95A</strong></li>
-            </ul>
-
-            <div class="alert-box alert-caution mt-4" style="margin-bottom: 0.75rem;">
-                <div class="alert-accent-line"></div>
-                <strong>IMPORTANT:</strong> Print structural parts <strong>vertically</strong> where possible, so the filament rows (layer lines) run along the load direction for stronger parts.
-            </div>
-
-            <div class="alert-box alert-note" style="margin: 0.75rem 0;">
-                <div class="alert-accent-line"></div>
-                <strong>NOTE:</strong> The wheel-base connector may need <strong>Z scaling only</strong> to balance the load across the omni-wheels and cart wheels. Do not uniformly scale the part.
-            </div>
-
-            <div class="alert-box alert-tip" style="margin-top: 0.75rem;">
-                <div class="alert-accent-line"></div>
-                <strong>TIP:</strong> Print two <strong>follower</strong> arms for the dual-arm build — leader arms are only needed for leader-follower teleop. Batch the wrist-camera mount and your preferred gripper variant with the arm prints.
-            </div>
-
-            <p class="mt-4 font-small">Any printer that handles PLA and TPU will do; the 3MF project is set up for a Prusa CORE One. PETG and carbon-fiber filaments were not tested. Build order and assembly steps are in the <a href="build-guide.html" class="text-neon text-underline">Build Guide</a>.</p>
-        </section>
-
-        <section class="card">
-            <h2>Hardware/Software Interface</h2>
-            <p>Before calibrating, make sure the Jetson sees both driver boards under stable names. <code>detect_buses.py</code> pings every ID on each port, works out which board is the arms bus (IDs 1&ndash;12) and which is the head and wheels bus (IDs 1&ndash;5), and prints the udev rules that name them.</p>
-            
-            <div class="terminal-box mt-4">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Port Verification</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> python diagnostics/detect_buses.py<br>
-                    <span>$</span> sudo udevadm control --reload-rules &amp;&amp; sudo udevadm trigger<br>
-                    <span>$</span> ls -l /dev/xle_arms /dev/xle_head
-                </div>
-            </div>
-        </section>
-
     </main>
 
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+                <p>An open-source two-arm mobile robot with the computer on board. Built on <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" rel="noopener noreferrer">XLeRobot</a> and <a href="https://github.com/huggingface/lerobot" target="_blank" rel="noopener noreferrer">LeRobot</a>.</p>
+            </div>
+            <nav aria-label="Build path (footer)">
+                <h2 class="footer-title">Build path</h2>
+                <ol class="footer-links">
+                    <li><a href="components.html">1. Components</a></li>
+                    <li><a href="build-guide.html">2. Build Guide</a></li>
+                    <li><a href="software.html">3. Software Setup</a></li>
+                    <li><a href="tutorial-first-reach.html">4. First Reach Tutorial</a></li>
+                </ol>
+            </nav>
+            <div>
+                <h2 class="footer-title">Project</h2>
+                <ul class="footer-links">
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <a class="to-top" href="#top">Back to top</a>
 </body>
 </html>

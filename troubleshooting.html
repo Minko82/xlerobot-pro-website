@@ -2,309 +2,291 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XLeRobot-Pro | Troubleshooting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Troubleshooting · XLeRobot-Pro</title>
+    <meta name="description" content="Find XLeRobot-Pro problems by symptom: motors, cameras, software, and assembly quick fixes, plus failure signatures that look like something other than their cause.">
+    <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=28">
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="site.js?v=21" defer></script>
 </head>
 <body>
-    <div class="ambient-blob blob-cyan"></div>
-    <div class="ambient-blob blob-purple"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="top-nav">
-        <div class="nav-content">
-            <a href="index.html" class="brand">
-                <img src="favicon.svg" alt="" class="brand-logo" width="34" height="34">
-                XLeRobot-Pro
-            </a>
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
-            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
-                <span></span><span></span><span></span>
-            </label>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Overview</a>
-                <a href="components.html" class="nav-link">Components</a>
-                <a href="build-guide.html" class="nav-link">Build Guide</a>
-                <a href="software.html" class="nav-link">Software</a>
-                <a href="troubleshooting.html" class="nav-link active">Troubleshooting</a>
+    <header class="site-header" id="top">
+        <div class="header-inner">
+            <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="bar bar-1" d="M4 6h16"/><path class="bar bar-2" d="M4 12h16"/><path class="bar bar-3" d="M4 18h16"/></svg>
+                Menu
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul class="nav-list">
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="components.html">Components</a></li>
+                    <li><a href="build-guide.html">Build Guide</a></li>
+                    <li><a href="software.html">Software</a></li>
+                    <li><a href="tutorial-first-reach.html">Tutorial</a></li>
+                    <li><a href="troubleshooting.html" aria-current="page">Troubleshooting</a></li>
+                </ul>
+                <div class="nav-ext">
+                    <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="container doc">
+            <div class="doc-head">
+                <h1>Troubleshooting</h1>
+                <p class="lede">Type what you see, or paste an error message, to find the fix.</p>
+                <div class="filter js-only">
+                    <label class="sr-only" for="symptom-filter">Filter by symptom or error message</label>
+                    <input id="symptom-filter" type="search" placeholder="Try “camera” or an error message" autocomplete="off" spellcheck="false" aria-keyshortcuts="/" data-filter-input>
+                    <button type="button" class="filter-clear" data-filter-clear hidden>Clear</button>
+                </div>
+                <p class="filter-status" role="status" aria-live="polite" data-filter-status></p>
             </div>
-            <div class="nav-actions">
-                <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" class="btn-neon btn-github">GitHub ↗</a>
-                <a href="https://arxiv.org/abs/2603.09051" target="_blank" class="btn-neon btn-arxiv">arXiv ↗</a>
+
+            <nav class="toc" aria-label="On this page" data-toc></nav>
+
+            <div class="doc-content">
+
+                <section class="doc-section flow" id="quick" data-toc-label="Quick fixes" data-filter-group>
+                    <h2>Quick fixes</h2>
+                    <p class="section-lede">One line per problem. If a fix doesn't hold, check <a href="#signatures">misleading errors</a> below.</p>
+
+                    <div class="flow" data-filter-group>
+                        <h3 id="motors">Motors</h3>
+                        <div class="table-wrap">
+                            <table class="data data--stack">
+                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
+                                <tbody>
+                                    <tr data-filter-item><td>No motors move</td><td>Check each board's power: Bus 1 from the 12&nbsp;V car outlet, Bus 2 through the USB-C PD cable. A plain 5&nbsp;V USB feed will not drive them.</td></tr>
+                                    <tr data-filter-item><td>Motors powered, but no communication at all</td><td>If the adapter board and the motor chain run from different supplies, connect their grounds</td></tr>
+                                    <tr data-filter-item><td>Permission denied</td><td><code>sudo usermod -aG dialout $USER</code>, then log out and back in</td></tr>
+                                    <tr data-filter-item><td>Whole bus silent</td><td>Two motors share an ID: scan each motor on its own</td></tr>
+                                    <tr data-filter-item><td>Fewer motors than expected</td><td>Scan the bus; the missing ID tells you which motor</td></tr>
+                                    <tr data-filter-item><td>One motor doesn't respond</td><td>Set its ID again with <code>set_motor_id.py</code>, with only that motor connected</td></tr>
+                                    <tr data-filter-item><td>Arm jerks or moves the wrong way</td><td>Check the IDs match the motor map</td></tr>
+                                    <tr data-filter-item><td>Grinding noise</td><td>Check the servo horn alignment; replace it if stripped</td></tr>
+                                    <tr data-filter-item><td><code>could not open /dev/xle_arms</code></td><td>Delete any old <code>/etc/udev/rules.d/99-xlerobot.rules</code>, then run <code>python diagnostics/detect_buses.py --write</code> (<a href="software.html#step-7">software step 7</a>)</td></tr>
+                                    <tr data-filter-item><td>Arm drops when a script ends</td><td>Lower the arm first; step <code>Torque_Limit</code> down over a few seconds instead of cutting it</td></tr>
+                                    <tr data-filter-item><td>Bus disappears after driving</td><td>A cable was tugged loose: check <code>dmesg</code>, then add slack</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flow" data-filter-group>
+                        <h3 id="cameras">Cameras</h3>
+                        <div class="table-wrap">
+                            <table class="data data--stack">
+                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
+                                <tbody>
+                                    <tr data-filter-item><td>Camera not detected</td><td>Run <code>ls /dev/video*</code>, then follow <a href="#camera">camera not detected</a></td></tr>
+                                    <tr data-filter-item><td>Black frame</td><td>Check the lens cap; test with <code>cv2.VideoCapture</code></td></tr>
+                                    <tr data-filter-item><td>Color detector misses the target</td><td>Check the camera and color thresholds with <code>diagnostics/visualize_color_detect.py</code></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flow" data-filter-group>
+                        <h3 id="software-issues">Software</h3>
+                        <div class="table-wrap">
+                            <table class="data data--stack">
+                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
+                                <tbody>
+                                    <tr data-filter-item><td>Import errors</td><td><code>pip install -e ".[all]"</code> from the repo root, inside the venv</td></tr>
+                                    <tr data-filter-item><td>CUDA unavailable</td><td>Check for a <code>+cpu</code> torch build; reinstall from the Jetson index</td></tr>
+                                    <tr data-filter-item><td>Module not found</td><td>Use the venv's Python directly: <code>~/.venvs/xlerobot-pro/bin/python</code></td></tr>
+                                    <tr data-filter-item><td>Joy-Con not pairing</td><td><code>sudo apt install joycond</code>, then turn on Bluetooth</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flow" data-filter-group>
+                        <h3 id="assembly-issues">Assembly</h3>
+                        <div class="table-wrap">
+                            <table class="data data--stack">
+                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
+                                <tbody>
+                                    <tr data-filter-item><td>Arm wobbles or has play</td><td>Tighten the servo horn screws; check the bracket fit</td></tr>
+                                    <tr data-filter-item><td>Wheels not straight</td><td>Adjust the Z-axis scale in the slicer, or use printed washers</td></tr>
+                                    <tr data-filter-item><td>Cart tips when reaching</td><td>Move the battery to the lowest shelf</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="doc-section flow" id="signatures" data-toc-label="Misleading errors" data-filter-group>
+                    <h2>Errors that point the wrong way</h2>
+                    <p class="section-lede">Each message here points to the wrong cause. Open one to see the real one.</p>
+
+                    <div>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title"><code>[TxRxResult] There is no status packet!</code></span><span class="sig-sub">Whole bus dead, yet each motor works on its own</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>Two motors share an ID.</strong> They answer at the same time and garble every message on the bus. It looks like a power or cable fault.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Scan each motor on its own and fix the duplicates. See <a href="build-guide.html#motor-configuration">Motor Configuration</a>.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title"><code>device descriptor read/64, error -110</code> or <code>unable to enumerate USB device</code></span><span class="sig-sub">Adapter plugged in, but no bus appears</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>A USB connection problem.</strong> The adapter has power but the Jetson never sees it.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Try a new cable first, then plug straight into the Jetson with no hub, then try another port.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title"><code>torch.cuda.is_available()</code> returns <code>False</code></span><span class="sig-sub">PyTorch installed, GPU not used</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>The wrong PyTorch build, or the wrong environment.</strong> Either the CPU build was installed (look for <code>+cpu</code> in the version) or torch went into conda.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Reinstall from the Jetson index into a venv on system Python 3.10. See <a href="software.html#step-4">Software step 4</a>.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title">Motors answer every scan but never move</span><span class="sig-sub">Load stuck at <code>1024 + Torque_Limit</code>, current 0</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>The motors have enough power to talk, but not to move.</strong> A lit LED doesn't prove otherwise: it is on the adapter board, not the motor.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Read <code>Present_Voltage</code>: ~120–135 means 12&nbsp;V and is healthy; ~50 means the bus is on 5&nbsp;V. Power Bus 1 from the 12&nbsp;V car outlet and Bus 2 through the USB-C PD cable in the parts list.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title">Bus drops during calibration, always at the same joint</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>The cable is pulled tight when that joint reaches the end of its travel.</strong></p>
+                                <span class="sig-label">Fix</span>
+                                <p>Leave a loop of slack cable at that joint. Don't raise the retry count to hide it: the same dropout will come back mid-grasp.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title">An arm falls the moment a script starts or ends</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>Torque was switched off all at once.</strong> Some read-only tools release torque on purpose so you can pose the arm by hand (<code>diagnostics/read_motors.py</code> is one), and <code>bus.disconnect()</code> turns torque off by default.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Lower the arms before running anything that releases torque. In your own code, use <code>disconnect(disable_torque=False)</code> and step <code>Torque_Limit</code> down over several seconds.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title">A script connects, but moves the wrong arm</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>Single-arm scripts use motor IDs 1–6</strong>, which is the left arm. The right arm is 7–12, so changing the port won't reach it.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Use the whole-robot teleop for two-arm work: <a href="software.html#step-11">software step 11</a>.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title">Grasp lands smoothly in the wrong place</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>The robot has the camera's position wrong; the arm math is fine.</strong> Swapped head tilt and pan motors, or the wrong motors read as the head, cause this.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Check that ID&nbsp;1 moves the head up/down and ID&nbsp;2 left/right. Then run <code>diagnostics/debug_transform_chain.py</code> and <code>diagnose_fk_vs_vision.py</code>.</p>
+                            </div>
+                        </details>
+                        <details class="more signature" data-filter-item>
+                            <summary><span><span class="sig-title"><code>UEFI Interactive Shell v2.2 — Shell&gt;</code> or <code>Error: could not make network connection</code></span><span class="sig-sub">Jetson boots to a shell prompt</span></span></summary>
+                            <div class="more-body">
+                                <span class="sig-label">Real cause</span>
+                                <p><strong>The Jetson found nothing to boot from.</strong> The network message is not a network fault; it is the last thing it tries.</p>
+                                <span class="sig-label">Fix</span>
+                                <p>Insert a flashed microSD card, and check the firmware is 36.x for a JetPack 6 card.</p>
+                            </div>
+                        </details>
+                    </div>
+                </section>
+
+                <section class="doc-section flow" id="order" data-toc-label="A bus won't respond">
+                    <h2>When a motor bus won't respond</h2>
+                    <p class="section-lede">Check these in order, and change one thing at a time.</p>
+                    <ol class="numbered">
+                        <li><span class="li-title">Does the adapter show up?</span>Run <code>lsusb | grep 1a86</code> and <code>ls /dev/ttyACM*</code>. If nothing appears, it's a USB problem, not the motors.</li>
+                        <li><span class="li-title">Does any motor answer?</span>Run <code>scan_port()</code> across all baud rates. One reply means power and wiring work.</li>
+                        <li><span class="li-title">One motor answers, but not the chain?</span>Two motors share an ID. Go to <a href="build-guide.html#motor-configuration">Motor Configuration</a>.</li>
+                        <li><span class="li-title">The chain answers, then drops when it moves?</span>A cable is pulled tight at a joint. Find that joint and add slack.</li>
+                    </ol>
+                </section>
+
+                <section class="doc-section flow" id="camera" data-toc-label="Camera not detected">
+                    <h2>Camera not detected</h2>
+                    <p class="section-lede">When <code>ls /dev/video*</code> shows fewer cameras than you plugged in.</p>
+                    <ol class="numbered">
+                        <li><span class="li-title">Replug it.</span>Unplug and replug the camera, or try another USB port.</li>
+                        <li><span class="li-title">Skip the hub.</span>Plug each camera straight into the Jetson. Keep using the same ports, since device paths change when you swap them.</li>
+                        <li><span class="li-title">List the devices.</span>Expect even-numbered entries (<code>/dev/video0</code>, <code>/dev/video2</code>), one per camera.</li>
+                    </ol>
+                    <div class="code">
+                        <div class="code-head"><span>List video devices</span></div>
+<pre><code>$ ls /dev/video*
+
+# To see detailed device paths:
+$ v4l2-ctl --list-devices</code></pre>
+                    </div>
+                    <ol class="numbered" start="4" style="counter-reset: n 3;">
+                        <li><span class="li-title">Test the camera.</span>This one-line test should print <strong>OK</strong>.</li>
+                    </ol>
+                    <div class="code">
+                        <div class="code-head"><span>Quick camera test</span></div>
+<pre><code>$ python -c "import cv2; cap = cv2.VideoCapture(0); ret, frame = cap.read(); print('OK' if ret else 'FAIL'); cap.release()"</code></pre>
+                    </div>
+                </section>
+
+                <p class="help-line">Still stuck? Go back to the last "Done when" check in <a href="software.html">Software Setup</a> that passed, and fix the first thing after it that doesn't. If that doesn't help, <a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">ask a question on GitHub<span class="sr-only"> (opens in a new tab)</span></a>.</p>
             </div>
         </div>
-    </nav>
-
-    <main class="page-container">
-        
-        <header class="page-header">
-            <span class="tech-badge tech-badge-pink">Diagnostics & Repair</span>
-            <h1>Troubleshooting</h1>
-            <p>Find your issue by symptom. Quick diagnostic matrices are below, followed by deep-dive resolution paths.</p>
-        </header>
-
-        <h2 class="hero-title font-med mb-4">Quick Diagnostic Matrices</h2>
-        
-        <div class="grid-2">
-            <section class="card neon-hover-cyan card-no-margin">
-                <h3 class="diag-header"><span class="diag-icon" style="color: var(--neon-cyan)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span> Motor Issues</h3>
-                <div class="table-container">
-                    <table class="tech-table table-small">
-                        <thead>
-                            <tr><th>Symptom</th><th>Quick Fix</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><strong>No motors move</strong></td><td>Check each board's power input: Bus 1 from the 12&nbsp;V car outlet, Bus 2 through the USB-C PD cable. A plain 5&nbsp;V USB feed will not drive them</td></tr>
-                            <tr><td><strong>Permission denied</strong></td><td><code class="code-cyan">sudo usermod -aG dialout $USER</code>, then re-login</td></tr>
-                            <tr><td><strong>Whole bus silent</strong></td><td>Duplicate IDs — scan each motor in isolation</td></tr>
-                            <tr><td><strong>Motor count mismatch</strong></td><td>Scan the bus; the missing ID names the culprit</td></tr>
-                            <tr><td><strong>Single unresponsive</strong></td><td>Re-assign its ID with <code class="code-cyan">set_motor_id.py</code>, one motor on the chain</td></tr>
-                            <tr><td><strong>Arm jerks / wrong dir</strong></td><td>Verify IDs match the motor map</td></tr>
-                            <tr><td><strong>Grinding noise</strong></td><td>Inspect servo horn alignment; replace if stripped</td></tr>
-                            <tr><td><code class="code-pink">could not open /dev/xle_arms</code></td><td>The bus symlinks do not exist — run <code class="code-cyan">python diagnostics/detect_buses.py --write</code></td></tr>
-                            <tr><td><strong>Answers the bus, never moves</strong></td><td>Logic power without motor power — check <code class="code-cyan">Present_Voltage</code></td></tr>
-                            <tr><td><strong>Arm drops when a script ends</strong></td><td>Torque cut instead of bled off — step <code class="code-cyan">Torque_Limit</code> down over seconds</td></tr>
-                            <tr><td><strong>Bus vanishes after driving</strong></td><td>A cable was tugged loose — check <code class="code-cyan">dmesg</code>, then strain-relieve it</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="card neon-hover-purple card-no-margin">
-                <h3 class="diag-header"><span class="diag-icon" style="color: var(--neon-purple)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span> Camera Issues</h3>
-                <div class="table-container">
-                    <table class="tech-table table-small">
-                        <thead>
-                            <tr><th>Symptom</th><th>Quick Fix</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><strong>Camera not detected</strong></td><td><code class="code-cyan">ls /dev/video*</code> to check path</td></tr>
-                            <tr><td><strong>Black frame</strong></td><td>Check lens cap; test with <code class="code-cyan">cv2.VideoCapture</code></td></tr>
-                            <tr><td><strong>Color detector misses the target</strong></td><td>Check the camera and the color thresholds with <code>diagnostics/visualize_color_detect.py</code></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="card neon-hover-pink card-no-margin">
-                <h3 class="diag-header"><span class="diag-icon" style="color: var(--neon-pink)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span> Software Issues</h3>
-                <div class="table-container">
-                    <table class="tech-table table-small">
-                        <thead>
-                            <tr><th>Symptom</th><th>Quick Fix</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><strong>Import errors</strong></td><td><code class="code-cyan">pip install -e ".[all]"</code> from the repo root, inside the venv</td></tr>
-                            <tr><td><strong>CUDA unavailable</strong></td><td>Check for a <code class="code-pink">+cpu</code> torch build; reinstall from the Jetson index</td></tr>
-                            <tr><td><strong>Module not found</strong></td><td>Use the venv interpreter directly: <code class="code-cyan">~/.venvs/xlerobot-pro/bin/python</code></td></tr>
-                            <tr><td><strong>Joy-Con not pairing</strong></td><td><code class="code-pink">sudo apt install joycond</code>, enable Bluetooth</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="card neon-hover-cyan card-no-margin">
-                <h3 class="diag-header"><span class="diag-icon" style="color: var(--neon-cyan)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Assembly Issues</h3>
-                <div class="table-container">
-                    <table class="tech-table table-small">
-                        <thead>
-                            <tr><th>Symptom</th><th>Quick Fix</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><strong>Arm wobbles/play</strong></td><td>Tighten servo horn screws; check bracket fit</td></tr>
-                            <tr><td><strong>Wheels not straight</strong></td><td>Adjust z-axis scale in slicer or use printed washers</td></tr>
-                            <tr><td><strong>Cart tips reaching</strong></td><td>Move battery to lowest shelf to lower CoG</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-        <hr class="divider-large">
-
-        <section class="card card-accent-purple">
-            <h2>Failure Signatures</h2>
-            <p>Every one of these presents as something other than its cause. That is exactly why they cost people hours — and why they are worth reading once before you need them.</p>
-
-            <div class="table-container mt-4">
-                <table class="tech-table">
-                    <thead>
-                        <tr><th>What you see</th><th>What it actually is</th><th>Fix</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code class="code-pink">[TxRxResult] There is no status packet!</code><br><span class="font-small text-muted">Whole bus dead, yet each motor works in isolation</span></td>
-                            <td><strong>Duplicate motor IDs.</strong> Feetech is half-duplex — two motors on the same ID transmit together and the collision corrupts every packet on the wire, not just theirs. Reads exactly like a power or cabling fault.</td>
-                            <td>Scan each motor in isolation and correct the duplicates. See <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">device descriptor read/64, error -110</code><br><code class="code-pink">unable to enumerate USB device</code></td>
-                            <td><strong>USB physical layer.</strong> The adapter is powered and looks connected but never enumerates, so its bus is <em>invisible</em> rather than faulty.</td>
-                            <td>New cable first, then plug directly into the Jetson bypassing any hub, then try a different port.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">torch.cuda.is_available() → False</code></td>
-                            <td><strong>Wrong PyTorch wheel or wrong environment.</strong> Either the CPU wheel won the resolve (check for a <code>+cpu</code> suffix) or torch was installed inside conda.</td>
-                            <td>Reinstall from the Jetson index by direct wheel URL, into a venv built on system Python 3.10.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Bus drops mid-calibration, always at the same joint</strong></td>
-                            <td><strong>Cable tugged at that joint's travel extreme.</strong> Range recording retries only once, so a single dropped packet aborts the run.</td>
-                            <td>Add a service loop at that joint. <strong>Do not raise the retry count to mask it</strong> — the same dropout will recur mid-grasp, under power.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">Permission denied: /dev/ttyACM0</code></td>
-                            <td><strong>User not in the <code>dialout</code> group</strong> — or the group was added without logging back in.</td>
-                            <td><code class="code-cyan">sudo usermod -aG dialout $USER</code>, then log out and back in.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Motors answer every scan but never move</strong><br><span class="font-small text-muted">Load pinned at <code>1024 + Torque_Limit</code>, current 0</span></td>
-                            <td><strong>Logic power without motor power.</strong> The servos have enough to talk and nothing to move with. A lit LED proves nothing here — the STS3215 has no external LED, so any light you see belongs to the adapter board and only means its barrel jack has voltage.</td>
-                            <td>Read <code>Present_Voltage</code>: ~120–135 means 12&nbsp;V and is healthy; ~50 means the bus is on a 5&nbsp;V rail. Power Bus 1 from the 12&nbsp;V car outlet and Bus 2 through the USB-C PD cable in the BOM, not a plain 5&nbsp;V USB-to-barrel cable.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">could not open port /dev/xle_arms</code></td>
-                            <td><strong>The udev symlinks were never created</strong>, or a rules file from an older build has different serials in it.</td>
-                            <td>Delete any stale <code>/etc/udev/rules.d/99-xlerobot.rules</code>, then run <code class="code-cyan">python diagnostics/detect_buses.py --write</code> — see <a href="software.html#step-7" class="text-neon text-underline">software step 7</a>.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Grasp lands confidently in the wrong place</strong><br><span class="font-small text-muted">Motion is smooth, the target is simply not there</span></td>
-                            <td><strong>The camera-to-base transform is wrong, not the IK.</strong> Head tilt and pan feed that transform, so swapping the two axes — or reading the wrong motors as "head" — produces a transform that looks entirely plausible.</td>
-                            <td>Confirm on your hardware that ID&nbsp;1 moves up/down and ID&nbsp;2 left/right. Then work through <code>diagnostics/debug_transform_chain.py</code> and <code>diagnose_fk_vs_vision.py</code>.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>A script connects, but drives the wrong arm</strong></td>
-                            <td><strong>Single-arm scripts address motor IDs 1–6</strong>, which on this build is the left arm. The right arm is at 7–12, so a port change alone will never reach it.</td>
-                            <td>Use the whole-robot teleop for two-armed work — <a href="software.html#step-11" class="text-neon text-underline">software step 11</a>.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>An arm falls the moment a script starts or ends</strong></td>
-                            <td><strong>Torque was cut in one write rather than bled off.</strong> Some read-only tools release torque deliberately so you can pose the arm by hand — <code>diagnostics/read_motors.py</code> is one — and <code>bus.disconnect()</code> disables torque by default.</td>
-                            <td>Lower the arms before running anything that releases torque. In your own code, pass <code>disconnect(disable_torque=False)</code> and step <code>Torque_Limit</code> down over several seconds instead of zeroing it.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">UEFI Interactive Shell v2.2 — Shell&gt;</code></td>
-                            <td><strong>No bootable storage.</strong> Run <code>map -r</code>: if the only entries are <code>MemoryMapped</code> and <code>Fv(...)</code>, both are internal (RAM and the QSPI firmware volume) and zero block devices are present.</td>
-                            <td>Seat a flashed microSD, or confirm firmware is 36.x for a JetPack 6 card.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">Error: could not make network connection</code></td>
-                            <td><strong>Not a network fault.</strong> UEFI exhausted its boot order and fell through to PXE as a last resort. It is the tail end of "nothing bootable found."</td>
-                            <td>Ignore it. Disappears once a bootable card is present.</td>
-                        </tr>
-                        <tr>
-                            <td><code class="code-pink">EXT4-fs (mmcblk0p1): error count since last fsck</code></td>
-                            <td><strong>Filesystem damage on the card</strong>, usually from power loss during a write. Accumulates silently.</td>
-                            <td>Schedule an <code>fsck</code> at next boot. Prefer clean shutdowns — SD cards tolerate abrupt power cuts poorly.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section class="card card-accent-cyan">
-            <h2>Diagnostic Order</h2>
-            <p>When a bus misbehaves, this sequence separates causes fastest. Each step rules out an entire class of problem, so work them in order rather than jumping to the most interesting theory.</p>
-
-            <ol class="mt-4">
-                <li class="mb-4"><strong>Does the adapter enumerate?</strong><br>
-                    <code class="code-cyan">lsusb | grep 1a86</code> and <code class="code-cyan">ls /dev/ttyACM*</code>. No device node means the problem is USB, not motors — stop looking at the robot.</li>
-                <li class="mb-4"><strong>Does any motor answer?</strong><br>
-                    Run <code class="code-cyan">scan_port()</code> across all baud rates. A single reply proves power, wiring, baud rate, and protocol all work.</li>
-                <li class="mb-4"><strong>Does one motor answer but not the chain?</strong><br>
-                    That is duplicate IDs, essentially every time. Go to <a href="build-guide.html#motor-configuration" class="text-neon text-underline">Motor Configuration</a>.</li>
-                <li class="mb-4"><strong>Does the chain answer but drop under motion?</strong><br>
-                    Cable routing at a rotating joint. Find the joint that reproduces it and add slack there.</li>
-            </ol>
-
-            <div class="alert-box alert-caution mt-4">
-                <div class="alert-accent-line"></div>
-                <strong>RESIST CHANGING TWO THINGS AT ONCE.</strong> Most of the difficulty in bringing one of these robots up comes from a working subsystem being disturbed while chasing a broken one.
-            </div>
-        </section>
-
-        <hr class="divider-large">
-
-        <section class="card card-accent-purple">
-            <div class="flex-between mb-4">
-                <h2 class="card-no-margin">Deep Dive: Camera Not Detected</h2>
-                <span class="tech-badge purple card-no-margin">Hardware / USB</span>
-            </div>
-
-            <div class="grid-2 mt-4">
-                <div>
-                    <h3 class="cause-title">Symptoms</h3>
-                    <ul class="font-small">
-                        <li><code>ls /dev/video*</code> shows no entries or fewer cameras than expected.</li>
-                        <li><code>cv2.VideoCapture()</code> returns <code>False</code> for <code>ret</code>.</li>
-                        <li>Vision scripts error with <em>“no camera found”</em>.</li>
-                        <li>Camera LED is off even though it’s plugged in.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="symptom-title">Likely Causes</h3>
-                    <ul class="font-small">
-                        <li><strong>USB cable not seated:</strong> Loose connection or damaged cable.</li>
-                        <li><strong>Camera behind a hub:</strong> Cameras and bus adapters should plug directly into the Jetson; behind a hub they can fail to enumerate.</li>
-                        <li><strong>Wrong device index:</strong> Camera is at a different path than the script expects.</li>
-                        <li><strong>Kernel driver issue:</strong> Camera module not loaded (rare on Ubuntu).</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h3 class="mt-4 border-top-light">Diagnostic & Fix Steps</h3>
-            
-            <p class="mt-4"><strong>1. Check Physical Connection:</strong> Unplug and replug the camera. Try a different USB port. Try without the USB hub (direct to PC) to isolate the issue.</p>
-            <p class="mt-4"><strong>2. Check the USB path:</strong> Plug each camera directly into the Jetson rather than through a hub.</p>
-            <p class="mt-4"><strong>3. Check Device Detection:</strong> You should see even-numbered entries (<code>/dev/video0</code>, <code>/dev/video2</code>) — one per camera.</p>
-            <div class="terminal-box mt-2 mb-2">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>List Video Devices</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> ls /dev/video*<br><br>
-                    <span class="log-info"># To see detailed device paths:</span><br>
-                    <span>$</span> v4l2-ctl --list-devices
-                </div>
-            </div>
-
-            <p class="mt-4"><strong>4. Test the Camera Directly:</strong> Use a one-line Python test to verify the OpenCV pipeline.</p>
-            <div class="terminal-box mt-2 mb-2">
-                <div class="terminal-header">
-                    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                    <span>Quick Camera Feed Test</span>
-                </div>
-                <div class="terminal-body">
-                    <span>$</span> python -c "import cv2; cap = cv2.VideoCapture(0); ret, frame = cap.read(); print('OK' if ret else 'FAIL'); cap.release()"
-                </div>
-            </div>
-
-            <div class="grid-2 mt-4">
-                <div class="status-card-green">
-                    <h4 class="status-title-green">Verification Checklist</h4>
-                    <ul class="status-list status-list-green">
-                        <li><code>ls /dev/video*</code> shows the expected number of devices.</li>
-                        <li>The Python camera test returns <strong>OK</strong>.</li>
-                        <li>Vision and teleoperation scripts run without camera errors.</li>
-                    </ul>
-                </div>
-                <div class="status-card-blue">
-                    <h4 class="status-title-blue">Prevention Tips</h4>
-                    <ul class="status-list status-list-blue">
-                        <li>Plug cameras <strong>directly into the Jetson</strong>, not through a hub.</li>
-                        <li>Always use the <strong>same USB ports</strong>—paths change when swapped.</li>
-                        <li>Label USB cables to avoid confusion during setup.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
     </main>
 
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a href="index.html" class="brand"><img src="favicon.svg" alt="" width="30" height="30">XLeRobot-Pro</a>
+                <p>An open-source two-arm mobile robot with the computer on board. Built on <a href="https://github.com/Vector-Wangel/XLeRobot" target="_blank" rel="noopener noreferrer">XLeRobot</a> and <a href="https://github.com/huggingface/lerobot" target="_blank" rel="noopener noreferrer">LeRobot</a>.</p>
+            </div>
+            <nav aria-label="Build path (footer)">
+                <h2 class="footer-title">Build path</h2>
+                <ol class="footer-links">
+                    <li><a href="components.html">1. Components</a></li>
+                    <li><a href="build-guide.html">2. Build Guide</a></li>
+                    <li><a href="software.html">3. Software Setup</a></li>
+                    <li><a href="tutorial-first-reach.html">4. First Reach Tutorial</a></li>
+                </ol>
+            </nav>
+            <div>
+                <h2 class="footer-title">Project</h2>
+                <ul class="footer-links">
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <a class="to-top" href="#top">Back to top</a>
 </body>
 </html>
