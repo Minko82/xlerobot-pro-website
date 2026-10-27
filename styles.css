@@ -214,7 +214,7 @@ kbd {
    A self-contained block (code, table, callout) stays attached to the sentence
    that leads into it, and gets a larger gap after it before the next idea. */
 .flow > * + * { margin-top: var(--space-4); }
-.flow > :where(.callout, .check, .code, .table-wrap, .more, .grid, .figure, .downloads, .download--main, .plates, .stats, .numbered, .checklist) + * { margin-top: var(--space-5); }
+.flow > :where(.callout, .check, .code, .table-wrap, .fixes, .more, .grid, .figure, .downloads, .download--main, .plates, .stats, .numbered, .checklist) + * { margin-top: var(--space-5); }
 .flow > h3 { margin-top: var(--space-7); }
 .flow > h4 { margin-top: var(--space-6); }
 .flow > :is(h2, h3, h4) + * { margin-top: var(--space-3); }
@@ -418,6 +418,18 @@ html:not(.js) .header-inner { height: auto; flex-wrap: wrap; padding-block: 0.5r
 @media (min-width: 1100px) {
     .doc-head { padding-bottom: var(--space-6); border-bottom: 1px solid var(--border-strong); }
 }
+
+/* Troubleshooting: the search is a tool, so it sits in its own panel and the
+   reference sections start below it. The box spans the reading column. */
+.doc-head.doc-head--search {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+}
+.doc-head--search .filter { max-width: none; margin-top: var(--space-5); }
+.doc-head--search .filter input { background: #fff; }
+.doc-head--search .filter-status:empty { min-height: 0; margin-top: 0; }
 
 .eyebrow {
     display: block;
@@ -1497,6 +1509,22 @@ figcaption, .caption { font-size: 0.875rem; line-height: 1.5; color: var(--muted
 .pager a:hover .pager-title { color: var(--brand); }
 .pager-next { text-align: right; grid-column: -2 / -1; }
 .help-line { margin-top: 1.25rem; font-size: 0.9375rem; color: var(--muted); }
+
+/* --- Quick fixes: problem on the left, fix on the right ---
+   One fixed first column for every group, so each fix starts at the same edge
+   down the whole page. Hairlines instead of boxes; stacked on phones. */
+.fixes { margin: 0; border-top: 1px solid var(--border-strong); }
+.fix {
+    display: grid;
+    gap: var(--space-1) var(--space-6);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border);
+}
+.fix dt { font-weight: 700; color: var(--text); }
+.fix dd { margin: 0; color: var(--body); }
+@media (min-width: 640px) {
+    .fix { grid-template-columns: 13rem minmax(0, 1fr); }
+}
 
 /* --- Troubleshooting filter --- */
 .filter { position: relative; max-width: 36rem; }

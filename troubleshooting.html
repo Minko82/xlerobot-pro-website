@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=28">
+    <link rel="stylesheet" href="styles.css?v=30">
     <script>document.documentElement.classList.add('js');</script>
     <script src="site.js?v=21" defer></script>
 </head>
@@ -46,7 +46,7 @@
 
     <main id="main">
         <div class="container doc">
-            <div class="doc-head">
+            <div class="doc-head doc-head--search">
                 <h1>Troubleshooting</h1>
                 <p class="lede">Type what you see, or paste an error message, to find the fix.</p>
                 <div class="filter js-only">
@@ -67,67 +67,47 @@
 
                     <div class="flow" data-filter-group>
                         <h3 id="motors">Motors</h3>
-                        <div class="table-wrap">
-                            <table class="data data--stack">
-                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
-                                <tbody>
-                                    <tr data-filter-item><td>No motors move</td><td>Check each board's power: Bus 1 from the 12&nbsp;V car outlet, Bus 2 through the USB-C PD cable. A plain 5&nbsp;V USB feed will not drive them.</td></tr>
-                                    <tr data-filter-item><td>Motors powered, but no communication at all</td><td>If the adapter board and the motor chain run from different supplies, connect their grounds</td></tr>
-                                    <tr data-filter-item><td>Permission denied</td><td><code>sudo usermod -aG dialout $USER</code>, then log out and back in</td></tr>
-                                    <tr data-filter-item><td>Whole bus silent</td><td>Two motors share an ID: scan each motor on its own</td></tr>
-                                    <tr data-filter-item><td>Fewer motors than expected</td><td>Scan the bus; the missing ID tells you which motor</td></tr>
-                                    <tr data-filter-item><td>One motor doesn't respond</td><td>Set its ID again with <code>set_motor_id.py</code>, with only that motor connected</td></tr>
-                                    <tr data-filter-item><td>Arm jerks or moves the wrong way</td><td>Check the IDs match the motor map</td></tr>
-                                    <tr data-filter-item><td>Grinding noise</td><td>Check the servo horn alignment; replace it if stripped</td></tr>
-                                    <tr data-filter-item><td><code>could not open /dev/xle_arms</code></td><td>Delete any old <code>/etc/udev/rules.d/99-xlerobot.rules</code>, then run <code>python diagnostics/detect_buses.py --write</code> (<a href="software.html#step-7">software step 7</a>)</td></tr>
-                                    <tr data-filter-item><td>Arm drops when a script ends</td><td>Lower the arm first; step <code>Torque_Limit</code> down over a few seconds instead of cutting it</td></tr>
-                                    <tr data-filter-item><td>Bus disappears after driving</td><td>A cable was tugged loose: check <code>dmesg</code>, then add slack</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <dl class="fixes">
+                            <div class="fix" data-filter-item><dt>No motors move</dt><dd>Check each board's power: Bus 1 from the 12&nbsp;V car outlet, Bus 2 through the USB-C PD cable. A plain 5&nbsp;V USB feed will not drive them.</dd></div>
+                            <div class="fix" data-filter-item><dt>Motors powered, but no communication at all</dt><dd>If the adapter board and the motor chain run from different supplies, connect their grounds</dd></div>
+                            <div class="fix" data-filter-item><dt>Permission denied</dt><dd><code>sudo usermod -aG dialout $USER</code>, then log out and back in</dd></div>
+                            <div class="fix" data-filter-item><dt>Whole bus silent</dt><dd>Two motors share an ID: scan each motor on its own</dd></div>
+                            <div class="fix" data-filter-item><dt>Fewer motors than expected</dt><dd>Scan the bus; the missing ID tells you which motor</dd></div>
+                            <div class="fix" data-filter-item><dt>One motor doesn't respond</dt><dd>Set its ID again with <code>set_motor_id.py</code>, with only that motor connected</dd></div>
+                            <div class="fix" data-filter-item><dt>Arm jerks or moves the wrong way</dt><dd>Check the IDs match the motor map</dd></div>
+                            <div class="fix" data-filter-item><dt>Grinding noise</dt><dd>Check the servo horn alignment; replace it if stripped</dd></div>
+                            <div class="fix" data-filter-item><dt><code>could not open /dev/xle_arms</code></dt><dd>Delete any old <code>/etc/udev/rules.d/99-xlerobot.rules</code>, then run <code>python diagnostics/detect_buses.py --write</code> (<a href="software.html#step-7">software step 7</a>)</dd></div>
+                            <div class="fix" data-filter-item><dt>Arm drops when a script ends</dt><dd>Lower the arm first; step <code>Torque_Limit</code> down over a few seconds instead of cutting it</dd></div>
+                            <div class="fix" data-filter-item><dt>Bus disappears after driving</dt><dd>A cable was tugged loose: check <code>dmesg</code>, then add slack</dd></div>
+                        </dl>
                     </div>
 
                     <div class="flow" data-filter-group>
                         <h3 id="cameras">Cameras</h3>
-                        <div class="table-wrap">
-                            <table class="data data--stack">
-                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
-                                <tbody>
-                                    <tr data-filter-item><td>Camera not detected</td><td>Run <code>ls /dev/video*</code>, then follow <a href="#camera">camera not detected</a></td></tr>
-                                    <tr data-filter-item><td>Black frame</td><td>Check the lens cap; test with <code>cv2.VideoCapture</code></td></tr>
-                                    <tr data-filter-item><td>Color detector misses the target</td><td>Check the camera and color thresholds with <code>diagnostics/visualize_color_detect.py</code></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <dl class="fixes">
+                            <div class="fix" data-filter-item><dt>Camera not detected</dt><dd>Run <code>ls /dev/video*</code>, then follow <a href="#camera">camera not detected</a></dd></div>
+                            <div class="fix" data-filter-item><dt>Black frame</dt><dd>Check the lens cap; test with <code>cv2.VideoCapture</code></dd></div>
+                            <div class="fix" data-filter-item><dt>Color detector misses the target</dt><dd>Check the camera and color thresholds with <code>diagnostics/visualize_color_detect.py</code></dd></div>
+                        </dl>
                     </div>
 
                     <div class="flow" data-filter-group>
                         <h3 id="software-issues">Software</h3>
-                        <div class="table-wrap">
-                            <table class="data data--stack">
-                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
-                                <tbody>
-                                    <tr data-filter-item><td>Import errors</td><td><code>pip install -e ".[all]"</code> from the repo root, inside the venv</td></tr>
-                                    <tr data-filter-item><td>CUDA unavailable</td><td>Check for a <code>+cpu</code> torch build; reinstall from the Jetson index</td></tr>
-                                    <tr data-filter-item><td>Module not found</td><td>Use the venv's Python directly: <code>~/.venvs/xlerobot-pro/bin/python</code></td></tr>
-                                    <tr data-filter-item><td>Joy-Con not pairing</td><td><code>sudo apt install joycond</code>, then turn on Bluetooth</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <dl class="fixes">
+                            <div class="fix" data-filter-item><dt>Import errors</dt><dd><code>pip install -e ".[all]"</code> from the repo root, inside the venv</dd></div>
+                            <div class="fix" data-filter-item><dt>CUDA unavailable</dt><dd>Check for a <code>+cpu</code> torch build; reinstall from the Jetson index</dd></div>
+                            <div class="fix" data-filter-item><dt>Module not found</dt><dd>Use the venv's Python directly: <code>~/.venvs/xlerobot-pro/bin/python</code></dd></div>
+                            <div class="fix" data-filter-item><dt>Joy-Con not pairing</dt><dd><code>sudo apt install joycond</code>, then turn on Bluetooth</dd></div>
+                        </dl>
                     </div>
 
                     <div class="flow" data-filter-group>
                         <h3 id="assembly-issues">Assembly</h3>
-                        <div class="table-wrap">
-                            <table class="data data--stack">
-                                <thead><tr><th scope="col">Problem</th><th scope="col">Fix</th></tr></thead>
-                                <tbody>
-                                    <tr data-filter-item><td>Arm wobbles or has play</td><td>Tighten the servo horn screws; check the bracket fit</td></tr>
-                                    <tr data-filter-item><td>Wheels not straight</td><td>Adjust the Z-axis scale in the slicer, or use printed washers</td></tr>
-                                    <tr data-filter-item><td>Cart tips when reaching</td><td>Move the battery to the lowest shelf</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <dl class="fixes">
+                            <div class="fix" data-filter-item><dt>Arm wobbles or has play</dt><dd>Tighten the servo horn screws; check the bracket fit</dd></div>
+                            <div class="fix" data-filter-item><dt>Wheels not straight</dt><dd>Adjust the Z-axis scale in the slicer, or use printed washers</dd></div>
+                            <div class="fix" data-filter-item><dt>Cart tips when reaching</dt><dd>Move the battery to the lowest shelf</dd></div>
+                        </dl>
                     </div>
                 </section>
 
