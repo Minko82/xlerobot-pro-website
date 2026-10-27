@@ -12,8 +12,8 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=30">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..800&family=Atkinson+Hyperlegible+Mono:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=36">
     <script>document.documentElement.classList.add('js');</script>
     <script src="site.js?v=21" defer></script>
 </head>
@@ -38,7 +38,7 @@
                 </ul>
                 <div class="nav-ext">
                     <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
-                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a>
                 </div>
             </nav>
         </div>
@@ -202,7 +202,7 @@
 
                 <section class="doc-section flow" id="order" data-toc-label="A bus won't respond">
                     <h2>When a motor bus won't respond</h2>
-                    <p class="section-lede">Check these in order, and change one thing at a time.</p>
+                    <p class="section-lede">Work through these in order, and change one thing at a time.</p>
                     <ol class="numbered">
                         <li><span class="li-title">Does the adapter show up?</span>Run <code>lsusb | grep 1a86</code> and <code>ls /dev/ttyACM*</code>. If nothing appears, it's a USB problem, not the motors.</li>
                         <li><span class="li-title">Does any motor answer?</span>Run <code>scan_port()</code> across all baud rates. One reply means power and wiring work.</li>
@@ -259,8 +259,9 @@ $ v4l2-ctl --list-devices</code></pre>
                 <h2 class="footer-title">Project</h2>
                 <ul class="footer-links">
                     <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="index.html#news">News</a></li>
                     <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
-                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
                     <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
                 </ul>
             </div>

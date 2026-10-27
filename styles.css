@@ -27,16 +27,20 @@
     --danger: #be123c;  --danger-bg: #fff1f2; --danger-border: #fda4af;
     --info: #1d4ed8;    --info-bg: #eff6ff;   --info-border: #bfdbfe;
 
-    --code-bg: #0f172a;
-    --code-head: #1e293b;
-    --code-text: #e2e8f0;
-    --code-comment: #94a3b8;
-    --code-prompt: #67e8f9;
-    --code-value: #fcd34d;
+    /* Commands are dark text on a light panel: light text on dark blocks
+       glows (halation) for readers with astigmatism */
+    --code-bg: #f6f7f9;
+    --code-head: #eceff3;
+    --code-text: #1e293b;
+    --code-comment: #5b6676;
+    --code-prompt: #0e7490;
+    --code-value: #9a3412;
 
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --font-display: 'Outfit', var(--font-sans);
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    /* Atkinson Hyperlegible: letterforms drawn to stay distinct (I l 1, O 0, b d)
+       for low-vision readers; the mono version keeps commands just as clear */
+    --font-sans: 'Atkinson Hyperlegible Next', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: var(--font-sans);
+    --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
     --radius-sm: 8px;
     --radius: 12px;
@@ -46,7 +50,7 @@
 
     --header-h: 64px;
     --toc-h: 56px;        /* pinned "where am I" bar on narrow screens */
-    --measure: 46rem;     /* reading column, about 70 characters per line */
+    --measure: 42rem;     /* reading column, about 75 characters per line at 18px */
     --gutter: clamp(1rem, 4vw, 2rem);
 
     /* Spacing scale. Related things sit a small step apart, separate
@@ -98,15 +102,15 @@ html {
 
 body {
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.65;
+    font-size: 1.0625rem;
+    line-height: 1.7;
     color: var(--body);
     background: var(--bg);
     -webkit-font-smoothing: antialiased;
     overflow-wrap: break-word;
 }
 @media (min-width: 768px) {
-    body { font-size: 1.0625rem; }
+    body { font-size: 1.125rem; }
 }
 
 img, video, iframe, svg { display: block; max-width: 100%; }
@@ -117,11 +121,11 @@ h1, h2, h3, h4 {
     color: var(--text);
     line-height: 1.2;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     text-wrap: balance;
 }
-h1 { font-size: var(--fs-h1); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; }
-h2 { font-size: var(--fs-h2); line-height: 1.15; letter-spacing: -0.02em; }
+h1 { font-size: var(--fs-h1); font-weight: 800; line-height: 1.12; letter-spacing: 0; }
+h2 { font-size: var(--fs-h2); line-height: 1.2; letter-spacing: 0; }
 h3 { font-size: var(--fs-h3); line-height: 1.25; }
 h4 { font-family: var(--font-sans); font-size: var(--fs-h4); line-height: 1.4; letter-spacing: 0; }
 
@@ -133,6 +137,7 @@ ul, ol { padding-left: 1.4rem; }
 li + li { margin-top: var(--space-2); }
 li::marker { color: var(--muted); }
 strong { color: var(--text); font-weight: 700; }
+.doc strong { font-weight: 600; }
 
 /* Links stay underlined (color is never the only cue), but the line is a light
    tint so a paragraph with several links doesn't read as striped */
@@ -262,7 +267,7 @@ kbd {
     font-family: var(--font-display);
     font-size: 1.25rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     color: var(--text);
     text-decoration: none;
     white-space: nowrap;
@@ -434,10 +439,8 @@ html:not(.js) .header-inner { height: auto; flex-wrap: wrap; padding-block: 0.5r
 .eyebrow {
     display: block;
     font-family: var(--font-display);
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--brand);
 }
 .lede {
@@ -847,11 +850,9 @@ a:hover > .timeline-marker { border-color: var(--brand); }
         display: block;
         margin-bottom: 0.6rem;
         font-family: var(--font-display);
-        font-size: 0.8125rem;
+        font-size: 0.9375rem;
         font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
+        color: var(--text);
     }
     .timeline-item > a,
     .timeline-phase > a { min-height: 0; padding-block: 0.3rem; font-size: 0.875rem; }
@@ -872,7 +873,7 @@ a:hover > .timeline-marker { border-color: var(--brand); }
     height: 2.5rem;
     margin-top: -0.1rem;
     border-radius: var(--radius-sm);
-    background: var(--text);
+    background: var(--brand);
     color: #fff;
     font-family: var(--font-display);
     font-size: 1.125rem;
@@ -880,16 +881,18 @@ a:hover > .timeline-marker { border-color: var(--brand); }
 }
 .step-head h2 { padding-top: 0.15rem; }
 .step-head + .chips { margin-top: 0.9rem; }
+.step-head + .section-lede { margin-top: var(--space-3); }
 
 .phase {
     margin-top: var(--space-8);
     padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--brand);
     border-radius: var(--radius);
-    background: var(--text);
-    color: #fff;
+    background: var(--surface);
+    color: var(--text);
 }
-.phase .eyebrow { color: #67e8f9; }
-.phase-title { margin-top: var(--space-1); font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; line-height: 1.25; color: #fff; }
+.phase-title { margin-top: var(--space-1); font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; line-height: 1.25; color: var(--text); }
 .phase + .doc-section { margin-top: var(--space-7); padding-top: 0; border-top: 0; }
 .doc-section + .phase { margin-top: calc(var(--section-gap) * 1.5); }
 
@@ -978,7 +981,8 @@ a:hover > .timeline-marker { border-color: var(--brand); }
 
 .callout--danger { --c-bg: var(--danger-bg); --c-bar: #e11d48; --c-icon: var(--danger); --c-mask: var(--i-danger); }
 .callout--warn { --c-bg: var(--warn-bg); --c-bar: #f59e0b; --c-icon: var(--warn); --c-mask: var(--i-warn); }
-.callout--tip { --c-bg: var(--brand-tint); --c-bar: var(--brand-bright); --c-icon: var(--brand); --c-mask: var(--i-tip); }
+.callout--tip { --c-bg: transparent; --c-bar: var(--brand-bright); --c-icon: var(--brand); --c-mask: var(--i-tip); }
+.callout--note, .callout:not([class*="callout--"]) { --c-bg: transparent; }
 .check { --c-bg: var(--ok-bg); --c-bar: #22c55e; --c-icon: var(--ok); --c-mask: var(--i-check-circle); }
 .check-title { font-family: var(--font-display); color: var(--ok); }
 .check ul { padding-left: 1.1rem; }
@@ -1066,8 +1070,8 @@ a:hover > .timeline-marker { border-color: var(--brand); }
 .code {
     border-radius: var(--radius);
     overflow: hidden;
+    border: 1px solid var(--border);
     background: var(--code-bg);
-    box-shadow: var(--shadow-sm);
 }
 .code-head {
     display: flex;
@@ -1077,23 +1081,24 @@ a:hover > .timeline-marker { border-color: var(--brand); }
     min-height: 44px;
     padding: 0.25rem 0.4rem 0.25rem 1rem;
     background: var(--code-head);
-    color: #cbd5e1;
-    font-size: 0.8125rem;
-    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    color: var(--body);
+    font-size: 0.875rem;
+    font-weight: 700;
 }
 .copy-btn {
     flex: none;
     min-height: 36px;
     padding: 0.3rem 0.8rem;
-    border: 1px solid #475569;
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    background: transparent;
-    color: #e2e8f0;
-    font: 600 0.8125rem/1 var(--font-sans);
+    background: #fff;
+    color: var(--text);
+    font: 700 0.875rem/1 var(--font-sans);
     cursor: pointer;
 }
-.copy-btn:hover { background: #334155; }
-.copy-btn.is-done { color: #86efac; border-color: #16a34a; }
+.copy-btn:hover { border-color: var(--brand); color: var(--brand); }
+.copy-btn.is-done { color: var(--ok); border-color: var(--ok); }
 .code pre {
     margin: 0;
     padding: 1rem 1.1rem;
@@ -1219,6 +1224,34 @@ table.data {
     .feature-body { padding: 1.5rem; }
 }
 
+/* Print settings: two big numbers side by side; the arm setting is the one that matters */
+.settings { display: grid; gap: var(--space-3); }
+@media (min-width: 640px) { .settings { grid-template-columns: 1fr 1fr; } }
+.setting {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+}
+.setting--key { border: 1.5px solid var(--brand); background: var(--brand-tint); }
+.setting-value {
+    flex: none;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+.setting--key .setting-value { color: var(--brand); }
+.setting-text { line-height: 1.4; color: var(--body); }
+.setting-label { display: block; font-weight: 700; color: var(--text); }
+.settings + .settings-shared { margin-top: var(--space-3); }
+.settings-shared { font-size: var(--fs-small); color: var(--muted); }
+
 /* Requirement cards (Components: check before you buy) */
 .req { display: flex; flex-direction: column; }
 /* A small label that introduces the list right under it */
@@ -1237,7 +1270,7 @@ table.data {
 .kv dt, .kv dd { padding: 0.45rem 0; border-top: 1px solid var(--border); }
 .kv dt:first-of-type, .kv dd:first-of-type { border-top: 0; }
 .kv dt { color: var(--body); padding-right: 1rem; }
-.kv dd { margin: 0; font-weight: 700; color: var(--text); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.kv dd { margin: 0; font-weight: 600; color: var(--text); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* Stats */
 .stats {
@@ -1258,7 +1291,7 @@ table.data {
     font-size: clamp(1.5rem, 1.25rem + 0.9vw, 1.875rem);
     font-weight: 800;
     line-height: 1.1;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     color: var(--text);
     font-variant-numeric: tabular-nums;
 }
@@ -1321,11 +1354,7 @@ figcaption, .caption { font-size: 0.875rem; line-height: 1.5; color: var(--muted
     display: grid;
     place-items: center;
     padding: 0.6rem;
-    background-color: #f1f5f9;
-    background-image:
-        linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-color: var(--surface-2);
 }
 .plate-bed img { max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.2)); }
 .plate figcaption {
@@ -1459,6 +1488,19 @@ figcaption, .caption { font-size: 0.875rem; line-height: 1.5; color: var(--muted
 }
 .media-grid figcaption strong { display: block; font-family: var(--font-display); font-size: 1.0625rem; color: var(--text); }
 .media-grid figcaption { font-size: 0.9375rem; color: var(--body); }
+
+/* News: date on the left, the change beside it; same hairline rhythm as the fixes list */
+.news { list-style: none; padding: 0; max-width: var(--measure); border-top: 1px solid var(--border-strong); }
+.news-item { display: grid; gap: var(--space-1) var(--space-6); padding: var(--space-4) 0; border-bottom: 1px solid var(--border); }
+.news li + li { margin-top: 0; }
+.news-item time { font-size: var(--fs-small); font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.news-title { font-family: var(--font-sans); font-size: 1.0625rem; font-weight: 700; letter-spacing: 0; }
+.news-item p { margin-top: var(--space-1); }
+@media (min-width: 640px) {
+    .news-item { grid-template-columns: 8rem minmax(0, 1fr); }
+    .news-item time { padding-top: 0.15rem; }
+}
+.section#news + .credits { border-top: 1px solid var(--border); }
 
 .credits { padding-block: clamp(2.5rem, 5vw, 3.5rem); }
 .credits-inner { display: grid; gap: var(--space-3) var(--space-7); }

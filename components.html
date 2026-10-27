@@ -12,8 +12,8 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=30">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..800&family=Atkinson+Hyperlegible+Mono:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=36">
     <script>document.documentElement.classList.add('js');</script>
     <script src="site.js?v=21" defer></script>
 </head>
@@ -38,7 +38,7 @@
                 </ul>
                 <div class="nav-ext">
                     <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
-                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a>
                 </div>
             </nav>
         </div>
@@ -82,7 +82,7 @@
                                 <tr><td><a href="https://www.amazon.com/dp/B07PGY2JP1" target="_blank" rel="noopener noreferrer">PLA Filament (3kg)</a></td><td class="center">1</td><td class="num mono">$45.00</td></tr>
                                 <tr><td><a href="https://www.amazon.com/dp/B0BRWCFD6Q?_encoding=UTF8&amp;ref=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;ref_=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;social_share=cm_sw_r_cp_ud_dp_NJMS7ZHFJF8T6K3W1ASX_2&amp;previewDoh=1&amp;th=1" target="_blank" rel="noopener noreferrer">M3 Screws and Nuts Set</a></td><td class="center">1</td><td class="num mono">$14.99</td></tr>
                                 <tr><td><a href="https://www.ikea.com/us/en/p/raskog-utility-cart-black-40582181/#content" target="_blank" rel="noopener noreferrer">IKEA RÅSKOG Utility Cart</a></td><td class="center">1</td><td class="num mono">$39.99</td></tr>
-                                <tr><td><a href="https://www.vexrobotics.com/omni-wheels.html" target="_blank" rel="noopener noreferrer">4” Omni Wheels</a></td><td class="center">3</td><td class="num mono">$29.97</td></tr>
+                                <tr><td><a href="https://www.vexrobotics.com/wheels.html?___store=vexroboticsca&amp;___from_store=vexrobotics" target="_blank" rel="noopener noreferrer">4” Omni Wheels</a></td><td class="center">3</td><td class="num mono">$29.97</td></tr>
                                 <tr><td>Intel RealSense D435</td><td class="center">1</td><td class="num mono">$333.75</td></tr>
                                 <tr><td><a href="https://www.amazon.com/dp/B0CDBWHXDZ?th=1" target="_blank" rel="noopener noreferrer">USB-C to DC5521 Cable</a></td><td class="center">1</td><td class="num mono">$8.99</td></tr>
                                 <tr><td>USB-C to DC5525 PD 140W Cable</td><td class="center">1</td><td class="num mono">$11.99</td></tr>
@@ -149,24 +149,17 @@
                     <h3>2. Print settings</h3>
                     <p>The 3MF already applies these. You only need them if you slice the parts some other way.</p>
 
-                    <div class="grid grid--2">
-                        <article class="card">
-                            <h4>Every arm part <span class="tag tag--ok">High-Shell</span></h4>
-                            <dl class="kv">
-                                <dt>Perimeters</dt><dd>4</dd>
-                                <dt>Infill</dt><dd>15%</dd>
-                                <dt>Layer height</dt><dd>0.20 mm</dd>
-                            </dl>
-                        </article>
-                        <article class="card">
-                            <h4>Everything else <span class="tag">Default</span></h4>
-                            <dl class="kv">
-                                <dt>Perimeters</dt><dd>2</dd>
-                                <dt>Infill</dt><dd>15%</dd>
-                                <dt>Layer height</dt><dd>0.20 mm</dd>
-                            </dl>
-                        </article>
+                    <div class="settings">
+                        <div class="setting setting--key">
+                            <span class="setting-value">4</span>
+                            <span class="setting-text"><span class="setting-label">perimeters</span> on every arm part <span class="tag tag--ok">High-Shell</span></span>
+                        </div>
+                        <div class="setting">
+                            <span class="setting-value">2</span>
+                            <span class="setting-text"><span class="setting-label">perimeters</span> on everything else <span class="tag">Default</span></span>
+                        </div>
                     </div>
+                    <p class="settings-shared">Every part: 0.20 mm layers and 15% infill.</p>
 
                     <h3>3. Printing rules</h3>
                     <ul class="checklist">
@@ -224,8 +217,9 @@
                 <h2 class="footer-title">Project</h2>
                 <ul class="footer-links">
                     <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="index.html#news">News</a></li>
                     <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
-                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
                     <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
                 </ul>
             </div>

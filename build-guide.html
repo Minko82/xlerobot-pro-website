@@ -12,8 +12,8 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=30">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..800&family=Atkinson+Hyperlegible+Mono:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=36">
     <script>document.documentElement.classList.add('js');</script>
     <script src="site.js?v=21" defer></script>
 </head>
@@ -38,7 +38,7 @@
                 </ul>
                 <div class="nav-ext">
                     <a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
-                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+                    <a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a>
                 </div>
             </nav>
         </div>
@@ -64,7 +64,7 @@
             <div class="doc-content">
 
                 <section class="doc-section flow" id="overview">
-                    <h2>1. Build overview</h2>
+                    <div class="step-head"><span class="step-num">1</span><h2>Build overview</h2></div>
                     <p class="section-lede">You'll build two SO-101 arms, a neck and head, and an omni-wheel base.</p>
                     <p>They mount on an IKEA RÅSKOG cart, with an NVIDIA Jetson Orin Nano Super on a <a href="components.html#printing">printed open frame</a> at its center.</p>
 
@@ -92,7 +92,7 @@
                 </section>
 
                 <section class="doc-section flow" id="assembly">
-                    <h2>2. Assembly</h2>
+                    <div class="step-head"><span class="step-num">2</span><h2>Assembly</h2></div>
                     <p class="section-lede">Follow the walkthrough video. The notes below cover the steps where order matters.</p>
 
                     <figure class="figure">
@@ -137,7 +137,7 @@
                 </section>
 
                 <section class="doc-section flow" id="motor-configuration">
-                    <h2>3. Motor configuration and IDs</h2>
+                    <div class="step-head"><span class="step-num">3</span><h2>Motor configuration and IDs</h2></div>
                     <p class="section-lede">Set every motor's ID <strong>before</strong> final cable management and hard mounting. Many servos ship with default ID 1, so each ID must be unique per bus.</p>
 
                     <div class="callout callout--danger">
@@ -213,7 +213,7 @@ $ python set_motor_id.py --port /dev/ttyACM0 --id 7 --model scs0009</code></pre>
                 </section>
 
                 <section class="doc-section flow" id="jetson">
-                    <h2>4. NVIDIA Jetson placement</h2>
+                    <div class="step-head"><span class="step-num">4</span><h2>NVIDIA Jetson placement</h2></div>
                     <p class="section-lede">Mount the Jetson in the <strong>center rack</strong>, between the base and the top plate.</p>
                     <ul class="checklist">
                         <li>Keep mass low for stability.</li>
@@ -228,7 +228,7 @@ $ python set_motor_id.py --port /dev/ttyACM0 --id 7 --model scs0009</code></pre>
                 </section>
 
                 <section class="doc-section flow" id="wiring">
-                    <h2>5. Wiring (2-bus)</h2>
+                    <div class="step-head"><span class="step-num">5</span><h2>Wiring (2-bus)</h2></div>
                     <p class="section-lede">Seventeen motors, four daisy chains, two bus hubs, and three USB cables to the Jetson (five with the optional wrist cameras).</p>
 
                     <figure class="figure">
@@ -300,7 +300,7 @@ $ python set_motor_id.py --port /dev/ttyACM0 --id 7 --model scs0009</code></pre>
                 </section>
 
                 <section class="doc-section flow" id="final-assembly">
-                    <h2>6. Final assembly</h2>
+                    <div class="step-head"><span class="step-num">6</span><h2>Final assembly</h2></div>
                     <ul>
                         <li>Complete wiring and cable management before clamping the top base into the cart.</li>
                         <li>Clamp the arms onto the cart corners after route verification.</li>
@@ -338,7 +338,7 @@ $ python set_motor_id.py --port /dev/ttyACM0 --id 7 --model scs0009</code></pre>
                 </section>
 
                 <section class="doc-section flow" id="calibration">
-                    <h2>7. Calibrate and validate</h2>
+                    <div class="step-head"><span class="step-num">7</span><h2>Calibrate and validate</h2></div>
                     <p class="section-lede">Calibrate once for the whole robot, then check that it moves as expected.</p>
 
                     <div class="callout callout--warn">
@@ -444,8 +444,9 @@ $ rs-enumerate-devices</code></pre>
                 <h2 class="footer-title">Project</h2>
                 <ul class="footer-links">
                     <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="index.html#news">News</a></li>
                     <li><a href="https://github.com/Minko82/xlerobot-pro" target="_blank" rel="noopener noreferrer">Code on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
-                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">Paper on arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
+                    <li><a href="https://arxiv.org/abs/2603.09051" target="_blank" rel="noopener noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a></li>
                     <li><a href="https://github.com/Minko82/xlerobot-pro/issues" target="_blank" rel="noopener noreferrer">Ask a question<span class="sr-only"> (opens in a new tab)</span></a></li>
                 </ul>
             </div>
